@@ -1,4 +1,4 @@
-package by.epam.audioorder.util.pool;
+package by.epam.audioorder.pool;
 
 public class ConnectionPoolException extends Exception {
     public ConnectionPoolException() {

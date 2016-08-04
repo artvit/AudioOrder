@@ -2,7 +2,7 @@ package by.epam.audioorder.dao;
 
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.exception.DAOException;
-import by.epam.audioorder.util.pool.ConnectionPoolException;
+import by.epam.audioorder.pool.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -56,19 +56,17 @@ public class UserDAO extends AbstractDAO<User> {
             ") VALUES (?, ?, ?, ?, ?);";
 
     public User findUserByLogin(String login) throws DAOException {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(USER_BY_LOGIN);
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(USER_BY_LOGIN)) {
             statement.setString(1, login);
             ResultSet result = statement.executeQuery();
             User user;
             if (result.next()) {
                 user = createUser(result);
+                LOGGER.info("Successful reading from database");
             } else {
                 throw new DAOException("No result was found for login " + login);
             }
-            statement.close();
-            connection.close();
             return user;
         } catch (ConnectionPoolException e) {
             throw new DAOException("Cannot get connection", e);
@@ -79,17 +77,15 @@ public class UserDAO extends AbstractDAO<User> {
 
     @Override
     public List<User> findAll() throws DAOException {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(USER_ALL);
+        try (Connection connection = getConnection();
+            PreparedStatement statement = connection.prepareStatement(USER_ALL)) {
             ResultSet result = statement.executeQuery();
             List<User> users = new ArrayList<>();
             while (result.next()) {
                 User user = createUser(result);
                 users.add(user);
             }
-            statement.close();
-            connection.close();
+            LOGGER.info("Successful reading from database");
             return users;
         } catch (ConnectionPoolException e) {
             throw new DAOException("Cannot get connection", e);
@@ -100,19 +96,17 @@ public class UserDAO extends AbstractDAO<User> {
 
     @Override
     public User findById(long id) throws DAOException {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(USER_BY_ID);
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(USER_BY_ID)){
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
             User user;
             if (result.next()) {
                 user = createUser(result);
+                LOGGER.info("Successful reading from database");
             } else {
                 throw new DAOException("No result was found for id " + id);
             }
-            statement.close();
-            connection.close();
             return user;
         } catch (ConnectionPoolException e) {
             throw new DAOException("Cannot get connection", e);
@@ -128,9 +122,8 @@ public class UserDAO extends AbstractDAO<User> {
 
     @Override
     public void insert(User entity) throws DAOException {
-        try {
-            Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(INSERT_USER);
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_USER)) {
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPasswordHash());
             statement.setString(3, entity.getEmail());

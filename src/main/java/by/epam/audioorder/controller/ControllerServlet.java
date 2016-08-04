@@ -3,7 +3,7 @@ package by.epam.audioorder.controller;
 import by.epam.audioorder.command.Command;
 import by.epam.audioorder.command.CommandFactory;
 import by.epam.audioorder.exception.UnsupportedCommandException;
-import by.epam.audioorder.util.pool.ConnectionPool;
+import by.epam.audioorder.pool.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,7 +46,7 @@ public class ControllerServlet extends HttpServlet {
             command = commandFactory.createCommand(commandName);
             if (command != null) {
                 String result = command.execute(request, response);
-                request.getRequestDispatcher(result).forward(request, response);
+                response.sendRedirect(result);
             }
         } catch (UnsupportedCommandException e) {
             request.getRequestDispatcher("/pages/error.jsp").forward(request, response);

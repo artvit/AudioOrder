@@ -1,4 +1,4 @@
-package by.epam.audioorder.util.pool;
+package by.epam.audioorder.pool;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +12,7 @@ import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,6 +22,7 @@ public class ConnectionPool {
     private static ConnectionPool instance;
     private static final int CAPACITY = 15;
     private static Lock accessLock = new ReentrantLock();
+    private static AtomicBoolean initialized = new AtomicBoolean();
 
     private String url;
     private String user;
@@ -113,7 +115,7 @@ public class ConnectionPool {
 
     public static ConnectionPool getInstance() {
         ConnectionPool localInstance = instance;
-        if (localInstance == null) {
+        if (!initialized.get()) {
             accessLock.lock();
             localInstance = instance;
             if (localInstance == null) {

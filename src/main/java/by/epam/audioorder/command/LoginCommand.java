@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class LoginCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -14,6 +15,7 @@ public class LoginCommand implements Command {
     private static final String LOGIN = "login";
     private static final String PASSWORD = "password";
     private static final String ROLE = "role";
+    public static final String MESSAGE = "message";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -22,12 +24,14 @@ public class LoginCommand implements Command {
         LoginService loginService = new LoginService();
         User user  = loginService.authenticate(login, password);
         if (user != null) {
-            request.getSession().setAttribute(LOGIN, user.getLogin());
-            request.getSession().setAttribute(ROLE, user.getRole());
+            HttpSession session = request.getSession();
+            session.setAttribute(LOGIN, user.getLogin());
+            session.setAttribute(ROLE, user.getRole());
             LOGGER.info("User " + login + " signed in successfully");
-            return "/index.jsp";
+            return Page.INDEX;
         } else {
-            return "/pages/login.jsp";
+            request.setAttribute(MESSAGE, "Invalid login/password");
+            return Page.LOGIN;
         }
     }
 }

@@ -1,8 +1,8 @@
 package by.epam.audioorder.dao;
 
 import by.epam.audioorder.exception.DAOException;
-import by.epam.audioorder.util.pool.ConnectionPool;
-import by.epam.audioorder.util.pool.ConnectionPoolException;
+import by.epam.audioorder.pool.ConnectionPool;
+import by.epam.audioorder.pool.ConnectionPoolException;
 
 import java.sql.Connection;
 import java.util.List;

@@ -1,4 +1,4 @@
-package by.epam.audioorder.util.pool;
+package by.epam.audioorder.pool;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
