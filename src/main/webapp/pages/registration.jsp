@@ -1,4 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="i18n.i18n"/>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -17,7 +21,7 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-body">
-            <form class="form-registration">
+            <form method="post" action="registration" class="form-registration">
                 <div class="form-group">
                     <label for="inputLogin" class="control-label">Login</label>
                     <input type="text" id="inputLogin" class="form-control" placeholder="Login" required autofocus>

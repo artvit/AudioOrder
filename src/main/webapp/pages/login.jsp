@@ -1,4 +1,8 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<fmt:setLocale value="${sessionScope.locale}"/>
+<fmt:setBundle basename="i18n.i18n"/>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -32,7 +36,7 @@
                 <label for="inputPassword" class="sr-only">Password</label>
                 <input name="password" type="password" id="inputPassword" class="form-control" placeholder="Password" required>
                 <button class="btn btn-lg btn-success btn-block" type="submit">Sign in</button>
-                <a class="btn btn-lg btn-primary btn-block" href="registration.html">Registration</a>
+                <a class="btn btn-lg btn-primary btn-block" href="${pageContext.request.contextPath}/registration">Registration</a>
             </form>
         </div>
     </div>

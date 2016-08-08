@@ -1,5 +1,6 @@
 package by.epam.audioorder.command;
 
+import by.epam.audioorder.action.ConfigurationManager;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.LoginService;
 import org.apache.logging.log4j.LogManager;
@@ -28,10 +29,10 @@ public class LoginCommand implements Command {
             session.setAttribute(LOGIN, user.getLogin());
             session.setAttribute(ROLE, user.getRole());
             LOGGER.info("User " + login + " signed in successfully");
-            return Page.INDEX;
+            return ConfigurationManager.getProperty("page.index");
         } else {
             request.setAttribute(MESSAGE, "Invalid login/password");
-            return Page.LOGIN;
+            return ConfigurationManager.getProperty("page.login");
         }
     }
 }
