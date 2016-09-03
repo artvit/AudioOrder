@@ -10,8 +10,8 @@
     <uri>customtaglib</uri>
 
     <tag>
-        <name>first</name>
-        <tag-class>by.epam.audioorder.tag.FirstTag</tag-class>
+        <name>usermenu</name>
+        <tag-class>by.epam.audioorder.tag.UserMenuTag</tag-class>
         <body-content>empty</body-content>
     </tag>
 

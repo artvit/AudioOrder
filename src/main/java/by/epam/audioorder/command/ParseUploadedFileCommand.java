@@ -20,7 +20,7 @@ public class ParseUploadedFileCommand implements Command {
     private static final String SAVE_DIR = "handlingFiles";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String savePath = request.getServletContext().getRealPath("") + SAVE_DIR;
 
         File fileSaveDir = new File(savePath);
@@ -56,7 +56,7 @@ public class ParseUploadedFileCommand implements Command {
         }
 
         request.setAttribute("message", "Upload has been done successfully!");
-        return "/pages/success.jsp";
+        return new CommandResult("/pages/success.jsp", CommandResult.Type.REDIRECT);
     }
 
     private String extractFileName(Part part) {

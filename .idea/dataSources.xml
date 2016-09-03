@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="2466379355">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
     <data-source source="LOCAL" name="MySQL - trackorder@localhost" uuid="7cfd6cf4-722b-4b17-9a01-2fccfd5660c0">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>

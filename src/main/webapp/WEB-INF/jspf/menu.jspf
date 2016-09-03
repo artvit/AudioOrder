@@ -17,17 +17,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="tracks.html"><span class="glyphicon glyphicon-music"></span> <fmt:message key="menu.tracks"/></a></li>
             </ul>
-            <%--<ul class="nav navbar-nav navbar-right">--%>
-                <%--<c:if test="${not empty login}">--%>
-                    <%--<li><c:out value="${sessionScope.login}"/></li>--%>
-                    <%--<li><a href="${pageContext.request.contextPath}/login"><fmt:message key="menu.logout"/></a></li>--%>
-                <%--</c:if>--%>
-                <%--<c:if test="${empty login}">--%>
-                    <%--<li><a href="${pageContext.request.contextPath}/login"><fmt:message key="menu.login"/></a></li>--%>
-                    <%--<li><a href="${pageContext.request.contextPath}/registration"><fmt:message key="menu.signup"/></a></li>--%>
-                <%--</c:if>--%>
-            <%--</ul>--%>
-            <ctl:first/>
+            <ctl:usermenu/>
         </div>
     </div>
 </nav>

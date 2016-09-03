@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registration</title>
+    <title><fmt:message key="registration.title"/></title>
     <link href="../webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="../webjars/jquery/3.0.0/jquery.min.js"></script>
     <script src="../webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -17,28 +17,39 @@
 <%@ include file="../WEB-INF/jspf/menu.jspf" %>
 <div class="container" role="main">
     <div class="page-header">
-        <h1>Registration</h1>
+        <h1><fmt:message key="registration.title"/></h1>
     </div>
     <div class="panel panel-default">
         <div class="panel-body">
+            <c:if test="${not empty message}">
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><fmt:message key="registration.error.title"/></h3>
+                    </div>
+                    <div class="panel-body">
+                        <c:out value="${message}"/>
+                    </div>
+                </div>
+            </c:if>
             <form method="post" action="registration" class="form-registration">
+                <input type="hidden" name="command" value="registration">
                 <div class="form-group">
-                    <label for="inputLogin" class="control-label">Login</label>
-                    <input type="text" id="inputLogin" class="form-control" placeholder="Login" required autofocus>
+                    <label for="inputLogin" class="control-label"><fmt:message key="registration.login"/></label>
+                    <input name="login" value="${login}" type="text" id="inputLogin" class="form-control" placeholder="<fmt:message key="registration.login"/>" required autofocus>
                 </div>
                 <div class="form-group">
-                    <label for="inputEmail" class="control-label">E-mail</label>
-                    <input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+                    <label for="inputEmail" class="control-label"><fmt:message key="registration.email"/></label>
+                    <input name="email" value="${email}" type="email" id="inputEmail" class="form-control" placeholder="<fmt:message key="registration.login"/>" required autofocus>
                 </div>
                 <div class="form-group">
-                    <label for="inputPassword" class="control-label">Password</label>
-                    <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+                    <label for="inputPassword" class="control-label"><fmt:message key="registration.password"/></label>
+                    <input name="password" value="${password}" type="password" id="inputPassword" class="form-control" placeholder="<fmt:message key="registration.password"/>" required>
                 </div>
                 <div class="form-group">
-                    <label for="inputPasswordConfirm" class="control-label">Password confirmation</label>
-                    <input type="password" id="inputPasswordConfirm" class="form-control" placeholder="Password confirmation" required>
+                    <label for="inputPasswordConfirm" class="control-label"><fmt:message key="registration.password-confirm"/></label>
+                    <input name="passwordConfirm" value="${passwordConfirm}" type="password" id="inputPasswordConfirm" class="form-control" placeholder="<fmt:message key="registration.password-confirm"/>" required>
                 </div>
-                <button class="btn btn-lg btn-success" type="submit">Sign in</button>
+                <button class="btn btn-lg btn-success" type="submit"><fmt:message key="registration.button"/></button>
             </form>
         </div>
     </div>
