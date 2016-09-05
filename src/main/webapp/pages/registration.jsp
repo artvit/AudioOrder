@@ -10,7 +10,7 @@
     <link href="../webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="../webjars/jquery/3.0.0/jquery.min.js"></script>
     <script src="../webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="../resource/css/registration.css.css" rel="stylesheet">
+    <link href="../resource/css/registration.css" rel="stylesheet">
     <link href="../resource/css/background.css" rel="stylesheet">
 </head>
 <body>
@@ -35,19 +35,19 @@
                 <input type="hidden" name="command" value="registration">
                 <div class="form-group">
                     <label for="inputLogin" class="control-label"><fmt:message key="registration.login"/></label>
-                    <input name="login" value="${login}" type="text" id="inputLogin" class="form-control" placeholder="<fmt:message key="registration.login"/>" required autofocus>
+                    <input name="login" value="${login}" type="text" userId="inputLogin" class="form-control" placeholder="<fmt:message key="registration.login"/>" required autofocus>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail" class="control-label"><fmt:message key="registration.email"/></label>
-                    <input name="email" value="${email}" type="email" id="inputEmail" class="form-control" placeholder="<fmt:message key="registration.login"/>" required autofocus>
+                    <input name="email" value="${email}" type="email" userId="inputEmail" class="form-control" placeholder="<fmt:message key="registration.email"/>" required>
                 </div>
                 <div class="form-group">
                     <label for="inputPassword" class="control-label"><fmt:message key="registration.password"/></label>
-                    <input name="password" value="${password}" type="password" id="inputPassword" class="form-control" placeholder="<fmt:message key="registration.password"/>" required>
+                    <input name="password" value="${password}" type="password" userId="inputPassword" class="form-control" placeholder="<fmt:message key="registration.password"/>" required>
                 </div>
                 <div class="form-group">
                     <label for="inputPasswordConfirm" class="control-label"><fmt:message key="registration.password-confirm"/></label>
-                    <input name="passwordConfirm" value="${passwordConfirm}" type="password" id="inputPasswordConfirm" class="form-control" placeholder="<fmt:message key="registration.password-confirm"/>" required>
+                    <input name="passwordConfirm" value="${passwordConfirm}" type="password" userId="inputPasswordConfirm" class="form-control" placeholder="<fmt:message key="registration.password-confirm"/>" required>
                 </div>
                 <button class="btn btn-lg btn-success" type="submit"><fmt:message key="registration.button"/></button>
             </form>

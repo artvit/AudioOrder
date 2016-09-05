@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "ControllerServlet",
-        urlPatterns = {"/controller", "/pages/controller", "/login", "/registration"})
+        urlPatterns = {"/controller", "/pages/controller", "/login", "/registration", "/tracks", "/addtrack", "/clients"})
 //@MultipartConfig(location = "C:\\apache-tomcat-8.0.36\\webapps\\parser\\tmp",
 //        fileSizeThreshold = 1024*1024*2,
 //        maxFileSize = 1024*1024*10,
@@ -27,9 +27,7 @@ import java.io.IOException;
 public class ControllerServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final String COMMAND = "command";
     private CommandFactory commandFactory;
-
 
     @Override
     public void init() throws ServletException {
@@ -38,9 +36,32 @@ public class ControllerServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        handleCommand(request, response);
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getParameter(ConfigurationManager.getProperty("param.command")) != null) {
+            handleCommand(request, response);
+        } else {
+            try {
+                String servletPath = request.getServletPath();
+                request.getRequestDispatcher(getForwardPage(servletPath)).forward(request, response);
+            } catch (UnsupportedPageException e) {
+                request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
+            }
+        }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
+        ConnectionPool.getInstance().close();
+    }
+
+    private void handleCommand(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Command command;
         try {
-            String commandName = request.getParameter(COMMAND);
+            String commandName = request.getParameter(ConfigurationManager.getProperty("param.command"));
             if (commandName == null) {
                 request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
             }
@@ -58,20 +79,6 @@ public class ControllerServlet extends HttpServlet {
         }
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            request.getRequestDispatcher(getForwardPage(request.getServletPath())).forward(request, response);
-        } catch (UnsupportedPageException e) {
-            request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
-        }
-    }
-
-    @Override
-    public void destroy() {
-        super.destroy();
-        ConnectionPool.getInstance().close();
-    }
-
     private static String getForwardPage(String servletPath) throws UnsupportedPageException {
         switch (servletPath) {
             case "/login":
@@ -80,6 +87,8 @@ public class ControllerServlet extends HttpServlet {
                 return ConfigurationManager.getProperty("page.registration");
             case "/error":
                 return ConfigurationManager.getProperty("page.error");
+            case "/tracks":
+                return ConfigurationManager.getProperty("page.tracks");
             default:
                 throw new UnsupportedPageException("Page " + servletPath + " is not supported");
         }

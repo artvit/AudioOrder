@@ -14,25 +14,20 @@ import javax.servlet.http.HttpSession;
 public class LoginCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final String LOGIN = "login";
-    private static final String PASSWORD = "password";
-    private static final String ROLE = "role";
-    private static final String MESSAGE = "message";
-
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String login = request.getParameter(LOGIN);
-        String password = request.getParameter(PASSWORD);
+        String login = request.getParameter(ConfigurationManager.getProperty("param.login"));
+        String password = request.getParameter(ConfigurationManager.getProperty("param.password"));
         LoginService loginService = new LoginService();
         User user  = loginService.authenticate(login, password);
         if (user != null) {
             HttpSession session = request.getSession();
-            session.setAttribute(LOGIN, user.getLogin());
-            session.setAttribute(ROLE, user.getRole());
+            session.setAttribute(ConfigurationManager.getProperty("attr.login"), user.getLogin());
+            session.setAttribute(ConfigurationManager.getProperty("attr.role"), user.getRole());
             LOGGER.info("User " + login + " signed in successfully");
             return new CommandResult(ConfigurationManager.getProperty("page.index"), CommandResult.Type.REDIRECT);
         } else {
-            request.setAttribute(MESSAGE, InternationalizationManager.getProperty("login.error.invalid"));
+            request.setAttribute(ConfigurationManager.getProperty("attr.message"), InternationalizationManager.getProperty("login.error.invalid"));
             return new CommandResult(ConfigurationManager.getProperty("page.login"), CommandResult.Type.FORWARD);
         }
     }

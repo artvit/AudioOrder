@@ -26,7 +26,7 @@ public class UserDAO extends AbstractDAO<User> {
     private static final String USER_BY_LOGIN =
             "SELECT " + USER_ID + ", " +
                         LOGIN + ", " +
-                    PASS_HASH + ", " +
+                        PASS_HASH + ", " +
                         EMAIL + ", " +
                         ROLE +", " +
                         BALANCE +
@@ -34,7 +34,7 @@ public class UserDAO extends AbstractDAO<User> {
     private static final String USER_ALL =
             "SELECT " + USER_ID + ", " +
                         LOGIN + ", " +
-                    PASS_HASH + ", " +
+                        PASS_HASH + ", " +
                         EMAIL + ", " +
                         ROLE +", " +
                         BALANCE +
@@ -42,7 +42,7 @@ public class UserDAO extends AbstractDAO<User> {
     private static final String USER_BY_ID =
             "SELECT " + USER_ID + ", " +
                         LOGIN + ", " +
-                    PASS_HASH + ", " +
+                        PASS_HASH + ", " +
                         EMAIL + ", " +
                         ROLE +", " +
                         BALANCE +
@@ -128,7 +128,7 @@ public class UserDAO extends AbstractDAO<User> {
     public void delete(User entity) throws DAOException {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_USER)) {
-            statement.setLong(1, entity.getId());
+            statement.setLong(1, entity.getUserId());
             int result = statement.executeUpdate();
             if (result == 0) {
                 throw new DAOException("New user was deleted");
@@ -173,7 +173,7 @@ public class UserDAO extends AbstractDAO<User> {
             statement.setString(3, entity.getEmail());
             statement.setString(4, entity.getRole().toString().toLowerCase());
             statement.setDouble(5, entity.getBalance());
-            statement.setLong(6, entity.getId());
+            statement.setLong(6, entity.getUserId());
             int result = statement.executeUpdate();
             if (result == 0) {
                 throw new DAOException("User "  + entity.getLogin() + " was not updated");
@@ -189,7 +189,7 @@ public class UserDAO extends AbstractDAO<User> {
 
     private User createUser(ResultSet resultSet) throws SQLException {
         User user = new User();
-        user.setId(resultSet.getLong(USER_ID));
+        user.setUserId(resultSet.getLong(USER_ID));
         user.setLogin(resultSet.getString(LOGIN));
         user.setPasswordHash(resultSet.getString(PASS_HASH));
         user.setEmail(resultSet.getString(EMAIL));

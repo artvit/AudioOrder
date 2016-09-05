@@ -1,12 +1,16 @@
 package by.epam.audioorder.tag;
 
 import by.epam.audioorder.action.InternationalizationManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.io.IOException;
-//TODO rename class
+
 public class UserMenuTag extends TagSupport{
+    public static final Logger LOGGER = LogManager.getLogger();
+
     @Override
     public int doStartTag() throws JspException {
         try {
@@ -14,21 +18,14 @@ public class UserMenuTag extends TagSupport{
             pageContext.getOut().println("<ul class=\"nav navbar-nav navbar-right\">");
             if (pageContext.getSession().getAttribute("login") != null) {
                 pageContext.getOut().println("<li>" + "<a href=\"" + contextPath + "/login\">" + pageContext.getSession().getAttribute("login") + "</a>" + "</li>");
-//                pageContext.getOut().println("<li>" + "<a href=\"" + contextPath + "/login\">" + InternationalizationManager.getProperty("menu.logout") + "</a>" + "</li>");
-                pageContext.getOut().println("<li>");
-                pageContext.getOut().println("<form class=\"navbar-form navbar-left\" role=\"search\">\n" +
-                        "  <input type=\"hidden\" value=\"logout\">" +
-                        "  <button type=\"submit\" class=\"btn btn-link\">" + InternationalizationManager.getProperty("menu.logout") +  "</button>\n" +
-                        "</form>");
-                pageContext.getOut().println("</li>");
+                pageContext.getOut().println("<li>" + "<a href=\"" + contextPath + "/controller?command=logout\">" + InternationalizationManager.getProperty("menu.logout") + "</a>" + "</li>");
             } else {
                 pageContext.getOut().println("<li>" + "<a href=\"" + contextPath + "/login\">" + InternationalizationManager.getProperty("menu.login") + "</a>" + "</li>");
                 pageContext.getOut().println("<li>" + "<a href=\"" + contextPath + "/registration\">" + InternationalizationManager.getProperty("menu.registration") + "</a>" + "</li>");
             }
             pageContext.getOut().println("</ul>");
         } catch (IOException e) {
-//            TODO io exception handling
-            e.printStackTrace();
+            LOGGER.error("Cannot print user menu", e);
         }
         return SKIP_BODY;
     }

@@ -1,0 +1,26 @@
+<div class="input-group">
+    <span class="input-group-addon" id="genre-description">Genre</span>
+    <div class="form-group" aria-describedby="genre-description">
+        <label for="genre" class="sr-only">Genre</label>
+        <select class="form-control" id="genre" name="genre">
+            <option value="any">Any</option>
+            <option value="rock">Rock</option>
+            <option value="">Pop</option>
+            <option>House & Dance</option>
+            <option>Alternative</option>
+            <option>Instrumental</option>
+            <option>Easy Listening</option>
+            <option>Metal</option>
+            <option>Dubstep & Trap</option>
+            <option>Indie Pop</option>
+            <option>Jazz & Blues</option>
+            <option>Drum & Bass</option>
+            <option>Trance</option>
+            <option>Ethnic</option>
+            <option>Acoustic & Vocal</option>
+            <option>Reggae</option>
+            <option>Classical</option>
+            <option>Electropop & Disco</option>
+        </select>
+    </div>
+</div>

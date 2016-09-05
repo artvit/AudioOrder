@@ -1,7 +1,7 @@
 package by.epam.audioorder.entity;
 
 public class User {
-    private long id;
+    private long userId;
     private String login;
     private String passwordHash;
     private String email;
@@ -9,22 +9,24 @@ public class User {
     private double balance;
 
     public User() {
+        this.role = UserType.USER;
+        this.balance = 0;
     }
 
-    public User(long id, String login, String passwordHash, UserType role, double balance) {
-        this.id = id;
+    public User(long userId, String login, String passwordHash, UserType role, double balance) {
+        this.userId = userId;
         this.login = login;
         this.passwordHash = passwordHash;
         this.role = role;
         this.balance = balance;
     }
 
-    public long getId() {
-        return id;
+    public long getUserId() {
+        return userId;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setUserId(long userId) {
+        this.userId = userId;
     }
 
     public String getLogin() {

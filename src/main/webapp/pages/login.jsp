@@ -32,9 +32,9 @@
                     </div>
                 </c:if>
                 <label for="inputLogin" class="sr-only"><fmt:message key="login.login"/></label>
-                <input name="login" type="text" id="inputLogin" class="form-control" placeholder="<fmt:message key="login.login"/>" required autofocus>
+                <input name="login" type="text" userId="inputLogin" class="form-control" placeholder="<fmt:message key="login.login"/>" required autofocus>
                 <label for="inputPassword" class="sr-only"><fmt:message key="login.password"/></label>
-                <input name="password" type="password" id="inputPassword" class="form-control" placeholder="<fmt:message key="login.password"/>" required>
+                <input name="password" type="password" userId="inputPassword" class="form-control" placeholder="<fmt:message key="login.password"/>" required>
                 <button class="btn btn-lg btn-success btn-block" type="submit"><fmt:message key="login.button.login"/></button>
                 <a class="btn btn-lg btn-primary btn-block" href="${pageContext.request.contextPath}/registration"><fmt:message key="login.button.regitration"/></a>
             </form>
