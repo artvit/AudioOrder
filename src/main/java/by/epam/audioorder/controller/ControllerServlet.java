@@ -11,7 +11,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,19 +35,14 @@ public class ControllerServlet extends HttpServlet {
     }
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        handleCommand(request, response);
+        handleCommandRequest(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if (request.getParameter(ConfigurationManager.getProperty("param.command")) != null) {
-            handleCommand(request, response);
+            handleCommandRequest(request, response);
         } else {
-            try {
-                String servletPath = request.getServletPath();
-                request.getRequestDispatcher(getForwardPage(servletPath)).forward(request, response);
-            } catch (UnsupportedPageException e) {
-                request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
-            }
+            handleNonCommandRequest(request, response);
         }
     }
 
@@ -58,14 +52,33 @@ public class ControllerServlet extends HttpServlet {
         ConnectionPool.getInstance().close();
     }
 
-    private void handleCommand(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Command command;
-        try {
-            String commandName = request.getParameter(ConfigurationManager.getProperty("param.command"));
-            if (commandName == null) {
+    private void handleCommandRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String commandName = request.getParameter(ConfigurationManager.getProperty("param.command"));
+        if (commandName == null) {
+            request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
+        } else {
+            handleCommand(commandName, request, response);
+        }
+
+
+    }
+
+    private void handleNonCommandRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String servletPath = request.getServletPath();
+        if (servletPath.equals("/tracks")) {
+            handleCommand(ConfigurationManager.getProperty("command.search.track"), request, response);
+        } else {
+            try {
+                request.getRequestDispatcher(getForwardPage(servletPath)).forward(request, response);
+            } catch (UnsupportedPageException e) {
                 request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
             }
-            command = commandFactory.createCommand(commandName);
+        }
+    }
+
+    private void handleCommand(String commandName, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            Command command = commandFactory.createCommand(commandName);
             if (command != null) {
                 CommandResult result = command.execute(request, response);
                 if (result.getType() == CommandResult.Type.REDIRECT) {

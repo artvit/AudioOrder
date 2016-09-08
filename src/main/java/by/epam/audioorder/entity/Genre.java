@@ -1,5 +1,7 @@
 package by.epam.audioorder.entity;
 
+import by.epam.audioorder.action.InternationalizationManager;
+
 public enum Genre {
     ANY,
     POP,
@@ -14,5 +16,14 @@ public enum Genre {
     TRANCE,
     ACOUSTIC,
     REGGAE,
-    CLASSICAL
+    CLASSICAL;
+
+    public Genre[] getValues() {
+        return Genre.values();
+    }
+
+    @Override
+    public String toString() {
+        return InternationalizationManager.getProperty("genre." + this.name().toLowerCase());
+    }
 }

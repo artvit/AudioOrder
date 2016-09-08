@@ -3,12 +3,12 @@ package by.epam.audioorder.entity;
 public class Track {
     private long trackId;
     private String title;
-    private String artist;
+    private Artist artist;
     private Genre genre;
     private int duration;
     private String path;
     private double cost;
-    private int released;
+    private int releasedYear;
 
     public long getTrackId() {
         return trackId;
@@ -26,11 +26,11 @@ public class Track {
         this.title = title;
     }
 
-    public String getArtist() {
+    public Artist getArtist() {
         return artist;
     }
 
-    public void setArtist(String artist) {
+    public void setArtist(Artist artist) {
         this.artist = artist;
     }
 
@@ -66,11 +66,11 @@ public class Track {
         this.cost = cost;
     }
 
-    public int getReleased() {
-        return released;
+    public int getReleasedYear() {
+        return releasedYear;
     }
 
-    public void setReleased(int released) {
-        this.released = released;
+    public void setReleasedYear(int releasedYear) {
+        this.releasedYear = releasedYear;
     }
 }

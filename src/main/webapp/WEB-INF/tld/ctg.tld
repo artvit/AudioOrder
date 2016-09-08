@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-
 <taglib xmlns="http://java.sun.com/xml/ns/javaee"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
@@ -13,6 +12,24 @@
         <name>usermenu</name>
         <tag-class>by.epam.audioorder.tag.UserMenuTag</tag-class>
         <body-content>empty</body-content>
+    </tag>
+
+    <tag>
+        <name>pagination</name>
+        <tag-class>by.epam.audioorder.tag.PaginationTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>page</name>
+            <required>yes</required>
+            <rtexprvalue>yes</rtexprvalue>
+            <type>int</type>
+        </attribute>
+        <attribute>
+            <name>total</name>
+            <required>yes</required>
+            <rtexprvalue>yes</rtexprvalue>
+            <type>int</type>
+        </attribute>
     </tag>
 
 </taglib>

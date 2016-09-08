@@ -17,6 +17,8 @@ public class CommandFactory {
             result = new RegistrationCommand();
         } else if (command.equals(ConfigurationManager.getProperty("command.logout"))) {
             result = new LogoutCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.search.track"))) {
+            result = new TrackSearchCommand();
         } else {
             throw new UnsupportedCommandException("Unknown command type");
         }

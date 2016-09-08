@@ -23,6 +23,10 @@ public class UserDAO extends AbstractDAO<User> {
     private static final String ROLE = "role";
     private static final String BALANCE = "balance";
 
+    private static final String ORDER_LOGIN = " ORDER BY " + LOGIN;
+    private static final String LIMIT = " LIMIT ? OFFSET ?";
+    private static final String USER_ALL_COUNT_ROWS = "SELECT COUNT(*) FROM user";
+
     private static final String USER_BY_LOGIN =
             "SELECT " + USER_ID + ", " +
                         LOGIN + ", " +
@@ -38,7 +42,7 @@ public class UserDAO extends AbstractDAO<User> {
                         EMAIL + ", " +
                         ROLE +", " +
                         BALANCE +
-                    " FROM user;";
+                    " FROM user";
     private static final String USER_BY_ID =
             "SELECT " + USER_ID + ", " +
                         LOGIN + ", " +
@@ -63,6 +67,7 @@ public class UserDAO extends AbstractDAO<User> {
             BALANCE + " = ? " +
             "WHERE " + USER_ID + " = ?";
 
+    private int pagesNumber = 0;
 
     public User findUserByLogin(String login) throws DAOException {
         try (Connection connection = getConnection();
@@ -85,14 +90,22 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     @Override
-    public List<User> findAll() throws DAOException {
+    public List<User> findAll(int page, int rowsPerPage) throws DAOException {
         try (Connection connection = getConnection();
-            PreparedStatement statement = connection.prepareStatement(USER_ALL)) {
+             PreparedStatement statement = connection.prepareStatement(USER_ALL + ORDER_LOGIN + LIMIT)) {
+            statement.setInt(1, rowsPerPage);
+            statement.setInt(2, (page - 1) * rowsPerPage);
             ResultSet result = statement.executeQuery();
             List<User> users = new ArrayList<>();
             while (result.next()) {
                 User user = createUser(result);
                 users.add(user);
+            }
+            try (PreparedStatement statementCount = connection.prepareStatement(USER_ALL_COUNT_ROWS)) {
+                ResultSet resultCount = statementCount.executeQuery();
+                if (resultCount.next()) {
+                    pagesNumber = (int) Math.ceil(resultCount.getInt(1) / rowsPerPage);
+                }
             }
             LOGGER.info("Successful reading from database");
             return users;
@@ -131,7 +144,7 @@ public class UserDAO extends AbstractDAO<User> {
             statement.setLong(1, entity.getUserId());
             int result = statement.executeUpdate();
             if (result == 0) {
-                throw new DAOException("New user was deleted");
+                throw new DAOException("User " + entity.getLogin() + " was deleted");
             } else {
                 LOGGER.info("Delete successful");
             }
@@ -185,6 +198,10 @@ public class UserDAO extends AbstractDAO<User> {
         } catch (SQLException e) {
             throw new DAOException("Error in SQL", e);
         }
+    }
+
+    public int getPagesNumber() {
+        return pagesNumber;
     }
 
     private User createUser(ResultSet resultSet) throws SQLException {
