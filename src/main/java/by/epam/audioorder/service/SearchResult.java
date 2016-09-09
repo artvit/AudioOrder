@@ -6,6 +6,11 @@ public class SearchResult<T> {
     private List<T> results;
     private int numberOfPages;
 
+    public SearchResult(List<T> results, int numberOfPages) {
+        this.results = results;
+        this.numberOfPages = numberOfPages;
+    }
+
     public List<T> getResults() {
         return results;
     }

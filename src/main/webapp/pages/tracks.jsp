@@ -27,7 +27,7 @@
                     <div class="col-sm-6">
                         <div class="input-group">
                             <label for="track" class="sr-only">Track</label>
-                            <input name="track" id="track" type="text" class="form-control" placeholder="<fmt:message key="tracks.search"/>">
+                            <input name="search" id="track" type="text" class="form-control" value="${search}" placeholder="<fmt:message key="tracks.search"/>">
                             <span class="input-group-btn">
                             <button class="btn btn-default" type="submit"><fmt:message key="tracks.search"/></button>
                         </span>
@@ -42,33 +42,33 @@
                         <table class="table table-striped table-hover">
                             <thead>
                             <tr>
-                                <th>#</th>
                                 <th>Artist</th>
                                 <th>Name</th>
+                                <th>Genre</th>
                                 <th>Duration</th>
                                 <th>Cost</th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
+                                <%--<th></th>--%>
+                                <%--<th></th>--%>
+                                <%--<th></th>--%>
                             </tr>
                             </thead>
                             <tbody>
                             <c:forEach var="track" items="${results}">
                                 <tr>
-                                    <td>2</td>
-                                    <td>Sting</td>
-                                    <td>Shape of my heart l</td>
-                                    <td>4:33</td>
-                                    <td>$0.99</td>
-                                    <td><button class="btn btn-xs btn-success" href="edittrack.html">
-                                        <span class="glyphicon glyphicon-plus"></span>
-                                    </button></td>
-                                    <td><button class="btn btn-xs btn-primary" href="edittrack.html">
-                                        <span class="glyphicon glyphicon-pencil"></span>
-                                    </button></td>
-                                    <td><button class="btn btn-xs btn-danger" href="edittrack.html">
-                                        <span class="glyphicon glyphicon-remove"></span>
-                                    </button></td>
+                                    <td>${track.artist.name}</td>
+                                    <td>${track.title}</td>
+                                    <td><c:out value="${track.genre}"/></td>
+                                    <td><ctl:duration value="${track.duration}"/></td>
+                                    <td>$${track.cost}</td>
+                                    <%--<td><button class="btn btn-xs btn-success" href="edittrack.html">--%>
+                                        <%--<span class="glyphicon glyphicon-plus"></span>--%>
+                                    <%--</button></td>--%>
+                                    <%--<td><button class="btn btn-xs btn-primary" href="edittrack.html">--%>
+                                        <%--<span class="glyphicon glyphicon-pencil"></span>--%>
+                                    <%--</button></td>--%>
+                                    <%--<td><button class="btn btn-xs btn-danger" href="edittrack.html">--%>
+                                        <%--<span class="glyphicon glyphicon-remove"></span>--%>
+                                    <%--</button></td>--%>
                                 </tr>
                             </c:forEach>
                         </table>
@@ -77,9 +77,6 @@
                         <ctl:pagination page="${page}" total="${numOfPages}"/>
                     </div>
                 </c:if>
-                <div>
-                    <ctl:pagination page="${page}" total="${numOfPages}"/>
-                </div>
             </form>
         </div>
     </div>

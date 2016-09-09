@@ -10,14 +10,13 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
 public class TrackSearchCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String track = request.getParameter(ConfigurationManager.getProperty("param.track"));
+        String searchQuery = request.getParameter(ConfigurationManager.getProperty("param.search"));
         Genre genre;
         String genreValue = request.getParameter(ConfigurationManager.getProperty("param.genre"));
         if (genreValue == null) {
@@ -25,15 +24,18 @@ public class TrackSearchCommand implements Command {
         } else {
             genre = Genre.valueOf(genreValue.toUpperCase());
         }
-        int page = 0;
+        int page = 1;
         try {
             page = Integer.parseInt(request.getParameter(ConfigurationManager.getProperty("param.page")));
         } catch (NumberFormatException e) {
             LOGGER.warn("No page parameter");
         }
         TrackSearchService service = new TrackSearchService();
-        SearchResult<Track> result = service.searchTrack(track, genre, page);
-
+        SearchResult<Track> result = service.searchTrack(searchQuery, genre, page);
+        request.setAttribute(ConfigurationManager.getProperty("attr.results"), result.getResults());
+        request.setAttribute(ConfigurationManager.getProperty("attr.page"), page);
+        request.setAttribute(ConfigurationManager.getProperty("attr.numofpages"), result.getNumberOfPages());
+        request.setAttribute(ConfigurationManager.getProperty("attr.search"), searchQuery);
         return new CommandResult(ConfigurationManager.getProperty("page.tracks"), CommandResult.Type.FORWARD);
     }
 }

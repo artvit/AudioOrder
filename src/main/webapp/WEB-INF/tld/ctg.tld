@@ -32,4 +32,16 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>duration</name>
+        <tag-class>by.epam.audioorder.tag.TrackDurationTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>value</name>
+            <required>yes</required>
+            <rtexprvalue>yes</rtexprvalue>
+            <type>int</type>
+        </attribute>
+    </tag>
+
 </taglib>

@@ -68,16 +68,71 @@ public class TrackDAO extends AbstractDAO<Track> {
             COST + " = ?, " +
             RELEASED + " = ?" + " WHERE " + ID + " = ?";
 
-    private static final String LIMIT =" LIMIT ? OFFSET ?";
+    private static final String LIMIT = " LIMIT ? OFFSET ?";
+    private static final String WHERE = " WHERE ";
+    private static final String AND = " AND ";
+    private static final String SEARCH_TITLE_ARTIST = "(" + TITLE + "LIKE %:?% OR " + ARTIST_NAME + " LIKE %:?%)";
+    private static final String SEARCH_GENRE = GENRE + " = ?";
 
     private int pagesNumber;
 
     @Override
     public List<Track> findAll(int page, int rowsPerPage) throws DAOException {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(TRACK_ALL + LIMIT)) {
+              PreparedStatement statement = connection.prepareStatement(TRACK_ALL + LIMIT)) {
             statement.setInt(1, rowsPerPage);
             statement.setInt(2, (page - 1) * rowsPerPage);
+            ResultSet result = statement.executeQuery();
+            List<Track> tracks = new ArrayList<>();
+            while (result.next()) {
+                Track track = createTrack(result);
+                tracks.add(track);
+            }
+            try (PreparedStatement statementCount = connection.prepareStatement(TRACK_ALL_COUNT_ROWS)) {
+                ResultSet resultCount = statementCount.executeQuery();
+                if (resultCount.next()) {
+                    pagesNumber = (int) Math.ceil(resultCount.getInt(1) / rowsPerPage);
+                }
+            }
+            LOGGER.info("Successful reading from database");
+            return tracks;
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Cannot get connection", e);
+        } catch (SQLException e) {
+            throw new DAOException("Error in SQL", e);
+        }
+    }
+
+    public List<Track> search(String searchQuery, Genre genre, int page, int rowsPerPage) throws DAOException {
+        String sqlQuery = TRACK_ALL + WHERE;
+        boolean statementChanged = false;
+        boolean isQuery = false;
+        if (searchQuery != null && !searchQuery.isEmpty()) {
+            isQuery = true;
+            sqlQuery += SEARCH_TITLE_ARTIST;
+            statementChanged = true;
+        }
+        boolean isGenre = false;
+        if (genre != null && genre != Genre.ANY) {
+            isGenre = true;
+            if (statementChanged) {
+                sqlQuery += AND;
+            }
+            sqlQuery += SEARCH_GENRE;
+        }
+        sqlQuery += LIMIT;
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
+            int parametersCounter = 1;
+            if (isQuery) {
+                statement.setString(parametersCounter++, searchQuery);
+                statement.setString(parametersCounter++, searchQuery);
+            }
+            if (isGenre) {
+                statement.setString(parametersCounter++, genre.name().toLowerCase());
+            }
+            statement.setInt(parametersCounter++, rowsPerPage);
+            statement.setInt(parametersCounter, (page - 1) * rowsPerPage);
             ResultSet result = statement.executeQuery();
             List<Track> tracks = new ArrayList<>();
             while (result.next()) {

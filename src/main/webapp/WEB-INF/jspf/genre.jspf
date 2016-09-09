@@ -5,8 +5,8 @@
     <div class="form-group" aria-describedby="genre-description">
         <label for="genre" class="sr-only">Genre</label>
         <select class="form-control" id="genre" name="genre">
-            <c:forEach var="genre" items="${genres}">
-                <option value="${genre.name()}"><c:out value="${genre}"/></option>
+            <c:forEach var="genreVar" items="${genres}">
+                <option value="${genreVar.name()}" <c:if test="${genreVar == genre}">selected="selected"</c:if>><c:out value="${genreVar}"/></option>
             </c:forEach>
         </select>
     </div>
