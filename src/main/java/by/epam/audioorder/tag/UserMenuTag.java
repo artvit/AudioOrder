@@ -17,7 +17,7 @@ public class UserMenuTag extends TagSupport{
             String contextPath = pageContext.getServletContext().getContextPath();
             pageContext.getOut().println("<ul class=\"nav navbar-nav navbar-right\">");
             if (pageContext.getSession().getAttribute("login") != null) {
-                pageContext.getOut().println("<li>" + "<a href=\"" + contextPath + "/login\">" + pageContext.getSession().getAttribute("login") + "</a>" + "</li>");
+                pageContext.getOut().println("<li>" + "<a href=\"" + contextPath + "/login\">" + "<span class=\"glyphicon glyphicon-list\"></span> " + pageContext.getSession().getAttribute("login") + "</a>" + "</li>");
                 pageContext.getOut().println("<li>" + "<a href=\"" + contextPath + "/controller?command=logout\">" + InternationalizationManager.getProperty("menu.logout") + "</a>" + "</li>");
             } else {
                 pageContext.getOut().println("<li>" + "<a href=\"" + contextPath + "/login\">" + InternationalizationManager.getProperty("menu.login") + "</a>" + "</li>");

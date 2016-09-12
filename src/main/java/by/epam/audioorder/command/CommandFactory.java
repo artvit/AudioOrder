@@ -19,6 +19,12 @@ public class CommandFactory {
             result = new LogoutCommand();
         } else if (command.equals(ConfigurationManager.getProperty("command.search.track"))) {
             result = new TrackSearchCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.search.user"))) {
+            result = new UserSearchCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.track.info"))) {
+            result = new TrackInfoCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.track.send.comment"))) {
+            result = new AddCommentCommand();
         } else {
             throw new UnsupportedCommandException("Unknown command type");
         }

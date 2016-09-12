@@ -6,7 +6,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Registration</title>
+    <title><fmt:message key="error.title"/></title>
     <link href="../webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="../webjars/jquery/3.0.0/jquery.min.js"></script>
     <script src="../webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -17,11 +17,11 @@
 <%@ include file="../WEB-INF/jspf/menu.jspf" %>
 <div class="container" role="main">
     <div class="page-header">
-        <h1><fmt:message key="registration.success.title"/></h1>
+        <h1><fmt:message key="error.title"/></h1>
     </div>
     <div class="panel panel-default">
         <div class="panel-body">
-            <fmt:message key="registration.success.text"/> <a href="${pageContext.request.contextPath}/login"><fmt:message key="registration.success.login"/></a>.
+            <div align="center"><h2><fmt:message key="error.message"/></h2></div>
         </div>
     </div>
 </div>

@@ -43,6 +43,14 @@ public class UserDAO extends AbstractDAO<User> {
                         ROLE +", " +
                         BALANCE +
                     " FROM user";
+    private static final String USER_SEARCH =
+            "SELECT " + USER_ID + ", " +
+                    LOGIN + ", " +
+                    PASS_HASH + ", " +
+                    EMAIL + ", " +
+                    ROLE +", " +
+                    BALANCE +
+                    " FROM user WHERE " + LOGIN + " LIKE ? OR " + EMAIL + " LIKE ?";
     private static final String USER_BY_ID =
             "SELECT " + USER_ID + ", " +
                         LOGIN + ", " +
@@ -116,10 +124,41 @@ public class UserDAO extends AbstractDAO<User> {
         }
     }
 
+    public List<User> search(String searchQuery, int page, int rowsPerPage) throws DAOException {
+        if (searchQuery == null ||  searchQuery.isEmpty()) {
+            throw new DAOException("Empty search query passed to search method");
+        }
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(USER_SEARCH + ORDER_LOGIN + LIMIT)) {
+            statement.setString(1, "%" + searchQuery + "%");
+            statement.setString(2, "%" + searchQuery + "%");
+            statement.setInt(3, rowsPerPage);
+            statement.setInt(4, (page - 1) * rowsPerPage);
+            ResultSet result = statement.executeQuery();
+            List<User> users = new ArrayList<>();
+            while (result.next()) {
+                User user = createUser(result);
+                users.add(user);
+            }
+            try (PreparedStatement statementCount = connection.prepareStatement(USER_ALL_COUNT_ROWS)) {
+                ResultSet resultCount = statementCount.executeQuery();
+                if (resultCount.next()) {
+                    pagesNumber = (int) Math.ceil(resultCount.getInt(1) / rowsPerPage);
+                }
+            }
+            LOGGER.info("Successful reading from database");
+            return users;
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Cannot get connection", e);
+        } catch (SQLException e) {
+            throw new DAOException("Error in SQL", e);
+        }
+    }
+
     @Override
     public User findById(long id) throws DAOException {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(USER_BY_ID)){
+             PreparedStatement statement = connection.prepareStatement(USER_BY_ID)) {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
             User user;

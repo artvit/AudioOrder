@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "ControllerServlet",
-        urlPatterns = {"/controller", "/pages/controller", "/login", "/registration", "/tracks", "/addtrack", "/clients"})
+        urlPatterns = {"/controller", "/pages/controller", "/login", "/registration", "/tracks", "/addtrack", "/clients", "/cart"})
 //@MultipartConfig(location = "C:\\apache-tomcat-8.0.36\\webapps\\parser\\tmp",
 //        fileSizeThreshold = 1024*1024*2,
 //        maxFileSize = 1024*1024*10,
@@ -67,6 +67,10 @@ public class ControllerServlet extends HttpServlet {
         String servletPath = request.getServletPath();
         if (servletPath.equals("/tracks")) {
             handleCommand(ConfigurationManager.getProperty("command.search.track"), request, response);
+        } else if (servletPath.equals("/clients")) {
+            handleCommand(ConfigurationManager.getProperty("command.search.user"), request, response);
+        } else if (servletPath.equals("/cart")) {
+            handleCommand(ConfigurationManager.getProperty("command.cart"), request, response);
         } else {
             try {
                 request.getRequestDispatcher(getForwardPage(servletPath)).forward(request, response);

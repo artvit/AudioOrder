@@ -1,8 +1,5 @@
 package by.epam.audioorder.command;
 
-/**
- * Created by artvi on 03/09/2016.
- */
 public class CommandResult {
     private String address;
     private Type type;

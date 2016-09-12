@@ -71,7 +71,7 @@ public class TrackDAO extends AbstractDAO<Track> {
     private static final String LIMIT = " LIMIT ? OFFSET ?";
     private static final String WHERE = " WHERE ";
     private static final String AND = " AND ";
-    private static final String SEARCH_TITLE_ARTIST = "(" + TITLE + "LIKE %:?% OR " + ARTIST_NAME + " LIKE %:?%)";
+    private static final String SEARCH_TITLE_ARTIST = "(" + TITLE + " LIKE ? OR " + ARTIST_NAME + " LIKE ?)";
     private static final String SEARCH_GENRE = GENRE + " = ?";
 
     private int pagesNumber;
@@ -125,8 +125,8 @@ public class TrackDAO extends AbstractDAO<Track> {
              PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             int parametersCounter = 1;
             if (isQuery) {
-                statement.setString(parametersCounter++, searchQuery);
-                statement.setString(parametersCounter++, searchQuery);
+                statement.setString(parametersCounter++, "%" + searchQuery + "%");
+                statement.setString(parametersCounter++, "%" + searchQuery + "%");
             }
             if (isGenre) {
                 statement.setString(parametersCounter++, genre.name().toLowerCase());

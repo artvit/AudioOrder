@@ -72,7 +72,7 @@ public class ArtistDAO extends AbstractDAO<Artist>{
     public void insert(Artist entity) throws DAOException {
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_ARTIST)) {
-            statement.setString(2, entity.getName());
+            statement.setString(1, entity.getName());
             int result = statement.executeUpdate();
             if (result == 0) {
                 throw new DAOException("New user was not inserted");

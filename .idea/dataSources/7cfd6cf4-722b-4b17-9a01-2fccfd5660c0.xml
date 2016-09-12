@@ -1,44 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <dataSource name="MySQL - trackorder@localhost">
   <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
     <schema id="1" name="trackorder">
       <visible>1</visible>
     </schema>
-    <schema id="2" name="exams" />
-    <schema id="3" name="information_schema" />
-    <schema id="4" name="mysql" />
-    <schema id="5" name="performance_schema" />
-    <schema id="6" name="sakila" />
-    <schema id="7" name="sys" />
-    <schema id="8" name="test" />
-    <schema id="9" name="world" />
-    <table id="10" parent="1" name="album" />
-    <table id="11" parent="1" name="album_track" />
-    <table id="12" parent="1" name="artist_album" />
-    <table id="13" parent="1" name="bonus" />
-    <table id="14" parent="1" name="comment" />
-    <table id="15" parent="1" name="track" />
-    <table id="16" parent="1" name="user" />
-    <table id="17" parent="1" name="user_track" />
-    <table id="18" parent="1" name="artist" />
+    <schema id="2" name="exams"/>
+    <schema id="3" name="information_schema"/>
+    <schema id="4" name="mysql"/>
+    <schema id="5" name="performance_schema"/>
+    <schema id="6" name="sakila"/>
+    <schema id="7" name="sys"/>
+    <schema id="8" name="test"/>
+    <schema id="9" name="world"/>
+    <table id="10" parent="1" name="album"/>
+    <table id="11" parent="1" name="album_track"/>
+    <table id="12" parent="1" name="artist_album"/>
+    <table id="13" parent="1" name="bonus"/>
+    <table id="14" parent="1" name="comment"/>
+    <table id="15" parent="1" name="track"/>
+    <table id="16" parent="1" name="user"/>
+    <table id="17" parent="1" name="user_track"/>
+    <table id="18" parent="1" name="artist"/>
     <column id="19" parent="10" name="album_id">
-      <comment>ИД альбома</comment>
+      <comment>РР” Р°Р»СЊР±РѕРјР°</comment>
       <mandatory>1</mandatory>
       <data-type>bigint(20)|0</data-type>
       <sequence-identity>1</sequence-identity>
     </column>
     <column id="20" parent="10" name="name">
-      <comment>Имя альбома</comment>
+      <comment>РРјСЏ Р°Р»СЊР±РѕРјР°</comment>
       <mandatory>1</mandatory>
       <data-type>varchar(200)|0</data-type>
     </column>
     <column id="21" parent="10" name="released">
-      <comment>Дата выхода альбома</comment>
+      <comment>Р”Р°С‚Р° РІС‹С…РѕРґР° Р°Р»СЊР±РѕРјР°</comment>
       <mandatory>1</mandatory>
       <data-type>date|0</data-type>
     </column>
     <index id="22" parent="10" name="track_name_idx">
       <columns>name</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
     </index>
     <key id="23" parent="10" name="PRIMARY">
       <columns>album_id</columns>
@@ -54,7 +55,7 @@
     </column>
     <index id="26" parent="11" name="track_idx">
       <columns>track_id</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
     </index>
     <key id="27" parent="11" name="PRIMARY">
       <columns>album_id
@@ -83,7 +84,7 @@ track_id</columns>
     </column>
     <index id="32" parent="12" name="album_idx">
       <columns>album_id</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
     </index>
     <key id="33" parent="12" name="PRIMARY">
       <columns>artist_id
@@ -109,41 +110,41 @@ album_id</columns>
       <sequence-identity>1</sequence-identity>
     </column>
     <column id="37" parent="13" name="user_id">
-      <comment>Пользователь, которому принадлежит этот бонус</comment>
+      <comment>РџРѕР»СЊР·РѕРІР°С‚РµР»СЊ, РєРѕС‚РѕСЂРѕРјСѓ РїСЂРёРЅР°РґР»РµР¶РёС‚ СЌС‚РѕС‚ Р±РѕРЅСѓСЃ</comment>
       <mandatory>1</mandatory>
       <data-type>bigint(20)|0</data-type>
     </column>
     <column id="38" parent="13" name="expired">
-      <comment>Дата, до которой этот бонус доступен</comment>
+      <comment>Р”Р°С‚Р°, РґРѕ РєРѕС‚РѕСЂРѕР№ СЌС‚РѕС‚ Р±РѕРЅСѓСЃ РґРѕСЃС‚СѓРїРµРЅ</comment>
       <data-type>datetime|0</data-type>
     </column>
     <column id="39" parent="13" name="tracks_after">
-      <comment>Скидка действует на треки, которые вышли после этой даты.</comment>
+      <comment>РЎРєРёРґРєР° РґРµР№СЃС‚РІСѓРµС‚ РЅР° С‚СЂРµРєРё, РєРѕС‚РѕСЂС‹Рµ РІС‹С€Р»Рё РїРѕСЃР»Рµ СЌС‚РѕР№ РґР°С‚С‹.</comment>
       <data-type>year(4)|0</data-type>
     </column>
     <column id="40" parent="13" name="tracks_before">
-      <comment>Скидка действует на треки, которые вышли до этой даты.</comment>
+      <comment>РЎРєРёРґРєР° РґРµР№СЃС‚РІСѓРµС‚ РЅР° С‚СЂРµРєРё, РєРѕС‚РѕСЂС‹Рµ РІС‹С€Р»Рё РґРѕ СЌС‚РѕР№ РґР°С‚С‹.</comment>
       <data-type>year(4)|0</data-type>
     </column>
     <column id="41" parent="13" name="genre">
-      <comment>Жанр треков, на которые действует скидка</comment>
+      <comment>Р–Р°РЅСЂ С‚СЂРµРєРѕРІ, РЅР° РєРѕС‚РѕСЂС‹Рµ РґРµР№СЃС‚РІСѓРµС‚ СЃРєРёРґРєР°</comment>
       <mandatory>1</mandatory>
-      <data-type>enum('any', 'pop', 'rock', 'house_dance', 'alternative', 'instrumental', 'metal', 'dubstep', 'jazz', 'dnb', 'trance', 'acoustic', 'reggae', 'classical')|0</data-type>
-      <default-expression>'any'</default-expression>
+      <data-type>enum(&apos;any&apos;, &apos;pop&apos;, &apos;rock&apos;, &apos;house_dance&apos;, &apos;alternative&apos;, &apos;instrumental&apos;, &apos;metal&apos;, &apos;dubstep&apos;, &apos;jazz&apos;, &apos;dnb&apos;, &apos;trance&apos;, &apos;acoustic&apos;, &apos;reggae&apos;, &apos;classical&apos;)|0</data-type>
+      <default-expression>&apos;any&apos;</default-expression>
     </column>
     <column id="42" parent="13" name="sale">
-      <comment>Размер скидки в процентах</comment>
+      <comment>Р Р°Р·РјРµСЂ СЃРєРёРґРєРё РІ РїСЂРѕС†РµРЅС‚Р°С…</comment>
       <data-type>decimal(5,2)|0</data-type>
-      <default-expression>'0.00'</default-expression>
+      <default-expression>&apos;0.00&apos;</default-expression>
     </column>
     <column id="43" parent="13" name="bonus">
-      <comment>Размер денежного бонуса</comment>
+      <comment>Р Р°Р·РјРµСЂ РґРµРЅРµР¶РЅРѕРіРѕ Р±РѕРЅСѓСЃР°</comment>
       <data-type>decimal(6,2)|0</data-type>
-      <default-expression>'0.00'</default-expression>
+      <default-expression>&apos;0.00&apos;</default-expression>
     </column>
     <index id="44" parent="13" name="user_idx">
       <columns>user_id</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
     </index>
     <key id="45" parent="13" name="PRIMARY">
       <columns>bonus_id</columns>
@@ -156,38 +157,38 @@ album_id</columns>
       <cascade-delete-rule>delete</cascade-delete-rule>
     </foreign-key>
     <column id="47" parent="14" name="comment_id">
-      <comment>ИД комментария</comment>
+      <comment>РР” РєРѕРјРјРµРЅС‚Р°СЂРёСЏ</comment>
       <mandatory>1</mandatory>
       <data-type>bigint(20)|0</data-type>
       <sequence-identity>1</sequence-identity>
     </column>
     <column id="48" parent="14" name="track_id">
-      <comment>ИД трека, к которому относится комментарий</comment>
+      <comment>РР” С‚СЂРµРєР°, Рє РєРѕС‚РѕСЂРѕРјСѓ РѕС‚РЅРѕСЃРёС‚СЃСЏ РєРѕРјРјРµРЅС‚Р°СЂРёР№</comment>
       <mandatory>1</mandatory>
       <data-type>bigint(20)|0</data-type>
     </column>
     <column id="49" parent="14" name="text">
-      <comment>текст комментария</comment>
+      <comment>С‚РµРєСЃС‚ РєРѕРјРјРµРЅС‚Р°СЂРёСЏ</comment>
       <mandatory>1</mandatory>
       <data-type>varchar(2000)|0</data-type>
     </column>
     <column id="50" parent="14" name="user_id">
-      <comment>ИД пользователя, который оставил комментарий</comment>
+      <comment>РР” РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РєРѕС‚РѕСЂС‹Р№ РѕСЃС‚Р°РІРёР» РєРѕРјРјРµРЅС‚Р°СЂРёР№</comment>
       <mandatory>1</mandatory>
       <data-type>bigint(20)|0</data-type>
     </column>
     <column id="51" parent="14" name="date">
-      <comment>Время и дата комментария</comment>
+      <comment>Р’СЂРµРјСЏ Рё РґР°С‚Р° РєРѕРјРјРµРЅС‚Р°СЂРёСЏ</comment>
       <mandatory>1</mandatory>
       <data-type>datetime|0</data-type>
     </column>
     <index id="52" parent="14" name="author_idx">
       <columns>user_id</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
     </index>
     <index id="53" parent="14" name="track_idx">
       <columns>track_id</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
     </index>
     <key id="54" parent="14" name="PRIMARY">
       <columns>comment_id</columns>
@@ -206,39 +207,39 @@ album_id</columns>
       <cascade-delete-rule>delete</cascade-delete-rule>
     </foreign-key>
     <column id="57" parent="15" name="track_id">
-      <comment>ИД трека</comment>
+      <comment>РР” С‚СЂРµРєР°</comment>
       <mandatory>1</mandatory>
       <data-type>bigint(20)|0</data-type>
       <sequence-identity>1</sequence-identity>
     </column>
     <column id="58" parent="15" name="artist_id">
-      <comment>ИД исполнителя этого трека</comment>
+      <comment>РР” РёСЃРїРѕР»РЅРёС‚РµР»СЏ СЌС‚РѕРіРѕ С‚СЂРµРєР°</comment>
       <mandatory>1</mandatory>
       <data-type>bigint(20)|0</data-type>
     </column>
     <column id="59" parent="15" name="title">
-      <comment>Название трека</comment>
+      <comment>РќР°Р·РІР°РЅРёРµ С‚СЂРµРєР°</comment>
       <mandatory>1</mandatory>
       <data-type>varchar(200)|0</data-type>
     </column>
     <column id="60" parent="15" name="genre">
-      <comment>Жанр трека</comment>
+      <comment>Р–Р°РЅСЂ С‚СЂРµРєР°</comment>
       <mandatory>1</mandatory>
-      <data-type>enum('any', 'pop', 'rock', 'house_dance', 'alternative', 'instrumental', 'metal', 'dubstep', 'jazz', 'dnb', 'trance', 'acoustic', 'reggae', 'classical')|0</data-type>
-      <default-expression>'any'</default-expression>
+      <data-type>enum(&apos;any&apos;, &apos;pop&apos;, &apos;rock&apos;, &apos;house_dance&apos;, &apos;alternative&apos;, &apos;instrumental&apos;, &apos;metal&apos;, &apos;dubstep&apos;, &apos;jazz&apos;, &apos;dnb&apos;, &apos;trance&apos;, &apos;acoustic&apos;, &apos;reggae&apos;, &apos;classical&apos;)|0</data-type>
+      <default-expression>&apos;any&apos;</default-expression>
     </column>
     <column id="61" parent="15" name="duration">
-      <comment>Продолжительность в секундах</comment>
+      <comment>РџСЂРѕРґРѕР»Р¶РёС‚РµР»СЊРЅРѕСЃС‚СЊ РІ СЃРµРєСѓРЅРґР°С…</comment>
       <mandatory>1</mandatory>
       <data-type>int(11)|0</data-type>
     </column>
     <column id="62" parent="15" name="link">
-      <comment>Указание ссылки на файл, который соответствует этому треку</comment>
+      <comment>РЈРєР°Р·Р°РЅРёРµ СЃСЃС‹Р»РєРё РЅР° С„Р°Р№Р», РєРѕС‚РѕСЂС‹Р№ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓРµС‚ СЌС‚РѕРјСѓ С‚СЂРµРєСѓ</comment>
       <mandatory>1</mandatory>
       <data-type>varchar(250)|0</data-type>
     </column>
     <column id="63" parent="15" name="cost">
-      <comment>Стоимость трека</comment>
+      <comment>РЎС‚РѕРёРјРѕСЃС‚СЊ С‚СЂРµРєР°</comment>
       <mandatory>1</mandatory>
       <data-type>decimal(4,2)|0</data-type>
     </column>
@@ -248,11 +249,11 @@ album_id</columns>
     <index id="65" parent="15" name="artist_title_idx">
       <columns>artist_id
 title</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
     </index>
     <index id="66" parent="15" name="title_idx">
       <columns>title</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
     </index>
     <key id="67" parent="15" name="PRIMARY">
       <columns>track_id</columns>
@@ -265,46 +266,46 @@ title</columns>
       <cascade-delete-rule>delete</cascade-delete-rule>
     </foreign-key>
     <column id="69" parent="16" name="user_id">
-      <comment>ИД пользователя</comment>
+      <comment>РР” РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</comment>
       <mandatory>1</mandatory>
       <data-type>bigint(20)|0</data-type>
       <sequence-identity>1</sequence-identity>
     </column>
     <column id="70" parent="16" name="login">
-      <comment>Логин пользователя</comment>
+      <comment>Р›РѕРіРёРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</comment>
       <mandatory>1</mandatory>
       <data-type>varchar(60)|0</data-type>
     </column>
     <column id="71" parent="16" name="passhash">
-      <comment>??? ?????? ????????????</comment>
+      <comment>пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ</comment>
       <mandatory>1</mandatory>
       <data-type>varchar(64)|0</data-type>
     </column>
     <column id="72" parent="16" name="email">
-      <comment>Электронная почта пользователя</comment>
+      <comment>Р­Р»РµРєС‚СЂРѕРЅРЅР°СЏ РїРѕС‡С‚Р° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</comment>
       <mandatory>1</mandatory>
       <data-type>varchar(256)|0</data-type>
     </column>
     <column id="73" parent="16" name="role">
-      <comment>Права пользователя</comment>
+      <comment>РџСЂР°РІР° РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ</comment>
       <mandatory>1</mandatory>
-      <data-type>enum('guest', 'admin', 'user')|0</data-type>
-      <default-expression>'guest'</default-expression>
+      <data-type>enum(&apos;guest&apos;, &apos;admin&apos;, &apos;user&apos;)|0</data-type>
+      <default-expression>&apos;guest&apos;</default-expression>
     </column>
     <column id="74" parent="16" name="balance">
-      <comment>Баланс пользователя, который он может пополнять</comment>
+      <comment>Р‘Р°Р»Р°РЅСЃ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ, РєРѕС‚РѕСЂС‹Р№ РѕРЅ РјРѕР¶РµС‚ РїРѕРїРѕР»РЅСЏС‚СЊ</comment>
       <mandatory>1</mandatory>
       <data-type>decimal(8,2)|0</data-type>
-      <default-expression>'0.00'</default-expression>
+      <default-expression>&apos;0.00&apos;</default-expression>
     </column>
     <index id="75" parent="16" name="email_UNIQUE">
       <columns>email</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
       <unique>1</unique>
     </index>
     <index id="76" parent="16" name="login_UNIQUE">
       <columns>login</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
       <unique>1</unique>
     </index>
     <key id="77" parent="16" name="PRIMARY">
@@ -329,11 +330,11 @@ title</columns>
     </column>
     <index id="82" parent="17" name="track_idx">
       <columns>track_id</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
     </index>
     <index id="83" parent="17" name="user_idx">
       <columns>user_id</columns>
-      <desc-columns />
+      <desc-columns></desc-columns>
     </index>
     <key id="84" parent="17" name="PRIMARY">
       <columns>track_id

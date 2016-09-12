@@ -10,8 +10,14 @@
     <link href="../webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="../webjars/jquery/3.0.0/jquery.min.js"></script>
     <script src="../webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="../resource/css/registration.css.css" rel="stylesheet">
     <link href="../resource/css/background.css" rel="stylesheet">
+    <script>
+        jQuery(document).ready(function($) {
+            $(".clickable-row").click(function() {
+                window.location = $(this).data("href");
+            });
+        });
+    </script>
 </head>
 <body>
 <%@ include file="../WEB-INF/jspf/menu.jspf" %>
@@ -24,17 +30,17 @@
             <form method="get" action="${pageContext.request.contextPath}/tracks">
                 <input type="hidden" name="command" value="track-search">
                 <div class="row">
+                    <div class="col-sm-3">
+                        <%@ include file="../WEB-INF/jspf/genre.jspf" %>
+                    </div>
                     <div class="col-sm-6">
                         <div class="input-group">
                             <label for="track" class="sr-only">Track</label>
                             <input name="search" id="track" type="text" class="form-control" value="${search}" placeholder="<fmt:message key="tracks.search"/>">
                             <span class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><fmt:message key="tracks.search"/></button>
-                        </span>
+                                <button class="btn btn-default" type="submit"><fmt:message key="tracks.search"/></button>
+                            </span>
                         </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <%@ include file="../WEB-INF/jspf/genre.jspf" %>
                     </div>
                 </div>
                 <c:if test="${not empty results}">
@@ -42,11 +48,11 @@
                         <table class="table table-striped table-hover">
                             <thead>
                             <tr>
-                                <th>Artist</th>
-                                <th>Name</th>
-                                <th>Genre</th>
-                                <th>Duration</th>
-                                <th>Cost</th>
+                                <th><fmt:message key="tracks.track.artist"/></th>
+                                <th><fmt:message key="tracks.track.title"/></th>
+                                <th><fmt:message key="tracks.track.genre"/></th>
+                                <th><fmt:message key="tracks.track.duration"/></th>
+                                <th><fmt:message key="tracks.track.cost"/></th>
                                 <%--<th></th>--%>
                                 <%--<th></th>--%>
                                 <%--<th></th>--%>
@@ -54,7 +60,7 @@
                             </thead>
                             <tbody>
                             <c:forEach var="track" items="${results}">
-                                <tr>
+                                <tr class="clickable-row" data-href="${pageContext.request.contextPath}/tracks?id=${track.trackId}&command=track-info">
                                     <td>${track.artist.name}</td>
                                     <td>${track.title}</td>
                                     <td><c:out value="${track.genre}"/></td>
