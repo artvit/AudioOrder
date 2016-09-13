@@ -1,6 +1,7 @@
 package by.epam.audioorder.entity;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Comment {
     private long commentId;
@@ -47,5 +48,22 @@ public class Comment {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return commentId == comment.commentId &&
+                Objects.equals(text, comment.text) &&
+                Objects.equals(time, comment.time) &&
+                Objects.equals(track, comment.track) &&
+                Objects.equals(user, comment.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(commentId, text, time, track, user);
     }
 }

@@ -3,21 +3,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="i18n.i18n"/>
+<c:set var="lastpage" scope="session" value="${requestScope['javax.servlet.forward.request_uri']}"/>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><fmt:message key="tracks.title"/></title>
-    <link href="../webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../webjars/jquery/3.0.0/jquery.min.js"></script>
-    <script src="../webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="webjars/jquery/3.0.0/jquery.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="../resource/css/background.css" rel="stylesheet">
-    <script>
-        jQuery(document).ready(function($) {
-            $(".clickable-row").click(function() {
-                window.location = $(this).data("href");
-            });
-        });
-    </script>
+    <script src="../resource/js/clickable-row.js"></script>
 </head>
 <body>
 <%@ include file="../WEB-INF/jspf/menu.jspf" %>
@@ -53,9 +48,7 @@
                                 <th><fmt:message key="tracks.track.genre"/></th>
                                 <th><fmt:message key="tracks.track.duration"/></th>
                                 <th><fmt:message key="tracks.track.cost"/></th>
-                                <%--<th></th>--%>
-                                <%--<th></th>--%>
-                                <%--<th></th>--%>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -66,15 +59,22 @@
                                     <td><c:out value="${track.genre}"/></td>
                                     <td><ctl:duration value="${track.duration}"/></td>
                                     <td>$${track.cost}</td>
-                                    <%--<td><button class="btn btn-xs btn-success" href="edittrack.html">--%>
-                                        <%--<span class="glyphicon glyphicon-plus"></span>--%>
-                                    <%--</button></td>--%>
-                                    <%--<td><button class="btn btn-xs btn-primary" href="edittrack.html">--%>
-                                        <%--<span class="glyphicon glyphicon-pencil"></span>--%>
-                                    <%--</button></td>--%>
-                                    <%--<td><button class="btn btn-xs btn-danger" href="edittrack.html">--%>
-                                        <%--<span class="glyphicon glyphicon-remove"></span>--%>
-                                    <%--</button></td>--%>
+                                    <td>
+                                        <c:choose>
+                                            <c:when test="${not cart.contains(track)}">
+                                                <a href="${pageContext.request.contextPath}/tracks?command=add-track-cart&id=${track.trackId}"
+                                                   class="btn btn-xs btn-success btn-block" >
+                                                    <span class="glyphicon glyphicon-plus"></span> <fmt:message key="cart.add"/>
+                                                </a>
+                                            </c:when>
+                                            <c:otherwise>
+                                                <a href="${pageContext.request.contextPath}/tracks?command=delete-track-cart&id=${track.trackId}"
+                                                   class="btn btn-xs btn-danger btn-block" >
+                                                    <span class="glyphicon glyphicon-minus"></span> <fmt:message key="cart.remove"/>
+                                                </a>
+                                            </c:otherwise>
+                                        </c:choose>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </table>

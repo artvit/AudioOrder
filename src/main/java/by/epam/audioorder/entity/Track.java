@@ -1,5 +1,7 @@
 package by.epam.audioorder.entity;
 
+import java.util.Objects;
+
 public class Track {
     private long trackId;
     private String title;
@@ -72,5 +74,25 @@ public class Track {
 
     public void setReleasedYear(int releasedYear) {
         this.releasedYear = releasedYear;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Track track = (Track) o;
+        return trackId == track.trackId &&
+                duration == track.duration &&
+                Double.compare(track.cost, cost) == 0 &&
+                releasedYear == track.releasedYear &&
+                Objects.equals(title, track.title) &&
+                Objects.equals(artist, track.artist) &&
+                genre == track.genre &&
+                Objects.equals(path, track.path);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(trackId, title, artist, genre, duration, path, cost, releasedYear);
     }
 }

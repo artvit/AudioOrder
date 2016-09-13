@@ -25,6 +25,12 @@ public class CommandFactory {
             result = new TrackInfoCommand();
         } else if (command.equals(ConfigurationManager.getProperty("command.track.send.comment"))) {
             result = new AddCommentCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.track.cart.add"))) {
+            result = new AddTrackToCartCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.track.cart.delete"))) {
+            result = new DeleteFromCartCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.track.add"))) {
+            result = new AddTrackCommand();
         } else {
             throw new UnsupportedCommandException("Unknown command type");
         }

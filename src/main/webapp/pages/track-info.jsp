@@ -3,13 +3,14 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="i18n.i18n"/>
+<c:set var="lastpage" scope="session" value="${requestScope['javax.servlet.forward.request_uri']}"/>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${track.artist.name} - ${track.title}</title>
-    <link href="../webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script src="../webjars/jquery/3.0.0/jquery.min.js"></script>
-    <script src="../webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="webjars/jquery/3.0.0/jquery.min.js"></script>
+    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="../resource/css/background.css" rel="stylesheet">
 </head>
 <body>
@@ -27,22 +28,37 @@
                 <br>
                 <fmt:message key="tracks.track.duration"/>: <ctl:duration value="${track.duration}"/>
                 <br>
+                <fmt:message key="tracks.track.year"/>: $${track.year}
+                <br>
                 <fmt:message key="tracks.track.cost"/>: $${track.cost}
             </div>
             <div>
-                <%--TODO buttons--%>
+                <c:choose>
+                    <c:when test="${not cart.contains(track)}">
+                        <a href="${pageContext.request.contextPath}/tracks?command=add-track-cart&id=${track.trackId}"
+                           class="btn btn-lg btn-success" >
+                            <span class="glyphicon glyphicon-plus"></span> <fmt:message key="cart.add"/>
+                        </a>
+                    </c:when>
+                    <c:otherwise>
+                        <a href="${pageContext.request.contextPath}/tracks?command=delete-track-cart&id=${track.trackId}"
+                           class="btn btn-sm btn-danger" >
+                            <span class="glyphicon glyphicon-minus"></span> <fmt:message key="cart.remove"/>
+                        </a>
+                    </c:otherwise>
+                </c:choose>
             </div>
             <div>
-                <h2><fmt:message key="trackinfo.feedback"/></h2>
                 <c:if test="${not empty feedback}">
+                    <h2><fmt:message key="trackinfo.feedback"/></h2>
                     <div>
                         <c:forEach var="comment" items="${feedback}">
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                        ${comment.user.login}
+                                    ${comment.user.login}
                                 </div>
                                 <div class="panel-body">
-                                        ${comment.text}
+                                    ${comment.text}
                                 </div>
                             </div>
                         </c:forEach>

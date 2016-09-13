@@ -25,7 +25,8 @@ public class LoginCommand implements Command {
             session.setAttribute(ConfigurationManager.getProperty("attr.login"), user.getLogin());
             session.setAttribute(ConfigurationManager.getProperty("attr.role"), user.getRole());
             LOGGER.info("User " + login + " signed in successfully");
-            return new CommandResult(ConfigurationManager.getProperty("page.index"), CommandResult.Type.REDIRECT);
+            String lastPage = (String) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
+            return new CommandResult(lastPage, CommandResult.Type.REDIRECT);
         } else {
             request.setAttribute(ConfigurationManager.getProperty("attr.message"), InternationalizationManager.getProperty("login.error.invalid"));
             return new CommandResult(ConfigurationManager.getProperty("page.login"), CommandResult.Type.FORWARD);

@@ -1,5 +1,7 @@
 package by.epam.audioorder.entity;
 
+import java.util.Objects;
+
 public class User {
     private long userId;
     private String login;
@@ -71,5 +73,23 @@ public class User {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return userId == user.userId &&
+                Double.compare(user.balance, balance) == 0 &&
+                Objects.equals(login, user.login) &&
+                Objects.equals(passwordHash, user.passwordHash) &&
+                Objects.equals(email, user.email) &&
+                role == user.role;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, login, passwordHash, email, role, balance);
     }
 }

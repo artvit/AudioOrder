@@ -4,6 +4,7 @@
 <%--<c:set var="locale" scope="session" value="ru_RU"/>--%>
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="i18n.i18n"/>
+<c:set var="lastpage" scope="session" value="${requestScope['javax.servlet.forward.request_uri']}"/>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
