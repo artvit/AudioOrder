@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Locale;
 
 public class LoginCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -26,9 +27,14 @@ public class LoginCommand implements Command {
             session.setAttribute(ConfigurationManager.getProperty("attr.role"), user.getRole());
             LOGGER.info("User " + login + " signed in successfully");
             String lastPage = (String) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
+            if (lastPage == null || lastPage.isEmpty()) {
+                lastPage = ConfigurationManager.getProperty("page.index");
+            }
             return new CommandResult(lastPage, CommandResult.Type.REDIRECT);
         } else {
-            request.setAttribute(ConfigurationManager.getProperty("attr.message"), InternationalizationManager.getProperty("login.error.invalid"));
+            Locale locale = (Locale) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.locale"));
+            String message = InternationalizationManager.getProperty("login.error.invalid", locale);
+            request.setAttribute(ConfigurationManager.getProperty("attr.message"), message);
             return new CommandResult(ConfigurationManager.getProperty("page.login"), CommandResult.Type.FORWARD);
         }
     }

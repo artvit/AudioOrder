@@ -55,4 +55,15 @@ public class TrackCommentService {
         }
         return false;
     }
+
+    public boolean deleteComment(long commentId) {
+        try {
+            CommentDAO commentDAO = new CommentDAO();
+            Comment comment = commentDAO.findById(commentId);
+            commentDAO.delete(comment);
+            return true;
+        } catch (DAOException e) {
+            return false;
+        }
+    }
 }

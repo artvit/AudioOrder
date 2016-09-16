@@ -34,10 +34,18 @@ public class CommentDAO extends AbstractDAO<Comment> {
             USER_ID + ", " +
             TEXT + ", " +
             DATE + " FROM comment WHERE " + TRACK_ID + " = ? ORDER BY " + DATE + " DESC";
-
-    private int pagesNumber = 0;
+    private static final String FIND_BY_ID = "SELECT " +
+            ID + ", " +
+            TRACK_ID + ", " +
+            USER_ID + ", " +
+            TEXT + ", " +
+            DATE + " FROM comment WHERE " + ID + " = ?";
     private static final String INSERT_COMMENT = "INSERT INTO " + COMMENT_TABLE +
             " (" + TRACK_ID + ", " + USER_ID + ", " + TEXT + ", " + DATE+ ") VALUES (?, ?, ?, ?);";
+    private static final String DELETE_COMMENT = "DELETE FROM " + COMMENT_TABLE + " WHERE " + ID + " = ?";
+
+    private int pagesNumber = 0;
+
     @Override
     public List<Comment> findAll(int page, int rowsPerPage) throws DAOException {
         return null;
@@ -45,12 +53,41 @@ public class CommentDAO extends AbstractDAO<Comment> {
 
     @Override
     public Comment findById(long id) throws DAOException {
-        return null;
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet result = statement.executeQuery();
+            Comment comment;
+            if (result.next()) {
+                comment = createComment(result);
+                LOGGER.info("Successful reading from database");
+            } else {
+                throw new DAOException("No result was found for id " + id);
+            }
+            return comment;
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Cannot get connection", e);
+        } catch (SQLException e) {
+            throw new DAOException("Error in SQL", e);
+        }
     }
 
     @Override
     public void delete(Comment entity) throws DAOException {
-
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(DELETE_COMMENT)) {
+            statement.setLong(1, entity.getCommentId());
+            int result = statement.executeUpdate();
+            if (result == 0) {
+                throw new DAOException("Comment was deleted");
+            } else {
+                LOGGER.info("Delete successful");
+            }
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Cannot get connection", e);
+        } catch (SQLException e) {
+            throw new DAOException("Error in SQL", e);
+        }
     }
 
     @Override

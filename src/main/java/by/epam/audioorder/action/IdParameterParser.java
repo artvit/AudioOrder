@@ -1,0 +1,22 @@
+package by.epam.audioorder.action;
+
+public class IdParameterParser {
+    private long result;
+
+    public boolean pasre(String idParameter) {
+        if (idParameter != null) {
+            try {
+                result = Long.parseLong(idParameter);
+                return true;
+            } catch (NumberFormatException e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    public long getResult() {
+        return result;
+    }
+}

@@ -20,10 +20,11 @@ import java.io.IOException;
 
 @WebServlet(name = "ControllerServlet",
         urlPatterns = {"/controller", "/pages/controller", "/login", "/registration", "/tracks", "/addtrack", "/clients", "/cart"})
-@MultipartConfig(location = "C:\\apache-tomcat-8.0.36\\webapps\\parser\\tmp",
-        fileSizeThreshold = 1024*1024*2,
-        maxFileSize = 1024*1024*10,
-        maxRequestSize = 1024*1024*50)
+//@MultipartConfig(location = "C:\\apache-tomcat-8.0.36\\webapps\\parser\\tmp",
+//        fileSizeThreshold = 1024*1024*2,
+//        maxFileSize = 1024*1024*10,
+//        maxRequestSize = 1024*1024*50)
+@MultipartConfig
 public class ControllerServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -56,6 +57,7 @@ public class ControllerServlet extends HttpServlet {
     private void handleCommandRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String commandName = request.getParameter(ConfigurationManager.getProperty("param.command"));
         if (commandName == null) {
+            LOGGER.error("Null command in POST request");
             request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
         } else {
             handleCommand(commandName, request, response);

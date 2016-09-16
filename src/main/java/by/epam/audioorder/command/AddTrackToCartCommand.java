@@ -1,6 +1,7 @@
 package by.epam.audioorder.command;
 
 import by.epam.audioorder.action.ConfigurationManager;
+import by.epam.audioorder.action.IdParameterParser;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.service.TrackInfoService;
 import org.apache.logging.log4j.LogManager;
@@ -25,12 +26,9 @@ public class AddTrackToCartCommand implements Command{
         }
         long trackId = 0;
         String trackIdParameter = request.getParameter(ConfigurationManager.getProperty("param.id"));
-        if (trackIdParameter != null) {
-            try {
-                trackId = Long.parseLong(trackIdParameter);
-            } catch (NumberFormatException e) {
-                return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.REDIRECT);
-            }
+        IdParameterParser parameterParser = new IdParameterParser();
+        if (parameterParser.pasre(trackIdParameter)) {
+            trackId = parameterParser.getResult();
         } else {
             return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.REDIRECT);
         }

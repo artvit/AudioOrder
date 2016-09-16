@@ -10,8 +10,7 @@
     <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="webjars/jquery/3.0.0/jquery.min.js"></script>
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="../resource/css/registration.css.css" rel="stylesheet">
-    <link href="../resource/css/background.css" rel="stylesheet">
+    <link href="${pageContext.request.contextPath}/resource/css/background.css" rel="stylesheet">
 </head>
 <body>
 <%@ include file="../WEB-INF/jspf/menu.jspf" %>

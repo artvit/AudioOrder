@@ -2,6 +2,8 @@ package by.epam.audioorder.entity;
 
 import by.epam.audioorder.action.InternationalizationManager;
 
+import java.util.Locale;
+
 public enum Genre {
     ANY,
     POP,
@@ -18,8 +20,8 @@ public enum Genre {
     REGGAE,
     CLASSICAL;
 
-    public Genre[] getValues() {
-        return Genre.values();
+    public String toLocalizedString(Locale locale) {
+        return InternationalizationManager.getProperty("genre." + this.name().toLowerCase(), locale);
     }
 
     @Override

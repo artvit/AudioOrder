@@ -9,9 +9,7 @@ public class CommandFactory {
         if (command == null || command.isEmpty()) {
             throw new UnsupportedCommandException("Empty command");
         }
-        if (command.equals(ConfigurationManager.getProperty("command.postfile"))) {
-            result = new ParseUploadedFileCommand();
-        } else if (command.equals(ConfigurationManager.getProperty("command.login"))) {
+        if (command.equals(ConfigurationManager.getProperty("command.login"))) {
             result = new LoginCommand();
         } else if (command.equals(ConfigurationManager.getProperty("command.registration"))) {
             result = new RegistrationCommand();
@@ -23,8 +21,10 @@ public class CommandFactory {
             result = new UserSearchCommand();
         } else if (command.equals(ConfigurationManager.getProperty("command.track.info"))) {
             result = new TrackInfoCommand();
-        } else if (command.equals(ConfigurationManager.getProperty("command.track.send.comment"))) {
+        } else if (command.equals(ConfigurationManager.getProperty("command.track.comment.send"))) {
             result = new AddCommentCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.track.comment.delete"))) {
+            result = new DeleteCommentCommand();
         } else if (command.equals(ConfigurationManager.getProperty("command.track.cart.add"))) {
             result = new AddTrackToCartCommand();
         } else if (command.equals(ConfigurationManager.getProperty("command.track.cart.delete"))) {
