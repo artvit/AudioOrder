@@ -6,10 +6,7 @@ import by.epam.audioorder.pool.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class ArtistDAO extends AbstractDAO<Artist>{
@@ -35,12 +32,10 @@ public class ArtistDAO extends AbstractDAO<Artist>{
              PreparedStatement statement = connection.prepareStatement(ARTIST_BY_ID)) {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
-            Artist artist;
+            Artist artist = null;
             if (result.next()) {
                 artist = createArtist(result);
                 LOGGER.info("Successful reading from database");
-            } else {
-                throw new DAOException("No result was found for id " + id);
             }
             return artist;
         } catch (ConnectionPoolException e) {
@@ -71,13 +66,17 @@ public class ArtistDAO extends AbstractDAO<Artist>{
     @Override
     public void insert(Artist entity) throws DAOException {
         try (Connection connection = getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_ARTIST)) {
+             PreparedStatement statement = connection.prepareStatement(INSERT_ARTIST, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getName());
             int result = statement.executeUpdate();
             if (result == 0) {
                 throw new DAOException("New user was not inserted");
             } else {
-                LOGGER.info("Insertion successful");
+                ResultSet resultSet = statement.getGeneratedKeys();
+                if (resultSet.next()) {
+                    entity.setArtistId(resultSet.getLong(1));
+                    LOGGER.info("Insertion successful");
+                }
             }
         } catch (ConnectionPoolException e) {
             throw new DAOException("Cannot get connection", e);
@@ -110,12 +109,10 @@ public class ArtistDAO extends AbstractDAO<Artist>{
              PreparedStatement statement = connection.prepareStatement(ARTIST_BY_LOGIN)) {
             statement.setString(1, name);
             ResultSet result = statement.executeQuery();
-            Artist artist;
+            Artist artist = null;
             if (result.next()) {
                 artist = createArtist(result);
                 LOGGER.info("Successful reading from database");
-            } else {
-                throw new DAOException("No result was found for name " + name);
             }
             return artist;
         } catch (ConnectionPoolException e) {

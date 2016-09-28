@@ -57,6 +57,10 @@
                     <input name="year" type="number" id="year" class="form-control" value="${year}" placeholder="<fmt:message key="tracks.track.year"/>">
                 </div>
                 <div class="form-group">
+                    <label for="cost" class="control-label"><fmt:message key="tracks.track.cost"/></label>
+                    <input name="cost" type="number" step="0.1" id="cost" class="form-control" value="${cost}" placeholder="<fmt:message key="tracks.track.cost"/>">
+                </div>
+                <div class="form-group">
                     <label for="file" class="control-label"><fmt:message key="track.add.file"/></label>
                     <input name="file" type="file" id="file" class="form-control" placeholder="File" required>
                 </div>

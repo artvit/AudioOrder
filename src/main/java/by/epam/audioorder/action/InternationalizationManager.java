@@ -9,6 +9,9 @@ public class InternationalizationManager {
     private InternationalizationManager() { }
 
     public static String getProperty(String key, Locale  locale) {
+        if (locale == null) {
+            return getProperty(key);
+        }
         return ResourceBundle.getBundle(BUNDLE, locale).getString(key);
     }
 

@@ -13,4 +13,12 @@
             <taglib-location>WEB-INF/tld/ctg.tld</taglib-location>
         </taglib>
     </jsp-config>
+    <filter-mapping>
+        <filter-name>EncodingFilter</filter-name>
+        <url-pattern />
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>InternationalizationFilter</filter-name>
+        <url-pattern />
+    </filter-mapping>
 </web-app>

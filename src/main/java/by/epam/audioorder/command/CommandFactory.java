@@ -31,6 +31,8 @@ public class CommandFactory {
             result = new DeleteFromCartCommand();
         } else if (command.equals(ConfigurationManager.getProperty("command.track.add"))) {
             result = new AddTrackCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.locale"))) {
+            result = new ChangeLanguageCommand();
         } else {
             throw new UnsupportedCommandException("Unknown command type");
         }

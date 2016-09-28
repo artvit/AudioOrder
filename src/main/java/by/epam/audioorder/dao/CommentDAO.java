@@ -57,12 +57,10 @@ public class CommentDAO extends AbstractDAO<Comment> {
              PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
-            Comment comment;
+            Comment comment = null;
             if (result.next()) {
                 comment = createComment(result);
                 LOGGER.info("Successful reading from database");
-            } else {
-                throw new DAOException("No result was found for id " + id);
             }
             return comment;
         } catch (ConnectionPoolException e) {

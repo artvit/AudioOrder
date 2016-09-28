@@ -13,7 +13,7 @@
             </button>
             <a class="navbar-brand" href="index.jsp">AudioOrder</a>
         </div>
-        <div class="collapse navbar-collapse" userId="collapsing-navbar">
+        <div class="collapse navbar-collapse" id="collapsing-navbar">
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/tracks"><span class="glyphicon glyphicon-music"></span> <fmt:message key="menu.tracks"/></a></li>
                 <c:if test="${sessionScope.role == 'ADMIN'}">
