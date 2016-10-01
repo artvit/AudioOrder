@@ -3,6 +3,7 @@ package by.epam.audioorder.dao;
 import by.epam.audioorder.entity.Artist;
 import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.entity.Track;
+import by.epam.audioorder.entity.User;
 import by.epam.audioorder.exception.DAOException;
 import by.epam.audioorder.pool.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
@@ -27,6 +28,7 @@ public class TrackDAO extends AbstractDAO<Track> {
     private static final String GENRE = "genre";
     private static final String PATH = "link";
     private static final String RELEASED = "released";
+    private static final String USER_ID = "user_id";
 
     private static final String TRACK_ALL_COUNT_ROWS = "SELECT COUNT(*) FROM track";
 
@@ -67,6 +69,18 @@ public class TrackDAO extends AbstractDAO<Track> {
             PATH + " = ?, " +
             COST + " = ?, " +
             RELEASED + " = ?" + " WHERE " + ID + " = ?";
+    private static final String TRACKS_FOR_USER = "SELECT " +
+            ID +  ", " +
+            TITLE +  ", " +
+            ARTIST_NAME + ", " +
+            ARTIST_ID + ", " +
+            DURATION + ", " +
+            COST + ", " +
+            PATH + ", " +
+            RELEASED + ", " +
+            GENRE +
+            " FROM user_track LEFT JOIN track USING(track_id) LEFT JOIN artist USING(artist_id)" +
+            "WHERE " + USER_ID + " = ?";
 
     private static final String LIMIT = " LIMIT ? OFFSET ?";
     private static final String WHERE = " WHERE ";
@@ -82,6 +96,33 @@ public class TrackDAO extends AbstractDAO<Track> {
               PreparedStatement statement = connection.prepareStatement(TRACK_ALL + LIMIT)) {
             statement.setInt(1, rowsPerPage);
             statement.setInt(2, (page - 1) * rowsPerPage);
+            ResultSet result = statement.executeQuery();
+            List<Track> tracks = new ArrayList<>();
+            while (result.next()) {
+                Track track = createTrack(result);
+                tracks.add(track);
+            }
+            try (PreparedStatement statementCount = connection.prepareStatement(TRACK_ALL_COUNT_ROWS)) {
+                ResultSet resultCount = statementCount.executeQuery();
+                if (resultCount.next()) {
+                    pagesNumber = (int) Math.ceil(resultCount.getInt(1) / rowsPerPage);
+                }
+            }
+            LOGGER.info("Successful reading from database");
+            return tracks;
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Cannot get connection", e);
+        } catch (SQLException e) {
+            throw new DAOException("Error in SQL", e);
+        }
+    }
+
+    public List<Track> findTracksForUser(User user, int page, int rowsPerPage) throws DAOException {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(TRACKS_FOR_USER + LIMIT)) {
+            statement.setLong(1, user.getUserId());
+            statement.setInt(2, rowsPerPage);
+            statement.setInt(3, (page - 1) * rowsPerPage);
             ResultSet result = statement.executeQuery();
             List<Track> tracks = new ArrayList<>();
             while (result.next()) {

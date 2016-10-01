@@ -21,7 +21,5 @@ public class InternationalizationFilter implements Filter {
     }
 
     public void init(FilterConfig config) throws ServletException {
-
     }
-
 }

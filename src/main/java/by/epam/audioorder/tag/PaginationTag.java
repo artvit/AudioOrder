@@ -1,8 +1,11 @@
 package by.epam.audioorder.tag;
 
+import by.epam.audioorder.action.ConfigurationManager;
+import com.sun.deploy.net.HttpRequest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.TagSupport;
@@ -17,16 +20,18 @@ public class PaginationTag extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         try {
-            if (total > 0) {
+            if (total > 1) {
                 JspWriter out = pageContext.getOut();
+                String lastPage = (String) pageContext.getSession().getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
+                lastPage += (((HttpServletRequest) pageContext.getRequest()).getQueryString() != null) ? "&" : "?" + "page=";
                 out.println("<div class=\"btn-group\">");
-                out.println("<input class=\"btn btn-default\" type=\"submit\" name=\"page\" value=\"1\">");
+                out.println("<a class=\"btn btn-default\" type=\"submit\" name=\"page\" value=\"1\">" + 1 + "</a>");
                 for (int i = page - 3; i < page + 4; ++i) {
-                    if (i > 0 && i < total) {
-                        out.println("<input class=\"btn btn-default\" type=\"submit\" name=\"page\" value=\"" + i + "\">");
+                    if (i > 1 && i < total) {
+                        out.println("<a class=\"btn btn-default\">" + i + "</a>");
                     }
                 }
-                out.println("<input class=\"btn btn-default\" type=\"submit\" name=\"page\" value=\"" + total + "\">");
+                out.println("<a class=\"btn btn-default\">" + total + "</a>");
                 out.println("</div>");
             }
         } catch (IOException e) {

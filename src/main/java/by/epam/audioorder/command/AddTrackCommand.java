@@ -1,6 +1,7 @@
 package by.epam.audioorder.command;
 
 import by.epam.audioorder.action.ConfigurationManager;
+import by.epam.audioorder.action.InternationalizationManager;
 import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.exception.ServiceException;
 import by.epam.audioorder.service.AddTrackService;
@@ -15,6 +16,7 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 public class AddTrackCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -27,6 +29,15 @@ public class AddTrackCommand implements Command {
         int year = 0;
         try {
             year = Integer.parseInt(yearParameter);
+        } catch (NumberFormatException e) {
+            LOGGER.warn("Wrong year parameter", e);
+        }
+        int duration = 0;
+        String secondsParameter = request.getParameter(ConfigurationManager.getProperty("param.seconds"));
+        String minutesParameter = request.getParameter(ConfigurationManager.getProperty("param.minutes"));
+        try {
+            duration = Integer.parseInt(secondsParameter);
+            duration = 60 * Integer.parseInt(minutesParameter);
         } catch (NumberFormatException e) {
             LOGGER.warn("Wrong year parameter", e);
         }
@@ -48,7 +59,6 @@ public class AddTrackCommand implements Command {
             String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
             AudioFileService audioFileService = new AudioFileService();
             String fileLink = audioFileService.saveFile(fileName, fileContent);
-            int duration = audioFileService.getDuration(fileLink);
             AddTrackService addTrackService = new AddTrackService();
             addTrackService.addTrack(artist, title, year, genre, duration, cost, fileLink);
             return new CommandResult(ConfigurationManager.getProperty("page.track.add.success"), CommandResult.Type.FORWARD);
@@ -57,6 +67,16 @@ public class AddTrackCommand implements Command {
         } catch (ServiceException e) {
             LOGGER.error("Cannot store file", e);
         }
+        request.setAttribute(ConfigurationManager.getProperty("param.artist"), artist);
+        request.setAttribute(ConfigurationManager.getProperty("param.artist"), title);
+        request.setAttribute(ConfigurationManager.getProperty("param.year"), yearParameter);
+        request.setAttribute(ConfigurationManager.getProperty("param.cost"), costParameter);
+        request.setAttribute(ConfigurationManager.getProperty("param.genre"), genreParameter);
+        request.setAttribute(ConfigurationManager.getProperty("param.minutes"), minutesParameter);
+        request.setAttribute(ConfigurationManager.getProperty("param.seconds"), secondsParameter);
+        Locale locale = (Locale) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.locale"));
+        String message = InternationalizationManager.getProperty("track.add.error.text", locale);
+        request.setAttribute(ConfigurationManager.getProperty("attr.message"), message);
         return new CommandResult(ConfigurationManager.getProperty("page.track.add"), CommandResult.Type.FORWARD);
     }
 }

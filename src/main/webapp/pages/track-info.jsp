@@ -86,7 +86,7 @@
                                 <input type="hidden" name="id" value="${track.trackId}">
                                 <div class="form-group">
                                     <label for="comment"><fmt:message key="trackinfo.comment"/>:</label>
-                                    <textarea name="text" class="form-control" rows="5" id="comment"></textarea>
+                                    <textarea name="text" class="form-control" rows="5" id="comment" required></textarea>
                                 </div>
                                 <button type="submit" class="btn btn-success"><fmt:message key="trackinfo.submit.comment"/></button>
                             </form>

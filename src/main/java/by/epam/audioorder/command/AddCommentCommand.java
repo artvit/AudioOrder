@@ -15,7 +15,7 @@ public class AddCommentCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        long trackId = 0;
+        long trackId;
         String trackIdParameter = request.getParameter(ConfigurationManager.getProperty("param.id"));
         try {
             trackId = Long.parseLong(trackIdParameter);
@@ -23,19 +23,16 @@ public class AddCommentCommand implements Command {
             LOGGER.warn("No id parameter");
             return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.FORWARD);
         }
-        TrackInfoService trackInfoService = new TrackInfoService();
-        Track track = trackInfoService.getTrackInfo(trackId);
         String login = (String) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.login"));
         String commentText = request.getParameter(ConfigurationManager.getProperty("param.comment.text"));
-        TrackCommentService trackCommentService = new TrackCommentService();
-        boolean addResult = trackCommentService.addComment(trackId, commentText, login);
-        if (addResult) {
-            String resultPage = ConfigurationManager.getProperty("url.trackinfo") + "?" +
-                    ConfigurationManager.getProperty("param.id") + "=" + track.getTrackId() +
-                    "&" + ConfigurationManager.getProperty("param.command") + "=" + ConfigurationManager.getProperty("command.track.info");
-            return new CommandResult(resultPage, CommandResult.Type.REDIRECT);
-        } else {
-            return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.FORWARD);
+        if (commentText != null && !commentText.isEmpty()) {
+            TrackCommentService trackCommentService = new TrackCommentService();
+            boolean addResult = trackCommentService.addComment(trackId, commentText, login);
+            if (!addResult) {
+                return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.FORWARD);
+            }
         }
+        String resultPage = (String) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
+        return new CommandResult(resultPage, CommandResult.Type.REDIRECT);
     }
 }

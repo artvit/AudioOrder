@@ -12,6 +12,7 @@
           <element id="library" level="project" name="Maven: org.apache.logging.log4j:log4j-core:2.6.2" />
           <element id="library" level="project" name="Maven: org.webjars:bootstrap:3.3.7" />
           <element id="library" level="project" name="Maven: org.webjars:jquery:3.0.0" />
+          <element id="library" level="project" name="Maven: org.webjars:jquery-ui:1.12.1" />
         </element>
       </element>
       <element id="directory" name="META-INF">

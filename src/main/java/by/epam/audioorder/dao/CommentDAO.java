@@ -130,7 +130,7 @@ public class CommentDAO extends AbstractDAO<Comment> {
                 statementCount.setLong(1, track.getTrackId());
                 ResultSet resultCount = statementCount.executeQuery();
                 if (resultCount.next()) {
-                    pagesNumber = (int) Math.ceil(resultCount.getInt(1) / rowsPerPage);
+                    pagesNumber = (resultCount.getInt(1) + rowsPerPage - 1)/ rowsPerPage;
                 }
             }
             LOGGER.info("Successful reading from database");

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "ControllerServlet",
-        urlPatterns = {"/controller", "/pages/controller", "/login", "/registration", "/tracks", "/addtrack", "/clients", "/cart"})
+        urlPatterns = {"/controller", "/pages/controller", "/login", "/registration", "/tracks", "/addtrack", "/clients", "/cart", "/account"})
 //@MultipartConfig(location = "C:\\apache-tomcat-8.0.36\\webapps\\parser\\tmp",
 //        fileSizeThreshold = 1024*1024*2,
 //        maxFileSize = 1024*1024*10,
@@ -99,6 +99,7 @@ public class ControllerServlet extends HttpServlet {
 
     private static String getForwardPage(String servletPath) throws UnsupportedPageException {
         switch (servletPath) {
+//            TODO constants
             case "/login":
                 return ConfigurationManager.getProperty("page.login");
             case "/registration":

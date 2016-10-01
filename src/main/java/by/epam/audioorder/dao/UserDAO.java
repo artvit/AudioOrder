@@ -1,5 +1,6 @@
 package by.epam.audioorder.dao;
 
+import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.exception.DAOException;
 import by.epam.audioorder.pool.ConnectionPoolException;
@@ -242,7 +243,7 @@ public class UserDAO extends AbstractDAO<User> {
     public int getPagesNumber() {
         return pagesNumber;
     }
-
+    
     private User createUser(ResultSet resultSet) throws SQLException {
         User user = new User();
         user.setUserId(resultSet.getLong(USER_ID));
