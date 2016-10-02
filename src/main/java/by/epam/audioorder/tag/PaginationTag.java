@@ -22,16 +22,17 @@ public class PaginationTag extends TagSupport {
         try {
             if (total > 1) {
                 JspWriter out = pageContext.getOut();
-                String lastPage = (String) pageContext.getSession().getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
-                lastPage += (((HttpServletRequest) pageContext.getRequest()).getQueryString() != null) ? "&" : "?" + "page=";
+                String link = (String) pageContext.getSession().getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
+                link = link.replaceAll("[&?]?page=\\d*", "");
+                link += ((((HttpServletRequest) pageContext.getRequest()).getQueryString() != null) ? "&" : "?") + "page=";
                 out.println("<div class=\"btn-group\">");
-                out.println("<a class=\"btn btn-default\" type=\"submit\" name=\"page\" value=\"1\">" + 1 + "</a>");
+                out.println("<a href='" + link + 1 +"' class=\"btn btn-default" + ((page == 1) ? " active":"") + "\">" + 1 + "</a>");
                 for (int i = page - 3; i < page + 4; ++i) {
                     if (i > 1 && i < total) {
-                        out.println("<a class=\"btn btn-default\">" + i + "</a>");
+                        out.println("<a href='" + link + i +"' class=\"btn btn-default" + ((page == i) ? " active":"") + "\">" + i + "</a>");
                     }
                 }
-                out.println("<a class=\"btn btn-default\">" + total + "</a>");
+                out.println("<a href='" + link + total +"' class=\"btn btn-default" + ((page == total) ? " active":"") + "\">" + total + "</a>");
                 out.println("</div>");
             }
         } catch (IOException e) {

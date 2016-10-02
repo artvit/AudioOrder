@@ -1,6 +1,7 @@
 package by.epam.audioorder.service;
 
 import by.epam.audioorder.action.ConfigurationManager;
+import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.UUID;
 
 public class AudioFileService {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -21,23 +23,21 @@ public class AudioFileService {
         try {
             String filePath = ConfigurationManager.getProperty("path.storage") + fileName;
             Files.copy(inputStream, Paths.get(filePath));
+            String newFileName = UUID.randomUUID().toString();
+            String newFilePath = ConfigurationManager.getProperty("path.storage") + newFileName;
+            Files.move(Paths.get(filePath), Paths.get(newFilePath));
             return filePath;
         } catch (IOException e) {
             throw new ServiceException("Cannot store file");
         }
     }
 
-    public int getDuration(String fileName) throws ServiceException {
+    public boolean deleteTrack(String trackPath) {
         try {
-            AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(Files.newInputStream(Paths.get(fileName)));
-            AudioFormat format = audioInputStream.getFormat();
-            long frames = audioInputStream.getFrameLength();
-            int durationInSeconds = (int) (frames / format.getFrameRate());
-            return durationInSeconds;
-        } catch (UnsupportedAudioFileException e) {
-            throw new ServiceException("Unsupported file", e);
+            Files.delete(Paths.get(trackPath));
         } catch (IOException e) {
-            throw new ServiceException("Cannot get audio track duration", e);
+            return false;
         }
+        return true;
     }
 }

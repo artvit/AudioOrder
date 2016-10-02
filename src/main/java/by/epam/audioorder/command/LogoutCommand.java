@@ -12,6 +12,7 @@ public class LogoutCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         session.removeAttribute(ConfigurationManager.getProperty("attr.login"));
+        session.removeAttribute(ConfigurationManager.getProperty("attr.user"));
         session.removeAttribute(ConfigurationManager.getProperty("attr.cart"));
         session.setAttribute(ConfigurationManager.getProperty("attr.role"), UserType.GUEST);
         String lastPage = (String) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.lastpage"));

@@ -33,8 +33,12 @@ public class CommandFactory {
             result = new AddTrackCommand();
         } else if (command.equals(ConfigurationManager.getProperty("command.locale"))) {
             result = new ChangeLanguageCommand();
-        } else if (command.equals(ConfigurationManager.getProperty("command.account"))) {
-            result = new AccountCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.account.tracks"))) {
+            result = new AccountTracksCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.track.edit"))) {
+            result = new EditTrackCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.track.save"))) {
+            result = new SaveTrackCommand();
         } else {
             throw new UnsupportedCommandException("Unknown command type");
         }

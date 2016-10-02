@@ -17,29 +17,6 @@
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
     <link href="${pageContext.request.contextPath}/resource/css/background.css" rel="stylesheet">
-    <%--<script>--%>
-        <%--$(function () {--%>
-            <%--$('#seconds').change(function () {--%>
-                <%--var seconds = $('#seconds');--%>
-                <%--var minutes = $('#minutes');--%>
-                <%--if (parseInt(seconds.val()) >= 60) {--%>
-                    <%--seconds.val(parseInt(seconds.val()) - 60);--%>
-                    <%--if (!minutes.val())--%>
-                        <%--minutes.val(0);--%>
-                    <%--minutes.val(parseInt(minutes.val()) + 1);--%>
-                    <%--minutes.change();--%>
-                <%--} else if (parseInt(seconds.val()) < 0) {--%>
-                    <%--seconds.val(parseInt(seconds.val()) + 60);--%>
-                    <%--if (minutes.val()) {--%>
-                        <%--minutes.val(parseInt(minutes.val()) - 1);--%>
-                        <%--minutes.change();--%>
-                    <%--} else {--%>
-                        <%--minutes.val(0);--%>
-                    <%--}--%>
-                <%--}--%>
-            <%--});--%>
-        <%--});--%>
-    <%--</script>--%>
     <style>
         #duration .form-control {
             width: 50%;
@@ -57,7 +34,7 @@
             <c:if test="${not empty message}">
                 <div class="panel panel-danger">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><fmt:message key="registration.error.title"/></h3>
+                        <h3 class="panel-title"><fmt:message key="error.title"/></h3>
                     </div>
                     <div class="panel-body">
                         <c:out value="${message}"/>
@@ -67,12 +44,12 @@
             <form method="post" action="${pageContext.request.contextPath}/addtrack" enctype="multipart/form-data" class="form-registration">
                 <input type="hidden" name="command" value="track-add">
                 <div class="form-group">
-                    <label for="artist" class="control-label"><fmt:message key="tracks.track.artist"/></label>
-                    <input name="artist" type="text" id="artist" class="form-control" value="${artist}" placeholder="<fmt:message key="tracks.track.artist"/>" required autofocus>
+                    <label for="artist" class="control-label"><fmt:message key="track.artist"/></label>
+                    <input name="artist" type="text" id="artist" class="form-control" value="${artist}" placeholder="<fmt:message key="track.artist"/>" required autofocus>
                 </div>
                 <div class="form-group">
-                    <label for="title" class="control-label"><fmt:message key="tracks.track.title"/></label>
-                    <input name="title" type="text" id="title" class="form-control" value="${title}" placeholder="<fmt:message key="tracks.track.title"/>"  required>
+                    <label for="title" class="control-label"><fmt:message key="track.title"/></label>
+                    <input name="title" type="text" id="title" class="form-control" value="${title}" placeholder="<fmt:message key="track.title"/>" required>
                 </div>
                 <div class="form-group">
                     <div class="row">
@@ -85,30 +62,32 @@
                             </select>
                         </div>
                         <div class="col-sm-2">
-                            <label for="year" class="control-label"><fmt:message key="tracks.track.year"/></label>
-                            <input name="year" type="number" id="year" min="1901" max="2155" class="form-control" value="${year}" placeholder="<fmt:message key="tracks.track.year"/>">
+                            <label for="year" class="control-label"><fmt:message key="track.year"/></label>
+                            <input name="year" type="number" id="year" min="1901" max="2155" class="form-control" value="${year}" placeholder="<fmt:message key="track.year"/>">
                         </div>
                         <div class="col-sm-3">
-                            <label for="cost" class="control-label"><fmt:message key="tracks.track.cost"/></label>
+                            <label for="cost" class="control-label"><fmt:message key="track.cost"/></label>
                             <div class="input-group">
                                 <span class="input-group-addon" id="sizing-addon2">$</span>
-                                <input name="cost" type="number" min="0" step="0.1" id="cost" class="form-control" value="${cost}" placeholder="<fmt:message key="tracks.track.cost"/>">
+                                <input name="cost" type="number" min="0" step="0.1" id="cost" class="form-control" value="${cost}" placeholder="<fmt:message key="track.cost"/>">
                             </div>
                         </div>
                     </div>
                 </div>
                 <div id="duration" class="form-group">
-                    <label for="minutes" class="control-label"><fmt:message key="tracks.track.duration"/></label>
+                    <label for="minutes" class="control-label"><fmt:message key="track.duration"/></label>
                     <div class="input-group">
                         <input type="number" class="form-control" id="minutes"
-                               name="minutes" value="${minutes}" placeholder="m" min="0">
+                               name="minutes" value="${minutes}"
+                               placeholder="<fmt:message key="track.duration.minutes"/>" min="0">
                         <input type="number" class="form-control" id="seconds"
-                               name="seconds" value="${seconds}" placeholder="s" min="0" max="59" required>
+                               name="seconds" value="${seconds}"
+                               placeholder="<fmt:message key="track.duration.seconds"/>" min="0" max="59" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="file" class="control-label"><fmt:message key="track.add.file"/></label>
-                    <input name="file" type="file" id="file" class="form-control" placeholder="<fmt:message key="tracks.track.file"/>" required>
+                    <input name="file" type="file" id="file" class="form-control" placeholder="<fmt:message key="track.file"/>" required>
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-success" type="submit"><fmt:message key="track.add.button"/></button>

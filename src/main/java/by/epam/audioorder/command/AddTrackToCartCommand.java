@@ -27,7 +27,7 @@ public class AddTrackToCartCommand implements Command{
         long trackId = 0;
         String trackIdParameter = request.getParameter(ConfigurationManager.getProperty("param.id"));
         IdParameterParser parameterParser = new IdParameterParser();
-        if (parameterParser.pasre(trackIdParameter)) {
+        if (parameterParser.parse(trackIdParameter)) {
             trackId = parameterParser.getResult();
         } else {
             return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.REDIRECT);

@@ -3,7 +3,7 @@ package by.epam.audioorder.action;
 public class IdParameterParser {
     private long result;
 
-    public boolean pasre(String idParameter) {
+    public boolean parse(String idParameter) {
         if (idParameter != null) {
             try {
                 result = Long.parseLong(idParameter);

@@ -10,7 +10,7 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>${track.artist.name} - ${track.title}</title>
+    <title><c:out value="${track.artist.name}"/> - <c:out value="${track.title}"/></title>
     <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="webjars/jquery/3.0.0/jquery.min.js"></script>
     <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -20,22 +20,23 @@
 <%@ include file="../WEB-INF/jspf/menu.jspf" %>
 <div class="container" role="main">
     <div class="page-header">
-        <h1>${track.artist.name} - ${track.title}</h1>
+        <h1><c:out value="${track.artist.name}"/> - <c:out value="${track.title}"/></h1>
     </div>
     <div class="panel panel-default">
         <div class="panel-body">
             <div style="font-size: larger">
-                <fmt:message key="tracks.track.artist"/>: ${track.artist.name}
+                <fmt:message key="track.artist"/>: <c:out value="${track.artist.name}"/>
                 <br>
-                <fmt:message key="tracks.track.title"/>: ${track.title}
+                <fmt:message key="track.title"/>: <c:out value="${track.title}"/>
                 <br>
-                <fmt:message key="tracks.track.duration"/>: <ctl:duration value="${track.duration}"/>
+                <fmt:message key="track.duration"/>: <ctl:duration value="${track.duration}"/>
                 <br>
-                <fmt:message key="tracks.track.year"/>: ${track.releasedYear}
+                <fmt:message key="track.year"/>: ${track.releasedYear}
                 <br>
-                <fmt:message key="tracks.track.cost"/>: $${track.cost}
+                <fmt:message key="track.cost"/>: $${track.cost}
             </div>
             <div>
+                <br>
                 <c:choose>
                     <c:when test="${not cart.contains(track)}">
                         <a href="${pageContext.request.contextPath}/tracks?command=add-track-cart&id=${track.trackId}"
@@ -50,10 +51,16 @@
                         </a>
                     </c:otherwise>
                 </c:choose>
+                <c:if test="${sessionScope.role == 'ADMIN'}">
+                    <a href="${pageContext.request.contextPath}/tracks?command=track-edit&id=${track.trackId}"
+                       class="btn btn-lg btn-primary" >
+                        <span class="glyphicon glyphicon-edit"></span> <fmt:message key="track.edit"/>
+                    </a>
+                </c:if>
             </div>
             <div>
                 <c:if test="${not empty feedback}">
-                    <h2><fmt:message key="trackinfo.feedback"/></h2>
+                    <h2><fmt:message key="track.info.feedback"/></h2>
                     <div>
                         <c:forEach var="comment" items="${feedback}">
                             <div class="panel panel-default">
@@ -63,7 +70,7 @@
                                     </div>
                                     <c:if test="${sessionScope.role == 'ADMIN'}">
                                     <div class="panel-title pull-right">
-                                        <a href="${pageContext.request.contextPath}/tracks?command=delete-comment&id=${comment.commentId}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span> <fmt:message key="trackinfo.comment.delete"/></a>
+                                        <a href="${pageContext.request.contextPath}/tracks?command=delete-comment&id=${comment.commentId}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span> <fmt:message key="track.info.comment.delete"/></a>
                                     </div>
                                     </c:if>
                                     <div class="clearfix"></div>
@@ -79,16 +86,17 @@
                     </div>
                 </c:if>
                 <c:if test="${(sessionScope.role == 'ADMIN') or sessionScope.role == 'USER'}">
+                    <br>
                     <div class="panel panel-success">
                         <div class="panel-body">
                             <form action="${pageContext.request.contextPath}/tracks" method="post">
                                 <input type="hidden" name="command" value="add-comment">
                                 <input type="hidden" name="id" value="${track.trackId}">
                                 <div class="form-group">
-                                    <label for="comment"><fmt:message key="trackinfo.comment"/>:</label>
+                                    <label for="comment"><fmt:message key="track.info.comment"/>:</label>
                                     <textarea name="text" class="form-control" rows="5" id="comment" required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-success"><fmt:message key="trackinfo.submit.comment"/></button>
+                                <button type="submit" class="btn btn-success"><fmt:message key="track.info.submit.comment"/></button>
                             </form>
                         </div>
                     </div>

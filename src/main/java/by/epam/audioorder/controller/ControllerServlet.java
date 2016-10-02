@@ -20,10 +20,6 @@ import java.io.IOException;
 
 @WebServlet(name = "ControllerServlet",
         urlPatterns = {"/controller", "/pages/controller", "/login", "/registration", "/tracks", "/addtrack", "/clients", "/cart", "/account"})
-//@MultipartConfig(location = "C:\\apache-tomcat-8.0.36\\webapps\\parser\\tmp",
-//        fileSizeThreshold = 1024*1024*2,
-//        maxFileSize = 1024*1024*10,
-//        maxRequestSize = 1024*1024*50)
 @MultipartConfig
 public class ControllerServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -56,11 +52,11 @@ public class ControllerServlet extends HttpServlet {
 
     private void handleCommandRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String commandName = request.getParameter(ConfigurationManager.getProperty("param.command"));
-        if (commandName == null) {
+        if (commandName != null) {
+            handleCommand(commandName, request, response);
+        } else {
             LOGGER.error("Null command in POST request");
             request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
-        } else {
-            handleCommand(commandName, request, response);
         }
 
 
@@ -72,6 +68,8 @@ public class ControllerServlet extends HttpServlet {
             handleCommand(ConfigurationManager.getProperty("command.search.track"), request, response);
         } else if (servletPath.equals("/clients")) {
             handleCommand(ConfigurationManager.getProperty("command.search.user"), request, response);
+        } else if (servletPath.equals("/account")) {
+            handleCommand(ConfigurationManager.getProperty("command.account.tracks"), request, response);
         } else {
             try {
                 request.getRequestDispatcher(getForwardPage(servletPath)).forward(request, response);
@@ -110,8 +108,6 @@ public class ControllerServlet extends HttpServlet {
                 return ConfigurationManager.getProperty("page.tracks");
             case "/cart":
                 return ConfigurationManager.getProperty("page.cart");
-            case "/addtrack":
-                return ConfigurationManager.getProperty("page.track.add");
             default:
                 throw new UnsupportedPageException("Page " + servletPath + " is not supported");
         }

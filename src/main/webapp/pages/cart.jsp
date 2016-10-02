@@ -33,11 +33,11 @@
                             <table class="table table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th><fmt:message key="tracks.track.artist"/></th>
-                                    <th><fmt:message key="tracks.track.title"/></th>
-                                    <th><fmt:message key="tracks.track.genre"/></th>
-                                    <th><fmt:message key="tracks.track.duration"/></th>
-                                    <th><fmt:message key="tracks.track.cost"/></th>
+                                    <th><fmt:message key="track.artist"/></th>
+                                    <th><fmt:message key="track.title"/></th>
+                                    <th><fmt:message key="track.genre"/></th>
+                                    <th><fmt:message key="track.duration"/></th>
+                                    <th><fmt:message key="track.cost"/></th>
                                     <th></th>
                                 </tr>
                                 </thead>

@@ -23,10 +23,11 @@ public class LoginCommand implements Command {
         User user  = loginService.authenticate(login, password);
         if (user != null) {
             HttpSession session = request.getSession();
+            session.setAttribute(ConfigurationManager.getProperty("attr.user"), user);
             session.setAttribute(ConfigurationManager.getProperty("attr.login"), user.getLogin());
             session.setAttribute(ConfigurationManager.getProperty("attr.role"), user.getRole());
             LOGGER.info("User " + login + " signed in successfully");
-            String lastPage = (String) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
+            String lastPage = (String) session.getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
             if (lastPage == null || lastPage.isEmpty()) {
                 lastPage = ConfigurationManager.getProperty("page.index");
             }

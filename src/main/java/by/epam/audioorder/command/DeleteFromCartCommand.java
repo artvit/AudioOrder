@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashSet;
 import java.util.Set;
 
 public class DeleteFromCartCommand implements Command {
@@ -23,7 +22,7 @@ public class DeleteFromCartCommand implements Command {
         long trackId = 0;
         String trackIdParameter = request.getParameter(ConfigurationManager.getProperty("param.id"));
         IdParameterParser parameterParser = new IdParameterParser();
-        if (parameterParser.pasre(trackIdParameter)) {
+        if (parameterParser.parse(trackIdParameter)) {
             trackId = parameterParser.getResult();
         } else {
             return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.REDIRECT);

@@ -23,7 +23,7 @@ public class UserMenuTag extends TagSupport{
             out.println("<ul class=\"nav navbar-nav navbar-right\">");
             out.println("<li>" + "<a href=\"" + contextPath + "/cart\">" + "<span class=\"glyphicon glyphicon-shopping-cart\"></span> " + InternationalizationManager.getProperty("menu.cart", locale) + "</a>" + "</li>");
             if (pageContext.getSession().getAttribute("login") != null) {
-                out.println("<li>" + "<a href=\"" + contextPath + "/login\">" + "<span class=\"glyphicon glyphicon-list\"></span> " + pageContext.getSession().getAttribute("login") + "</a>" + "</li>");
+                out.println("<li>" + "<a href=\"" + contextPath + "/account\">" + "<span class=\"glyphicon glyphicon-list\"></span> " + pageContext.getSession().getAttribute("login") + "</a>" + "</li>");
                 out.println("<li>" + "<a href=\"" + contextPath + "/controller?command=logout\">" + InternationalizationManager.getProperty("menu.logout", locale) + "</a>" + "</li>");
             } else {
                 out.println("<li>" + "<a href=\"" + contextPath + "/login\">" + InternationalizationManager.getProperty("menu.login", locale) + "</a>" + "</li>");

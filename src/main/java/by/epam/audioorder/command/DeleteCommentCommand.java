@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 public class DeleteCommentCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        long commentId = 0;
+        long commentId;
         String commentIdParameter = request.getParameter(ConfigurationManager.getProperty("param.id"));
         IdParameterParser parameterParser = new IdParameterParser();
-        if (parameterParser.pasre(commentIdParameter)) {
+        if (parameterParser.parse(commentIdParameter)) {
             commentId = parameterParser.getResult();
         } else {
             return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.REDIRECT);

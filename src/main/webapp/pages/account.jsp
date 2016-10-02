@@ -3,6 +3,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${sessionScope.locale}"/>
 <fmt:setBundle basename="i18n.i18n"/>
+<c:set var="lastpage" scope="session" value="${requestScope['javax.servlet.forward.request_uri']}"/>
+<c:if test="${not empty requestScope['javax.servlet.forward.query_string']}">
+    <c:set var="lastpage" scope="session" value="${lastpage}?${requestScope['javax.servlet.forward.query_string']}"/>
+</c:if>
 <html>
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,7 +24,16 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-body">
-
+            <ul class="nav nav-tabs">
+                <li role="presentation" <c:if test="${section == 'tracks'}">class="active"</c:if>><a href="${pageContext.request.contextPath}/account?command=account-tracks">Home</a></li>
+                <li role="presentation" <c:if test="${section == 'bonuses'}">class="active"</c:if>><a href="${pageContext.request.contextPath}/account?command=account-bonuses">Profile</a></li>
+            </ul>
+            <c:if test="${section == 'tracks'}">
+                <%@ include file="../WEB-INF/jspf/account-tracks.jspf" %>
+            </c:if>
+            <c:if test="${section == 'bonuses'}">
+                <%@ include file="../WEB-INF/jspf/account-bonuses.jspf" %>
+            </c:if>
         </div>
     </div>
 </div>

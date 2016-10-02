@@ -1,11 +1,13 @@
 package by.epam.audioorder.command;
 
 import by.epam.audioorder.action.ConfigurationManager;
-import by.epam.audioorder.action.InternationalizationManager;
+import by.epam.audioorder.action.IdParameterParser;
 import by.epam.audioorder.entity.Genre;
+import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.exception.ServiceException;
-import by.epam.audioorder.service.SaveTrackService;
 import by.epam.audioorder.service.AudioFileService;
+import by.epam.audioorder.service.SaveTrackService;
+import by.epam.audioorder.service.TrackInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,13 +18,20 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.util.Locale;
 
-public class AddTrackCommand implements Command {
+public class SaveTrackCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
+        String idParameter = request.getParameter(ConfigurationManager.getProperty("param.id"));
+        IdParameterParser idParser = new IdParameterParser();
+        if (!idParser.parse(idParameter)) {
+            return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.FORWARD);
+        }
+        long id = idParser.getResult();
+        TrackInfoService trackInfoService = new TrackInfoService();
+        Track track = trackInfoService.getTrackInfo(id);
         String artist = request.getParameter(ConfigurationManager.getProperty("param.artist"));
         String title = request.getParameter(ConfigurationManager.getProperty("param.title"));
         String yearParameter = request.getParameter(ConfigurationManager.getProperty("param.year"));
@@ -53,32 +62,28 @@ public class AddTrackCommand implements Command {
         if (genreParameter != null && !genreParameter.isEmpty()) {
             genre = Genre.valueOf(genreParameter.toUpperCase());
         }
+        String fileLink = null;
         try {
             Part filePart = request.getPart(ConfigurationManager.getProperty("param.file"));
             if (filePart != null) {
                 InputStream fileContent = filePart.getInputStream();
                 String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                 AudioFileService audioFileService = new AudioFileService();
-                String fileLink = audioFileService.saveFile(fileName, fileContent);
-                SaveTrackService saveTrackService = new SaveTrackService();
-                saveTrackService.addTrack(artist, title, year, genre, duration, cost, fileLink);
-                return new CommandResult(ConfigurationManager.getProperty("page.track.add.success"), CommandResult.Type.FORWARD);
+                if (!audioFileService.deleteTrack(track.getPath())) {
+                    LOGGER.error("Cannot delete file: " + track.getPath());
+                }
+                fileLink = audioFileService.saveFile(fileName, fileContent);
             }
         } catch (IOException | ServletException e) {
             LOGGER.error("Cannot upload file", e);
         } catch (ServiceException e) {
             LOGGER.error("Cannot store file", e);
         }
-        request.setAttribute(ConfigurationManager.getProperty("param.artist"), artist);
-        request.setAttribute(ConfigurationManager.getProperty("param.title"), title);
-        request.setAttribute(ConfigurationManager.getProperty("param.year"), yearParameter);
-        request.setAttribute(ConfigurationManager.getProperty("param.cost"), costParameter);
-        request.setAttribute(ConfigurationManager.getProperty("param.genre"), genreParameter);
-        request.setAttribute(ConfigurationManager.getProperty("param.minutes"), minutesParameter);
-        request.setAttribute(ConfigurationManager.getProperty("param.seconds"), secondsParameter);
-        Locale locale = (Locale) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.locale"));
-        String message = InternationalizationManager.getProperty("track.add.error.text", locale);
-        request.setAttribute(ConfigurationManager.getProperty("attr.message"), message);
-        return new CommandResult(ConfigurationManager.getProperty("page.track.add"), CommandResult.Type.FORWARD);
+        SaveTrackService saveTrackService = new SaveTrackService();
+        saveTrackService.saveTrack(track, artist, title, year, genre, duration, cost, fileLink);
+        String resultURL = ConfigurationManager.getProperty("url.trackinfo") + "?" +
+                ConfigurationManager.getProperty("param.command") + "=" + ConfigurationManager.getProperty("command.track.info") + "&" +
+                ConfigurationManager.getProperty("param.id") + "=" + track.getTrackId();
+        return new CommandResult(resultURL, CommandResult.Type.REDIRECT);
     }
 }

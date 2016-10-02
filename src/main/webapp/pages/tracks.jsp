@@ -46,19 +46,19 @@
                         <table class="table table-striped table-hover">
                             <thead>
                             <tr>
-                                <th><fmt:message key="tracks.track.artist"/></th>
-                                <th><fmt:message key="tracks.track.title"/></th>
-                                <th><fmt:message key="tracks.track.genre"/></th>
-                                <th><fmt:message key="tracks.track.duration"/></th>
-                                <th><fmt:message key="tracks.track.cost"/></th>
+                                <th><fmt:message key="track.artist"/></th>
+                                <th><fmt:message key="track.title"/></th>
+                                <th><fmt:message key="track.genre"/></th>
+                                <th><fmt:message key="track.duration"/></th>
+                                <th><fmt:message key="track.cost"/></th>
                                 <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             <c:forEach var="track" items="${results}">
                                 <tr class="clickable-row" data-href="${pageContext.request.contextPath}/tracks?id=${track.trackId}&command=track-info">
-                                    <td>${track.artist.name}</td>
-                                    <td>${track.title}</td>
+                                    <td><c:out value="${track.artist.name}"/></td>
+                                    <td><c:out value="${track.title}"/></td>
                                     <td><c:out value="${track.genre}"/></td>
                                     <td><ctl:duration value="${track.duration}"/></td>
                                     <td>$${track.cost}</td>
