@@ -39,6 +39,8 @@ public class CommandFactory {
             result = new EditTrackCommand();
         } else if (command.equals(ConfigurationManager.getProperty("command.track.save"))) {
             result = new SaveTrackCommand();
+        } else if (command.equals(ConfigurationManager.getProperty("command.track.download"))) {
+            result = new DownloadCommand();
         } else {
             throw new UnsupportedCommandException("Unknown command type");
         }
