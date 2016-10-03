@@ -77,7 +77,7 @@ public class CommentDAO extends AbstractDAO<Comment> {
             statement.setLong(1, entity.getCommentId());
             int result = statement.executeUpdate();
             if (result == 0) {
-                throw new DAOException("Comment was deleted");
+                throw new DAOException("Comment was not deleted");
             } else {
                 LOGGER.info("Delete successful");
             }

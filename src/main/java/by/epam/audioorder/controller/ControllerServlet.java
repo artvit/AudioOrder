@@ -1,9 +1,12 @@
 package by.epam.audioorder.controller;
 
-import by.epam.audioorder.action.ConfigurationManager;
 import by.epam.audioorder.command.Command;
 import by.epam.audioorder.command.CommandFactory;
 import by.epam.audioorder.command.CommandResult;
+import by.epam.audioorder.config.CommandParameter;
+import by.epam.audioorder.config.Page;
+import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ServletMappingValue;
 import by.epam.audioorder.exception.UnsupportedCommandException;
 import by.epam.audioorder.exception.UnsupportedPageException;
 import by.epam.audioorder.pool.ConnectionPool;
@@ -24,6 +27,7 @@ import java.io.IOException;
 public class ControllerServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
 
+
     private CommandFactory commandFactory;
 
     @Override
@@ -37,7 +41,7 @@ public class ControllerServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getParameter(ConfigurationManager.getProperty("param.command")) != null) {
+        if (request.getParameter(ParamenterName.COMMAND) != null) {
             handleCommandRequest(request, response);
         } else {
             handleNonCommandRequest(request, response);
@@ -51,30 +55,28 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void handleCommandRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String commandName = request.getParameter(ConfigurationManager.getProperty("param.command"));
+        String commandName = request.getParameter(ParamenterName.COMMAND);
         if (commandName != null) {
             handleCommand(commandName, request, response);
         } else {
             LOGGER.error("Null command in POST request");
-            request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
+            request.getRequestDispatcher(Page.ERROR).forward(request, response);
         }
-
-
     }
 
     private void handleNonCommandRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String servletPath = request.getServletPath();
-        if (servletPath.equals("/tracks")) {
-            handleCommand(ConfigurationManager.getProperty("command.search.track"), request, response);
-        } else if (servletPath.equals("/clients")) {
-            handleCommand(ConfigurationManager.getProperty("command.search.user"), request, response);
-        } else if (servletPath.equals("/account")) {
-            handleCommand(ConfigurationManager.getProperty("command.account.tracks"), request, response);
+        if (ServletMappingValue.URL_TRACKS.equals(servletPath)) {
+            handleCommand(CommandParameter.SEARCH_TRACK, request, response);
+        } else if (ServletMappingValue.URL_CLIENTS.equals(servletPath)) {
+            handleCommand(CommandParameter.SEARCH_USER, request, response);
+        } else if (ServletMappingValue.URL_ACCOUNT.equals(servletPath)) {
+            handleCommand(CommandParameter.ACCOUNT_TRACKS, request, response);
         } else {
             try {
                 request.getRequestDispatcher(getForwardPage(servletPath)).forward(request, response);
             } catch (UnsupportedPageException e) {
-                request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
+                request.getRequestDispatcher(Page.ERROR).forward(request, response);
             }
         }
     }
@@ -84,30 +86,34 @@ public class ControllerServlet extends HttpServlet {
             Command command = commandFactory.createCommand(commandName);
             if (command != null) {
                 CommandResult result = command.execute(request, response);
-                if (result.getType() == CommandResult.Type.REDIRECT) {
-                    response.sendRedirect(result.getAddress());
-                } else {
-                    request.getRequestDispatcher(result.getAddress()).forward(request, response);
+                if (result != null) {
+                    if (result.getType() == CommandResult.Type.REDIRECT) {
+                        response.sendRedirect(result.getAddress());
+                    } else {
+                        request.getRequestDispatcher(result.getAddress()).forward(request, response);
+                    }
                 }
             }
         } catch (UnsupportedCommandException e) {
-            request.getRequestDispatcher(ConfigurationManager.getProperty("page.error")).forward(request, response);
+            request.getRequestDispatcher(Page.ERROR).forward(request, response);
         }
     }
 
+
     private static String getForwardPage(String servletPath) throws UnsupportedPageException {
         switch (servletPath) {
-//            TODO constants
-            case "/login":
-                return ConfigurationManager.getProperty("page.login");
-            case "/registration":
-                return ConfigurationManager.getProperty("page.registration");
-            case "/error":
-                return ConfigurationManager.getProperty("page.error");
-            case "/tracks":
-                return ConfigurationManager.getProperty("page.tracks");
-            case "/cart":
-                return ConfigurationManager.getProperty("page.cart");
+            case ServletMappingValue.URL_LOGIN:
+                return Page.LOGIN;
+            case ServletMappingValue.URL_REGISTRATION:
+                return Page.REGISTRATION;
+            case ServletMappingValue.URL_ERROR:
+                return Page.ERROR;
+            case ServletMappingValue.URL_TRACKS:
+                return Page.TRACKS;
+            case ServletMappingValue.URL_CART:
+                return Page.CART;
+            case ServletMappingValue.URL_ADD_TRACK:
+                return Page.TRACK_ADD;
             default:
                 throw new UnsupportedPageException("Page " + servletPath + " is not supported");
         }

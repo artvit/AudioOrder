@@ -1,7 +1,6 @@
 package by.epam.audioorder.tag;
 
-import by.epam.audioorder.action.ConfigurationManager;
-import com.sun.deploy.net.HttpRequest;
+import by.epam.audioorder.config.AttributeName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -22,7 +21,7 @@ public class PaginationTag extends TagSupport {
         try {
             if (total > 1) {
                 JspWriter out = pageContext.getOut();
-                String link = (String) pageContext.getSession().getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
+                String link = (String) pageContext.getSession().getAttribute(AttributeName.LAST_PAGE);
                 link = link.replaceAll("[&?]?page=\\d*", "");
                 link += ((((HttpServletRequest) pageContext.getRequest()).getQueryString() != null) ? "&" : "?") + "page=";
                 out.println("<div class=\"btn-group\">");

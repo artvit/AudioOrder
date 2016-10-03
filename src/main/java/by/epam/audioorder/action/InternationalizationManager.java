@@ -3,7 +3,7 @@ package by.epam.audioorder.action;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class InternationalizationManager {
+public final class InternationalizationManager {
     private static final String BUNDLE = "i18n.i18n";
 
     private InternationalizationManager() { }

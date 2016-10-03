@@ -4,10 +4,11 @@ import by.epam.audioorder.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class PasswordHandler {
+public final class PasswordHandler {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String HASH_ALGORITHM = "SHA-256";
@@ -17,7 +18,6 @@ public class PasswordHandler {
             MessageDigest md = MessageDigest.getInstance(HASH_ALGORITHM);
             md.update(password.getBytes());
             byte byteData[] = md.digest();
-
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < byteData.length; i++) {
                 sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));

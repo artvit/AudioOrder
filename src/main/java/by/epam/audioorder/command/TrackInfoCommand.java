@@ -1,6 +1,8 @@
 package by.epam.audioorder.command;
 
-import by.epam.audioorder.action.ConfigurationManager;
+import by.epam.audioorder.config.AttributeName;
+import by.epam.audioorder.config.Page;
+import by.epam.audioorder.config.ParamenterName;
 import by.epam.audioorder.entity.Comment;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.service.SearchResult;
@@ -18,7 +20,7 @@ public class TrackInfoCommand implements Command{
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         int page = 1;
-        String pageParameter = request.getParameter(ConfigurationManager.getProperty("param.page"));
+        String pageParameter = request.getParameter(ParamenterName.PAGE);
         if (pageParameter != null) {
             try {
                 page = Integer.parseInt(pageParameter);
@@ -27,7 +29,7 @@ public class TrackInfoCommand implements Command{
             }
         }
         long trackId = 0;
-        String trackIdParameter = request.getParameter(ConfigurationManager.getProperty("param.id"));
+        String trackIdParameter = request.getParameter(ParamenterName.ID);
         if (trackIdParameter != null) {
             try {
                 trackId = Long.parseLong(trackIdParameter);
@@ -35,16 +37,16 @@ public class TrackInfoCommand implements Command{
                 LOGGER.warn("No id parameter");
             }
         } else {
-            return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.FORWARD);
+            return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
         }
         TrackInfoService trackInfoService = new TrackInfoService();
         Track track = trackInfoService.getTrackInfo(trackId);
         TrackCommentService trackCommentService = new TrackCommentService();
         SearchResult<Comment> feedback = trackCommentService.findCommentsForTrack(track, page);
-        request.setAttribute(ConfigurationManager.getProperty("attr.track"), track);
-        request.setAttribute(ConfigurationManager.getProperty("attr.feedback"), feedback.getResults());
-        request.setAttribute(ConfigurationManager.getProperty("attr.numofpages"), feedback.getNumberOfPages());
-        request.setAttribute(ConfigurationManager.getProperty("attr.page"), page);
-        return new CommandResult(ConfigurationManager.getProperty("page.track.info"), CommandResult.Type.FORWARD);
+        request.setAttribute(AttributeName.TRACK, track);
+        request.setAttribute(AttributeName.FEEDBACK, feedback.getResults());
+        request.setAttribute(AttributeName.NUMBER_OF_PAGES, feedback.getNumberOfPages());
+        request.setAttribute(AttributeName.PAGE, page);
+        return new CommandResult(Page.TRACK_INFO, CommandResult.Type.FORWARD);
     }
 }

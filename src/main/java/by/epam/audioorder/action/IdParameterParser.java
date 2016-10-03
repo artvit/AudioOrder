@@ -1,6 +1,6 @@
 package by.epam.audioorder.action;
 
-public class IdParameterParser {
+public final class IdParameterParser {
     private long result;
 
     public boolean parse(String idParameter) {

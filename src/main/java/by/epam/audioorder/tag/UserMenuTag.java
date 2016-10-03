@@ -1,7 +1,7 @@
 package by.epam.audioorder.tag;
 
-import by.epam.audioorder.action.ConfigurationManager;
 import by.epam.audioorder.action.InternationalizationManager;
+import by.epam.audioorder.config.AttributeName;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +19,7 @@ public class UserMenuTag extends TagSupport{
         try {
             String contextPath = pageContext.getServletContext().getContextPath();
             JspWriter out = pageContext.getOut();
-            Locale locale = (Locale) pageContext.getSession().getAttribute(ConfigurationManager.getProperty("attr.locale"));
+            Locale locale = (Locale) pageContext.getSession().getAttribute(AttributeName.LOCALE);
             out.println("<ul class=\"nav navbar-nav navbar-right\">");
             out.println("<li>" + "<a href=\"" + contextPath + "/cart\">" + "<span class=\"glyphicon glyphicon-shopping-cart\"></span> " + InternationalizationManager.getProperty("menu.cart", locale) + "</a>" + "</li>");
             if (pageContext.getSession().getAttribute("login") != null) {

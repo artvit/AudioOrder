@@ -1,7 +1,9 @@
 package by.epam.audioorder.command;
 
-import by.epam.audioorder.action.ConfigurationManager;
 import by.epam.audioorder.action.IdParameterParser;
+import by.epam.audioorder.config.AttributeName;
+import by.epam.audioorder.config.Page;
+import by.epam.audioorder.config.ParamenterName;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.service.TrackInfoService;
 
@@ -11,15 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 public class EditTrackCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String idParameter = request.getParameter(ConfigurationManager.getProperty("param.id"));
+        String idParameter = request.getParameter(ParamenterName.ID);
         IdParameterParser idParser = new IdParameterParser();
         if (!idParser.parse(idParameter)) {
-            return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.FORWARD);
+            return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
         }
         long id = idParser.getResult();
         TrackInfoService trackInfoService = new TrackInfoService();
         Track track = trackInfoService.getTrackInfo(id);
-        request.setAttribute(ConfigurationManager.getProperty("attr.track"), track);
-        return new CommandResult(ConfigurationManager.getProperty("page.track.edit"), CommandResult.Type.FORWARD);
+        request.setAttribute(AttributeName.TRACK, track);
+        return new CommandResult(Page.TRACK_EDIT, CommandResult.Type.FORWARD);
     }
 }

@@ -22,7 +22,6 @@ public class UserDAO extends AbstractDAO<User> {
     private static final String PASS_HASH = "passhash";
     private static final String EMAIL = "email";
     private static final String ROLE = "role";
-    private static final String BALANCE = "balance";
 
     private static final String ORDER_LOGIN = " ORDER BY " + LOGIN;
     private static final String LIMIT = " LIMIT ? OFFSET ?";
@@ -33,47 +32,41 @@ public class UserDAO extends AbstractDAO<User> {
                         LOGIN + ", " +
                         PASS_HASH + ", " +
                         EMAIL + ", " +
-                        ROLE +", " +
-                        BALANCE +
+                        ROLE +
                     " FROM user WHERE " + LOGIN + " = ?";
     private static final String USER_ALL =
             "SELECT " + USER_ID + ", " +
                         LOGIN + ", " +
                         PASS_HASH + ", " +
                         EMAIL + ", " +
-                        ROLE +", " +
-                        BALANCE +
+                        ROLE +
                     " FROM user";
     private static final String USER_SEARCH =
             "SELECT " + USER_ID + ", " +
                     LOGIN + ", " +
                     PASS_HASH + ", " +
                     EMAIL + ", " +
-                    ROLE +", " +
-                    BALANCE +
+                    ROLE +
                     " FROM user WHERE " + LOGIN + " LIKE ? OR " + EMAIL + " LIKE ?";
     private static final String USER_BY_ID =
             "SELECT " + USER_ID + ", " +
                         LOGIN + ", " +
                         PASS_HASH + ", " +
                         EMAIL + ", " +
-                        ROLE +", " +
-                        BALANCE +
+                        ROLE +
                     " FROM user WHERE " + USER_ID + " = ?;";
     private static final String INSERT_USER = "INSERT INTO user (" +
             LOGIN + ", " +
             PASS_HASH + ", " +
             EMAIL + ", " +
-            ROLE +", " +
-            BALANCE +
+            ROLE +
             ") VALUES (?, ?, ?, ?, ?);";
     private static final String DELETE_USER = "DELETE FROM user WHERE " + USER_ID + " = ?;";
     private static final String UPDATE_USER = "UPDATE user SET " +
             LOGIN + " = ?," +
             PASS_HASH + " = ?," +
             EMAIL + " = ?," +
-            ROLE + " = ?," +
-            BALANCE + " = ? " +
+            ROLE  + " = ? " +
             "WHERE " + USER_ID + " = ?";
 
     private int pagesNumber = 0;
@@ -203,7 +196,6 @@ public class UserDAO extends AbstractDAO<User> {
             statement.setString(2, entity.getPasswordHash());
             statement.setString(3, entity.getEmail());
             statement.setString(4, entity.getRole().toString().toLowerCase());
-            statement.setDouble(5, entity.getBalance());
             int result = statement.executeUpdate();
             if (result == 0) {
                 throw new DAOException("New user was not inserted");
@@ -225,7 +217,6 @@ public class UserDAO extends AbstractDAO<User> {
             statement.setString(2, entity.getPasswordHash());
             statement.setString(3, entity.getEmail());
             statement.setString(4, entity.getRole().toString().toLowerCase());
-            statement.setDouble(5, entity.getBalance());
             statement.setLong(6, entity.getUserId());
             int result = statement.executeUpdate();
             if (result == 0) {
@@ -251,7 +242,6 @@ public class UserDAO extends AbstractDAO<User> {
         user.setPasswordHash(resultSet.getString(PASS_HASH));
         user.setEmail(resultSet.getString(EMAIL));
         user.setRole(resultSet.getString(ROLE));
-        user.setBalance(resultSet.getDouble(BALANCE));
         return user;
     }
 }

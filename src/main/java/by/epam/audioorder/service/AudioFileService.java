@@ -1,15 +1,9 @@
 package by.epam.audioorder.service;
 
-import by.epam.audioorder.action.ConfigurationManager;
-import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.exception.ServiceException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -19,14 +13,21 @@ import java.util.UUID;
 public class AudioFileService {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private static final String SAVE_FOLDER = "c:/Users/artvi/IdeaProjects/storage/";
+
     public String saveFile(String fileName, InputStream inputStream) throws ServiceException {
         try {
-            String filePath = ConfigurationManager.getProperty("path.storage") + fileName;
+            String filePath = SAVE_FOLDER + fileName;
+            String extension = "";
+            int i = fileName.lastIndexOf('.');
+            if (i > 0) {
+                extension = fileName.substring(i+1);
+            }
             Files.copy(inputStream, Paths.get(filePath));
-            String newFileName = UUID.randomUUID().toString();
-            String newFilePath = ConfigurationManager.getProperty("path.storage") + newFileName;
+            String newFileName = UUID.randomUUID().toString() + extension;
+            String newFilePath = SAVE_FOLDER + newFileName;
             Files.move(Paths.get(filePath), Paths.get(newFilePath));
-            return filePath;
+            return newFilePath;
         } catch (IOException e) {
             throw new ServiceException("Cannot store file");
         }

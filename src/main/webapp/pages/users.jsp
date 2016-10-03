@@ -44,7 +44,6 @@
                             <tr>
                                 <th><fmt:message key="users.user.login"/></th>
                                 <th><fmt:message key="users.user.email"/></th>
-                                <th><fmt:message key="users.user.balance"/></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -52,8 +51,6 @@
                             <tr>
                                 <td>${user.login}</td>
                                 <td>${user.email}</td>
-                                <td>$${user.balance}</td>
-
                             </tr>
                             </c:forEach>
                         </table>

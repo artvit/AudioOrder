@@ -1,7 +1,9 @@
 package by.epam.audioorder.command;
 
-import by.epam.audioorder.action.ConfigurationManager;
 import by.epam.audioorder.action.InternationalizationManager;
+import by.epam.audioorder.config.AttributeName;
+import by.epam.audioorder.config.Page;
+import by.epam.audioorder.config.ParamenterName;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.LoginService;
 import org.apache.logging.log4j.LogManager;
@@ -17,26 +19,26 @@ public class LoginCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String login = request.getParameter(ConfigurationManager.getProperty("param.login"));
-        String password = request.getParameter(ConfigurationManager.getProperty("param.password"));
+        String login = request.getParameter(ParamenterName.LOGIN);
+        String password = request.getParameter(ParamenterName.PASSWORD);
         LoginService loginService = new LoginService();
         User user  = loginService.authenticate(login, password);
         if (user != null) {
             HttpSession session = request.getSession();
-            session.setAttribute(ConfigurationManager.getProperty("attr.user"), user);
-            session.setAttribute(ConfigurationManager.getProperty("attr.login"), user.getLogin());
-            session.setAttribute(ConfigurationManager.getProperty("attr.role"), user.getRole());
+            session.setAttribute(AttributeName.USER, user);
+            session.setAttribute(AttributeName.LOGIN, user.getLogin());
+            session.setAttribute(AttributeName.ROLE, user.getRole());
             LOGGER.info("User " + login + " signed in successfully");
-            String lastPage = (String) session.getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
+            String lastPage = (String) session.getAttribute(AttributeName.LAST_PAGE);
             if (lastPage == null || lastPage.isEmpty()) {
-                lastPage = ConfigurationManager.getProperty("page.index");
+                lastPage = Page.INDEX;
             }
             return new CommandResult(lastPage, CommandResult.Type.REDIRECT);
         } else {
-            Locale locale = (Locale) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.locale"));
+            Locale locale = (Locale) request.getSession().getAttribute(AttributeName.LOCALE);
             String message = InternationalizationManager.getProperty("login.error.invalid", locale);
-            request.setAttribute(ConfigurationManager.getProperty("attr.message"), message);
-            return new CommandResult(ConfigurationManager.getProperty("page.login"), CommandResult.Type.FORWARD);
+            request.setAttribute(AttributeName.MESSAGE, message);
+            return new CommandResult(Page.LOGIN, CommandResult.Type.FORWARD);
         }
     }
 }

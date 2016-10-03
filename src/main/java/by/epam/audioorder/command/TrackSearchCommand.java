@@ -1,6 +1,8 @@
 package by.epam.audioorder.command;
 
-import by.epam.audioorder.action.ConfigurationManager;
+import by.epam.audioorder.config.AttributeName;
+import by.epam.audioorder.config.Page;
+import by.epam.audioorder.config.ParamenterName;
 import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.service.SearchResult;
@@ -16,16 +18,16 @@ public class TrackSearchCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String searchQuery = request.getParameter(ConfigurationManager.getProperty("param.search"));
+        String searchQuery = request.getParameter(ParamenterName.SEARCH);
         Genre genre;
-        String genreValue = request.getParameter(ConfigurationManager.getProperty("param.genre"));
+        String genreValue = request.getParameter(ParamenterName.GENRE);
         if (genreValue == null) {
             genre = Genre.ANY;
         } else {
             genre = Genre.valueOf(genreValue.toUpperCase());
         }
         int page = 1;
-        String pageParameter = request.getParameter(ConfigurationManager.getProperty("param.page"));
+        String pageParameter = request.getParameter(ParamenterName.PAGE);
         if (pageParameter != null) {
             try {
                 page = Integer.parseInt(pageParameter);
@@ -35,11 +37,11 @@ public class TrackSearchCommand implements Command {
         }
         TrackSearchService service = new TrackSearchService();
         SearchResult<Track> result = service.searchTrack(searchQuery, genre, page);
-        request.setAttribute(ConfigurationManager.getProperty("attr.results"), result.getResults());
-        request.setAttribute(ConfigurationManager.getProperty("attr.page"), page);
-        request.setAttribute(ConfigurationManager.getProperty("attr.numofpages"), result.getNumberOfPages());
-        request.setAttribute(ConfigurationManager.getProperty("attr.search"), searchQuery);
-        request.setAttribute(ConfigurationManager.getProperty("attr.genre"), genre);
-        return new CommandResult(ConfigurationManager.getProperty("page.tracks"), CommandResult.Type.FORWARD);
+        request.setAttribute(AttributeName.RESULTS, result.getResults());
+        request.setAttribute(AttributeName.PAGE, page);
+        request.setAttribute(AttributeName.NUMBER_OF_PAGES, result.getNumberOfPages());
+        request.setAttribute(AttributeName.SEARCH, searchQuery);
+        request.setAttribute(AttributeName.GENRE, genre);
+        return new CommandResult(Page.TRACKS, CommandResult.Type.FORWARD);
     }
 }

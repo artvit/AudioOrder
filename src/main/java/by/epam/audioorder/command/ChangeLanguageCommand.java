@@ -1,6 +1,7 @@
 package by.epam.audioorder.command;
 
-import by.epam.audioorder.action.ConfigurationManager;
+import by.epam.audioorder.config.AttributeName;
+import by.epam.audioorder.config.ParamenterName;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,11 +11,11 @@ import java.util.Locale;
 public class ChangeLanguageCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String lang = request.getParameter(ConfigurationManager.getProperty("param.lang"));
+        String lang = request.getParameter(ParamenterName.LANG);
         Locale locale = new Locale(lang);
         HttpSession session = request.getSession();
-        session.setAttribute(ConfigurationManager.getProperty("attr.locale"), locale);
-        String lastPage = (String) session.getAttribute(ConfigurationManager.getProperty("attr.lastpage"));
+        session.setAttribute(AttributeName.LOCALE, locale);
+        String lastPage = (String) session.getAttribute(AttributeName.LAST_PAGE);
         return new CommandResult(lastPage, CommandResult.Type.REDIRECT);
     }
 }

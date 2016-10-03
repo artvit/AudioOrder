@@ -1,6 +1,8 @@
 package by.epam.audioorder.command;
 
-import by.epam.audioorder.action.ConfigurationManager;
+import by.epam.audioorder.config.AttributeName;
+import by.epam.audioorder.config.Page;
+import by.epam.audioorder.config.ParamenterName;
 import by.epam.audioorder.exception.ServiceException;
 import by.epam.audioorder.service.RegistrationService;
 
@@ -11,19 +13,19 @@ public class RegistrationCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String login = request.getParameter(ConfigurationManager.getProperty("param.login"));
-        String email = request.getParameter(ConfigurationManager.getProperty("param.email"));
-        String password = request.getParameter(ConfigurationManager.getProperty("param.password"));
-        String passwordConfirm = request.getParameter(ConfigurationManager.getProperty("param.password.confirm"));
+        String login = request.getParameter(ParamenterName.LOGIN);
+        String email = request.getParameter(ParamenterName.EMAIL);
+        String password = request.getParameter(ParamenterName.PASSWORD);
+        String passwordConfirm = request.getParameter(ParamenterName.PASSWORD_CONFIRM);
         RegistrationService service = new RegistrationService();
         try {
             service.signUp(login, email, password, passwordConfirm);
-            return new CommandResult(ConfigurationManager.getProperty("page.registration.success"), CommandResult.Type.FORWARD);
+            return new CommandResult(Page.REGISTRATION_SUCCESS, CommandResult.Type.FORWARD);
         } catch (ServiceException e) {
-            request.setAttribute(ConfigurationManager.getProperty("param.login"), login);
-            request.setAttribute(ConfigurationManager.getProperty("param.email"), email);
-            request.setAttribute(ConfigurationManager.getProperty("attr.message"), e.getMessage());
-            return new CommandResult(ConfigurationManager.getProperty("page.registration"), CommandResult.Type.FORWARD);
+            request.setAttribute(ParamenterName.LOGIN, login);
+            request.setAttribute(ParamenterName.EMAIL, email);
+            request.setAttribute(AttributeName.MESSAGE, e.getMessage());
+            return new CommandResult(Page.REGISTRATION, CommandResult.Type.FORWARD);
         }
     }
 }

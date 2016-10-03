@@ -1,7 +1,10 @@
 package by.epam.audioorder.command;
 
-import by.epam.audioorder.action.ConfigurationManager;
 import by.epam.audioorder.action.IdParameterParser;
+import by.epam.audioorder.config.CommandParameter;
+import by.epam.audioorder.config.Page;
+import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ServletMappingValue;
 import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.exception.ServiceException;
@@ -24,17 +27,17 @@ public class SaveTrackCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String idParameter = request.getParameter(ConfigurationManager.getProperty("param.id"));
+        String idParameter = request.getParameter(ParamenterName.ID);
         IdParameterParser idParser = new IdParameterParser();
         if (!idParser.parse(idParameter)) {
-            return new CommandResult(ConfigurationManager.getProperty("page.error"), CommandResult.Type.FORWARD);
+            return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
         }
         long id = idParser.getResult();
         TrackInfoService trackInfoService = new TrackInfoService();
         Track track = trackInfoService.getTrackInfo(id);
-        String artist = request.getParameter(ConfigurationManager.getProperty("param.artist"));
-        String title = request.getParameter(ConfigurationManager.getProperty("param.title"));
-        String yearParameter = request.getParameter(ConfigurationManager.getProperty("param.year"));
+        String artist = request.getParameter(ParamenterName.ARTIST);
+        String title = request.getParameter(ParamenterName.TITLE);
+        String yearParameter = request.getParameter(ParamenterName.YEAR);
         int year = 0;
         try {
             year = Integer.parseInt(yearParameter);
@@ -42,15 +45,15 @@ public class SaveTrackCommand implements Command {
             LOGGER.warn("Wrong year parameter", e);
         }
         int duration = 0;
-        String secondsParameter = request.getParameter(ConfigurationManager.getProperty("param.seconds"));
-        String minutesParameter = request.getParameter(ConfigurationManager.getProperty("param.minutes"));
+        String secondsParameter = request.getParameter(ParamenterName.SECONDS);
+        String minutesParameter = request.getParameter(ParamenterName.MINUTES);
         try {
             duration = Integer.parseInt(secondsParameter);
             duration = 60 * Integer.parseInt(minutesParameter);
         } catch (NumberFormatException e) {
             LOGGER.warn("Wrong year parameter", e);
         }
-        String costParameter = request.getParameter(ConfigurationManager.getProperty("param.cost"));
+        String costParameter = request.getParameter(ParamenterName.COST);
         double cost = 0;
         try {
             cost = Double.parseDouble(costParameter);
@@ -58,13 +61,13 @@ public class SaveTrackCommand implements Command {
             LOGGER.warn("Wrong year parameter", e);
         }
         Genre genre = Genre.ANY;
-        String genreParameter = request.getParameter(ConfigurationManager.getProperty("param.genre"));
+        String genreParameter = request.getParameter(ParamenterName.GENRE);
         if (genreParameter != null && !genreParameter.isEmpty()) {
             genre = Genre.valueOf(genreParameter.toUpperCase());
         }
         String fileLink = null;
         try {
-            Part filePart = request.getPart(ConfigurationManager.getProperty("param.file"));
+            Part filePart = request.getPart(ParamenterName.FILE);
             if (filePart != null) {
                 InputStream fileContent = filePart.getInputStream();
                 String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
@@ -81,9 +84,9 @@ public class SaveTrackCommand implements Command {
         }
         SaveTrackService saveTrackService = new SaveTrackService();
         saveTrackService.saveTrack(track, artist, title, year, genre, duration, cost, fileLink);
-        String resultURL = ConfigurationManager.getProperty("url.trackinfo") + "?" +
-                ConfigurationManager.getProperty("param.command") + "=" + ConfigurationManager.getProperty("command.track.info") + "&" +
-                ConfigurationManager.getProperty("param.id") + "=" + track.getTrackId();
+        String resultURL = ServletMappingValue.URL_TRACKS + "?" +
+                ParamenterName.COMMAND + "=" + CommandParameter.TRACK_INFO + "&" +
+                ParamenterName.ID + "=" + track.getTrackId();
         return new CommandResult(resultURL, CommandResult.Type.REDIRECT);
     }
 }

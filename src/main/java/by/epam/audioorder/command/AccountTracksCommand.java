@@ -1,6 +1,8 @@
 package by.epam.audioorder.command;
 
-import by.epam.audioorder.action.ConfigurationManager;
+import by.epam.audioorder.config.AttributeName;
+import by.epam.audioorder.config.Page;
+import by.epam.audioorder.config.ParamenterName;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.SearchResult;
@@ -16,9 +18,9 @@ public class AccountTracksCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        User user = (User) request.getSession().getAttribute(ConfigurationManager.getProperty("attr.user"));
+        User user = (User) request.getSession().getAttribute(AttributeName.USER);
         int page = 1;
-        String pageParameter = request.getParameter(ConfigurationManager.getProperty("param.page"));
+        String pageParameter = request.getParameter(ParamenterName.PAGE);
         if (pageParameter != null) {
             try {
                 page = Integer.parseInt(pageParameter);
@@ -28,10 +30,10 @@ public class AccountTracksCommand implements Command {
         }
         UserTracksService userTracksService = new UserTracksService();
         SearchResult<Track> searchResult = userTracksService.getTracksForUser(user, page);
-        request.setAttribute(ConfigurationManager.getProperty("attr.results"), searchResult.getResults());
-        request.setAttribute(ConfigurationManager.getProperty("attr.page"), page);
-        request.setAttribute(ConfigurationManager.getProperty("attr.numofpages"), searchResult.getNumberOfPages());
-        request.setAttribute(ConfigurationManager.getProperty("attr.account.section"), ConfigurationManager.getProperty("attr.account.section.tracks"));
-        return new CommandResult(ConfigurationManager.getProperty("page.account"), CommandResult.Type.FORWARD);
+        request.setAttribute(AttributeName.RESULTS, searchResult.getResults());
+        request.setAttribute(AttributeName.PAGE, page);
+        request.setAttribute(AttributeName.NUMBER_OF_PAGES, searchResult.getNumberOfPages());
+        request.setAttribute(AttributeName.SECTION, AttributeName.SECTION_TRACKS);
+        return new CommandResult(Page.ACCOUNT, CommandResult.Type.FORWARD);
     }
 }

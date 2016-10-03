@@ -1,6 +1,8 @@
 package by.epam.audioorder.command;
 
-import by.epam.audioorder.action.ConfigurationManager;
+import by.epam.audioorder.config.AttributeName;
+import by.epam.audioorder.config.Page;
+import by.epam.audioorder.config.ParamenterName;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.SearchResult;
 import by.epam.audioorder.service.UserSearchService;
@@ -15,9 +17,9 @@ public class UserSearchCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String searchQuery = request.getParameter(ConfigurationManager.getProperty("param.search"));
+        String searchQuery = request.getParameter(ParamenterName.SEARCH);
         int page = 1;
-        String pageParameter = request.getParameter(ConfigurationManager.getProperty("param.page"));
+        String pageParameter = request.getParameter(ParamenterName.PAGE);
         if (pageParameter != null) {
             try {
                 page = Integer.parseInt(pageParameter);
@@ -27,10 +29,10 @@ public class UserSearchCommand implements Command {
         }
         UserSearchService service = new UserSearchService();
         SearchResult<User> result = service.searchUser(searchQuery, page);
-        request.setAttribute(ConfigurationManager.getProperty("attr.results"), result.getResults());
-        request.setAttribute(ConfigurationManager.getProperty("attr.page"), page);
-        request.setAttribute(ConfigurationManager.getProperty("attr.numofpages"), result.getNumberOfPages());
-        request.setAttribute(ConfigurationManager.getProperty("attr.search"), searchQuery);
-        return new CommandResult(ConfigurationManager.getProperty("page.users"), CommandResult.Type.FORWARD);
+        request.setAttribute(AttributeName.RESULTS, result.getResults());
+        request.setAttribute(AttributeName.PAGE, page);
+        request.setAttribute(AttributeName.NUMBER_OF_PAGES, result.getNumberOfPages());
+        request.setAttribute(AttributeName.SEARCH, searchQuery);
+        return new CommandResult(Page.USERS, CommandResult.Type.FORWARD);
     }
 }
