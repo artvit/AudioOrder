@@ -4,7 +4,7 @@ import by.epam.audioorder.action.IdParameterParser;
 import by.epam.audioorder.action.InternationalizationManager;
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.SaveBonusService;
@@ -22,7 +22,7 @@ public class AddBonusCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         Locale locale = (Locale) request.getSession().getAttribute(AttributeName.LOCALE);
-        String idParameter = request.getParameter(ParamenterName.ID);
+        String idParameter = request.getParameter(ParameterName.ID);
         IdParameterParser idParser = new IdParameterParser();
         if (!idParser.parse(idParameter)) {
             request.setAttribute(AttributeName.MESSAGE, InternationalizationManager.getProperty("error.param.id", locale));
@@ -36,29 +36,29 @@ public class AddBonusCommand implements Command {
             return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
         }
         Genre genre = Genre.ANY;
-        String genreParameter = request.getParameter(ParamenterName.GENRE);
+        String genreParameter = request.getParameter(ParameterName.GENRE);
         if (genreParameter != null && !genreParameter.isEmpty()) {
             genre = Genre.valueOf(genreParameter.toUpperCase());
         } else {
             request.setAttribute(AttributeName.MESSAGE, InternationalizationManager.getProperty("error.", locale));
             return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
         }
-        String afterParameter = request.getParameter(ParamenterName.AFTER);
+        String afterParameter = request.getParameter(ParameterName.AFTER);
         int after = 0;
         try {
             after = Integer.parseInt(afterParameter);
         } catch (NumberFormatException e) {
             LOGGER.warn("Wrong year parameter", e);
         }
-        String beforeParameter = request.getParameter(ParamenterName.BEFORE);
+        String beforeParameter = request.getParameter(ParameterName.BEFORE);
         int before = 0;
         try {
             before = Integer.parseInt(beforeParameter);
         } catch (NumberFormatException e) {
             LOGGER.warn("Wrong year parameter", e);
         }
-        String bonusValueParameter = request.getParameter(ParamenterName.BONUS_VALUE);
-        String saleParameter = request.getParameter(ParamenterName.SALE);
+        String bonusValueParameter = request.getParameter(ParameterName.BONUS_VALUE);
+        String saleParameter = request.getParameter(ParameterName.SALE);
         if ((bonusValueParameter == null || bonusValueParameter.isEmpty()) && (saleParameter == null || saleParameter.isEmpty())) {
             LOGGER.error("Sale and bonus value was not passed both");
             request.setAttribute(AttributeName.MESSAGE, InternationalizationManager.getProperty("error.param.notall", locale));

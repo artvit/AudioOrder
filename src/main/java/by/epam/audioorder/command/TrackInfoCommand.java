@@ -2,7 +2,7 @@ package by.epam.audioorder.command;
 
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Comment;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.service.SearchResult;
@@ -20,7 +20,7 @@ public class TrackInfoCommand implements Command{
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         int page = 1;
-        String pageParameter = request.getParameter(ParamenterName.PAGE);
+        String pageParameter = request.getParameter(ParameterName.PAGE);
         if (pageParameter != null) {
             try {
                 page = Integer.parseInt(pageParameter);
@@ -29,7 +29,7 @@ public class TrackInfoCommand implements Command{
             }
         }
         long trackId = 0;
-        String trackIdParameter = request.getParameter(ParamenterName.ID);
+        String trackIdParameter = request.getParameter(ParameterName.ID);
         if (trackIdParameter != null) {
             try {
                 trackId = Long.parseLong(trackIdParameter);

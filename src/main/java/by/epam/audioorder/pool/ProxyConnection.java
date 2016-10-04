@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
-class ProxyConnection implements Connection {
+final class ProxyConnection implements Connection {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private Connection connection;

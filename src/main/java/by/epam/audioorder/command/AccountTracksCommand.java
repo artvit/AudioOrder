@@ -2,11 +2,10 @@ package by.epam.audioorder.command;
 
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.SearchResult;
-import by.epam.audioorder.service.UserSearchService;
 import by.epam.audioorder.service.UserTracksService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -20,7 +19,7 @@ public class AccountTracksCommand implements Command {
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         User user = (User) request.getSession().getAttribute(AttributeName.USER);
         int page = 1;
-        String pageParameter = request.getParameter(ParamenterName.PAGE);
+        String pageParameter = request.getParameter(ParameterName.PAGE);
         if (pageParameter != null) {
             try {
                 page = Integer.parseInt(pageParameter);

@@ -2,7 +2,7 @@ package by.epam.audioorder.command;
 
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.SearchResult;
 import by.epam.audioorder.service.UserSearchService;
@@ -17,9 +17,9 @@ public class UserSearchCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String searchQuery = request.getParameter(ParamenterName.SEARCH);
+        String searchQuery = request.getParameter(ParameterName.SEARCH);
         int page = 1;
-        String pageParameter = request.getParameter(ParamenterName.PAGE);
+        String pageParameter = request.getParameter(ParameterName.PAGE);
         if (pageParameter != null) {
             try {
                 page = Integer.parseInt(pageParameter);

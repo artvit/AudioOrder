@@ -3,7 +3,7 @@ package by.epam.audioorder.command;
 import by.epam.audioorder.action.IdParameterParser;
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.service.TrackCommentService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,7 +13,7 @@ public class DeleteCommentCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         long commentId;
-        String commentIdParameter = request.getParameter(ParamenterName.ID);
+        String commentIdParameter = request.getParameter(ParameterName.ID);
         IdParameterParser parameterParser = new IdParameterParser();
         if (parameterParser.parse(commentIdParameter)) {
             commentId = parameterParser.getResult();

@@ -5,7 +5,7 @@ import by.epam.audioorder.command.CommandFactory;
 import by.epam.audioorder.command.CommandResult;
 import by.epam.audioorder.config.CommandParameter;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.config.ServletMappingValue;
 import by.epam.audioorder.exception.UnsupportedCommandException;
 import by.epam.audioorder.exception.UnsupportedPageException;
@@ -41,7 +41,7 @@ public class ControllerServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getParameter(ParamenterName.COMMAND) != null) {
+        if (request.getParameter(ParameterName.COMMAND) != null) {
             handleCommandRequest(request, response);
         } else {
             handleNonCommandRequest(request, response);
@@ -55,7 +55,7 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void handleCommandRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String commandName = request.getParameter(ParamenterName.COMMAND);
+        String commandName = request.getParameter(ParameterName.COMMAND);
         if (commandName != null) {
             handleCommand(commandName, request, response);
         } else {

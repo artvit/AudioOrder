@@ -3,7 +3,7 @@ package by.epam.audioorder.command;
 import by.epam.audioorder.action.IdParameterParser;
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.service.TrackInfoService;
 
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 public class EditTrackCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String idParameter = request.getParameter(ParamenterName.ID);
+        String idParameter = request.getParameter(ParameterName.ID);
         IdParameterParser idParser = new IdParameterParser();
         if (!idParser.parse(idParameter)) {
             return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);

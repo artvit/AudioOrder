@@ -1,6 +1,6 @@
 package by.epam.audioorder.config;
 
-public final class AttributeName {
+public class AttributeName {
     public static final String ROLE = "role";
     public static final String USER = "user";
     public static final String LOGIN = "login";

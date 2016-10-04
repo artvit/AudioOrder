@@ -29,6 +29,9 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-body">
+            <div>
+                <h2><fmt:message key="cart.total"/>: ${total}</h2>
+            </div>
             <form action="${pageContext.request.contextPath}/payment" method="post">
                 <input type="hidden" name="command" value="payment-complete">
                 <div class="form-group">

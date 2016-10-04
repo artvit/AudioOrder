@@ -4,7 +4,7 @@ import by.epam.audioorder.action.IdParameterParser;
 import by.epam.audioorder.action.InternationalizationManager;
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Bonus;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.BonusService;
@@ -19,7 +19,7 @@ public class EditUserCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         Locale locale = (Locale) request.getSession().getAttribute(AttributeName.LOCALE);
-        String idParameter = request.getParameter(ParamenterName.ID);
+        String idParameter = request.getParameter(ParameterName.ID);
         IdParameterParser idParser = new IdParameterParser();
         if (!idParser.parse(idParameter)) {
             request.setAttribute(AttributeName.MESSAGE, InternationalizationManager.getProperty("error.param.id", locale));
@@ -34,7 +34,7 @@ public class EditUserCommand implements Command {
         }
         BonusService bonusService = new BonusService();
         List<Bonus> bonuses = bonusService.bonusesForUser(user);
-        request.setAttribute(ParamenterName.ID, user.getUserId());
+        request.setAttribute(ParameterName.ID, user.getUserId());
         request.setAttribute(AttributeName.USER, user);
         request.setAttribute(AttributeName.RESULTS, bonuses);
         return new CommandResult(Page.USER_EDIT, CommandResult.Type.FORWARD);

@@ -2,7 +2,7 @@ package by.epam.audioorder.command;
 
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
@@ -19,16 +19,16 @@ public class TrackSearchCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String searchQuery = request.getParameter(ParamenterName.SEARCH);
+        String searchQuery = request.getParameter(ParameterName.SEARCH);
         Genre genre;
-        String genreValue = request.getParameter(ParamenterName.GENRE);
+        String genreValue = request.getParameter(ParameterName.GENRE);
         if (genreValue == null) {
             genre = Genre.ANY;
         } else {
             genre = Genre.valueOf(genreValue.toUpperCase());
         }
         int page = 1;
-        String pageParameter = request.getParameter(ParamenterName.PAGE);
+        String pageParameter = request.getParameter(ParameterName.PAGE);
         if (pageParameter != null) {
             try {
                 page = Integer.parseInt(pageParameter);

@@ -30,6 +30,10 @@
         <filter-name>AdminAccessFilter</filter-name>
         <servlet-name>ControllerServlet</servlet-name>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>UserAccessFilter</filter-name>
+        <servlet-name>ControllerServlet</servlet-name>
+    </filter-mapping>
     
     <error-page>
         <location>/error</location>

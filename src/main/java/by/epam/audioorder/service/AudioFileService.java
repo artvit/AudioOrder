@@ -21,12 +21,13 @@ public class AudioFileService {
             String extension = "";
             int i = fileName.lastIndexOf('.');
             if (i > 0) {
-                extension = fileName.substring(i+1);
+                extension = fileName.substring(i);
             }
             Files.copy(inputStream, Paths.get(filePath));
             String newFileName = UUID.randomUUID().toString() + extension;
             String newFilePath = SAVE_FOLDER + newFileName;
             Files.move(Paths.get(filePath), Paths.get(newFilePath));
+            LOGGER.info("File " + newFilePath + "saved");
             return newFilePath;
         } catch (IOException e) {
             throw new ServiceException("Cannot store file");
@@ -37,8 +38,10 @@ public class AudioFileService {
         try {
             Files.delete(Paths.get(trackPath));
         } catch (IOException e) {
+            LOGGER.error("Cannot delete file " + trackPath, e);
             return false;
         }
+        LOGGER.info("Delete file " + trackPath +" successfully");
         return true;
     }
 }

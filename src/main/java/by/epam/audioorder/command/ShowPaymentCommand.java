@@ -4,7 +4,8 @@ import by.epam.audioorder.action.IdParameterParser;
 import by.epam.audioorder.action.InternationalizationManager;
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
+import by.epam.audioorder.config.ServletMappingValue;
 import by.epam.audioorder.entity.Bonus;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
@@ -21,10 +22,10 @@ import java.util.Locale;
 public class ShowPaymentCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String[] bonusParameter = request.getParameterValues(ParamenterName.BONUS);
+        String[] bonusParameter = request.getParameterValues(ParameterName.BONUS);
+        User user = (User) request.getSession().getAttribute(AttributeName.USER);
         List<Bonus> bonuses = null;
         if (bonusParameter == null) {
-            User user = (User) request.getSession().getAttribute(AttributeName.USER);
             BonusService bonusService = new BonusService();
             bonuses = bonusService.bonusesForUser(user);
             if (bonuses != null && !bonuses.isEmpty()) {

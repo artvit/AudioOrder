@@ -1,6 +1,6 @@
 package by.epam.audioorder.config;
 
-public final class ServletMappingValue {
+public class ServletMappingValue {
     public static final String URL_LOGIN = "/login";
     public static final String URL_REGISTRATION = "/registration";
     public static final String URL_ERROR = "/error";

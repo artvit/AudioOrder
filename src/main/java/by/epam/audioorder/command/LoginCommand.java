@@ -3,7 +3,7 @@ package by.epam.audioorder.command;
 import by.epam.audioorder.action.InternationalizationManager;
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.LoginService;
 import org.apache.logging.log4j.LogManager;
@@ -19,8 +19,8 @@ public class LoginCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String login = request.getParameter(ParamenterName.LOGIN);
-        String password = request.getParameter(ParamenterName.PASSWORD);
+        String login = request.getParameter(ParameterName.LOGIN);
+        String password = request.getParameter(ParameterName.PASSWORD);
         LoginService loginService = new LoginService();
         User user  = loginService.authenticate(login, password);
         if (user != null) {

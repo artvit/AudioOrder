@@ -3,7 +3,7 @@ package by.epam.audioorder.command;
 import by.epam.audioorder.action.InternationalizationManager;
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.exception.ServiceException;
 import by.epam.audioorder.service.SaveTrackService;
@@ -25,9 +25,9 @@ public class AddTrackCommand implements Command {
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String artist = request.getParameter(ParamenterName.ARTIST);
-        String title = request.getParameter(ParamenterName.TITLE);
-        String yearParameter = request.getParameter(ParamenterName.YEAR);
+        String artist = request.getParameter(ParameterName.ARTIST);
+        String title = request.getParameter(ParameterName.TITLE);
+        String yearParameter = request.getParameter(ParameterName.YEAR);
         int year = 0;
         try {
             year = Integer.parseInt(yearParameter);
@@ -35,15 +35,15 @@ public class AddTrackCommand implements Command {
             LOGGER.warn("Wrong year parameter", e);
         }
         int duration = 0;
-        String secondsParameter = request.getParameter(ParamenterName.SECONDS);
-        String minutesParameter = request.getParameter(ParamenterName.MINUTES);
+        String secondsParameter = request.getParameter(ParameterName.SECONDS);
+        String minutesParameter = request.getParameter(ParameterName.MINUTES);
         try {
             duration = Integer.parseInt(secondsParameter);
             duration = 60 * Integer.parseInt(minutesParameter);
         } catch (NumberFormatException e) {
             LOGGER.warn("Wrong year parameter", e);
         }
-        String costParameter = request.getParameter(ParamenterName.COST);
+        String costParameter = request.getParameter(ParameterName.COST);
         double cost = 0;
         boolean costError = false;
         if (costParameter != null) {
@@ -65,12 +65,12 @@ public class AddTrackCommand implements Command {
             return new CommandResult(Page.TRACK_ADD, CommandResult.Type.FORWARD);
         }
         Genre genre = Genre.ANY;
-        String genreParameter = request.getParameter(ParamenterName.GENRE);
+        String genreParameter = request.getParameter(ParameterName.GENRE);
         if (genreParameter != null && !genreParameter.isEmpty()) {
             genre = Genre.valueOf(genreParameter.toUpperCase());
         }
         try {
-            Part filePart = request.getPart(ParamenterName.FILE);
+            Part filePart = request.getPart(ParameterName.FILE);
             if (filePart != null) {
                 InputStream fileContent = filePart.getInputStream();
                 String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
@@ -89,13 +89,13 @@ public class AddTrackCommand implements Command {
         } catch (ServiceException e) {
             LOGGER.error("Cannot store file", e);
         }
-        request.setAttribute(ParamenterName.ARTIST, artist);
-        request.setAttribute(ParamenterName.TITLE, title);
-        request.setAttribute(ParamenterName.YEAR, yearParameter);
-        request.setAttribute(ParamenterName.COST, costParameter);
-        request.setAttribute(ParamenterName.GENRE, genreParameter);
-        request.setAttribute(ParamenterName.MINUTES, minutesParameter);
-        request.setAttribute(ParamenterName.SECONDS, secondsParameter);
+        request.setAttribute(ParameterName.ARTIST, artist);
+        request.setAttribute(ParameterName.TITLE, title);
+        request.setAttribute(ParameterName.YEAR, yearParameter);
+        request.setAttribute(ParameterName.COST, costParameter);
+        request.setAttribute(ParameterName.GENRE, genreParameter);
+        request.setAttribute(ParameterName.MINUTES, minutesParameter);
+        request.setAttribute(ParameterName.SECONDS, secondsParameter);
         Locale locale = (Locale) request.getSession().getAttribute(AttributeName.LOCALE);
         String message = InternationalizationManager.getProperty("track.add.error.text", locale);
         request.setAttribute(AttributeName.MESSAGE, message);

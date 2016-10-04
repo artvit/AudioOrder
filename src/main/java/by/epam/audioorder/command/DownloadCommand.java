@@ -1,9 +1,12 @@
 package by.epam.audioorder.command;
 
 import by.epam.audioorder.action.IdParameterParser;
+import by.epam.audioorder.action.InternationalizationManager;
+import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Track;
+import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.TrackInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,12 +20,13 @@ import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 public class DownloadCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
-        String idParameter = request.getParameter(ParamenterName.ID);
+        String idParameter = request.getParameter(ParameterName.ID);
         IdParameterParser idParser = new IdParameterParser();
         if (!idParser.parse(idParameter)) {
             return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
@@ -30,6 +34,12 @@ public class DownloadCommand implements Command {
         long id = idParser.getResult();
         TrackInfoService trackInfoService = new TrackInfoService();
         Track track = trackInfoService.getTrackInfo(id);
+        User user = (User) request.getSession().getAttribute(AttributeName.USER);
+        Locale locale = (Locale) request.getSession().getAttribute(AttributeName.LOCALE);
+        if (!trackInfoService.checkUserHasTrack(user, track)) {
+            request.setAttribute(AttributeName.MESSAGE, InternationalizationManager.getProperty("error.access", locale));
+            return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
+        }
         Path filePath = Paths.get(track.getPath());
         try {
             InputStream inStream = Files.newInputStream(filePath);
@@ -41,7 +51,10 @@ public class DownloadCommand implements Command {
             response.setContentType(mimeType);
             response.setContentLength((int) Files.size(filePath));
             String headerKey = "Content-Disposition";
-            String headerValue = String.format("attachment; filename=\"%s\"", filePath.getFileName().toString());
+            String fileName = (track.getArtist().getName() + " - " + track.getTitle()).replaceAll("[^\\p{L}\\d.-]+", "_");
+            String extension = track.getPath().substring(track.getPath().lastIndexOf("."));
+            fileName += extension;
+            String headerValue = String.format("attachment; filename=\"%s\"", fileName);
             response.setHeader(headerKey, headerValue);
             OutputStream outStream = response.getOutputStream();
             byte[] buffer = new byte[4096];
@@ -53,6 +66,7 @@ public class DownloadCommand implements Command {
             outStream.close();
         } catch (IOException e) {
             LOGGER.error("Cannot send file", e);
+            return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
         }
         return null;
     }

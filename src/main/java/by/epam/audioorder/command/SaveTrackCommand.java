@@ -27,7 +27,7 @@ public class SaveTrackCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         Locale locale = (Locale) request.getSession().getAttribute(AttributeName.LOCALE);
-        String idParameter = request.getParameter(ParamenterName.ID);
+        String idParameter = request.getParameter(ParameterName.ID);
         IdParameterParser idParser = new IdParameterParser();
         if (!idParser.parse(idParameter)) {
             LOGGER.error("No id parameter");
@@ -37,9 +37,9 @@ public class SaveTrackCommand implements Command {
         long id = idParser.getResult();
         TrackInfoService trackInfoService = new TrackInfoService();
         Track track = trackInfoService.getTrackInfo(id);
-        String artist = request.getParameter(ParamenterName.ARTIST);
-        String title = request.getParameter(ParamenterName.TITLE);
-        String yearParameter = request.getParameter(ParamenterName.YEAR);
+        String artist = request.getParameter(ParameterName.ARTIST);
+        String title = request.getParameter(ParameterName.TITLE);
+        String yearParameter = request.getParameter(ParameterName.YEAR);
         int year = 0;
         try {
             year = Integer.parseInt(yearParameter);
@@ -47,15 +47,15 @@ public class SaveTrackCommand implements Command {
             LOGGER.warn("Wrong year parameter", e);
         }
         int duration = 0;
-        String secondsParameter = request.getParameter(ParamenterName.SECONDS);
-        String minutesParameter = request.getParameter(ParamenterName.MINUTES);
+        String secondsParameter = request.getParameter(ParameterName.SECONDS);
+        String minutesParameter = request.getParameter(ParameterName.MINUTES);
         try {
             duration = Integer.parseInt(secondsParameter);
             duration = 60 * Integer.parseInt(minutesParameter);
         } catch (NumberFormatException e) {
             LOGGER.warn("Wrong year parameter", e);
         }
-        String costParameter = request.getParameter(ParamenterName.COST);
+        String costParameter = request.getParameter(ParameterName.COST);
         double cost = 0;
         try {
             cost = Double.parseDouble(costParameter);
@@ -63,13 +63,13 @@ public class SaveTrackCommand implements Command {
             LOGGER.warn("Wrong year parameter", e);
         }
         Genre genre = Genre.ANY;
-        String genreParameter = request.getParameter(ParamenterName.GENRE);
+        String genreParameter = request.getParameter(ParameterName.GENRE);
         if (genreParameter != null && !genreParameter.isEmpty()) {
             genre = Genre.valueOf(genreParameter.toUpperCase());
         }
         String fileLink = null;
         try {
-            Part filePart = request.getPart(ParamenterName.FILE);
+            Part filePart = request.getPart(ParameterName.FILE);
             if (filePart != null) {
                 InputStream fileContent = filePart.getInputStream();
                 String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
@@ -88,8 +88,8 @@ public class SaveTrackCommand implements Command {
         boolean result = saveTrackService.saveTrack(track, artist, title, year, genre, duration, cost, fileLink);
         if (result) {
             String resultURL = ServletMappingValue.URL_TRACKS + "?" +
-                    ParamenterName.COMMAND + "=" + CommandParameter.TRACK_INFO + "&" +
-                    ParamenterName.ID + "=" + track.getTrackId();
+                    ParameterName.COMMAND + "=" + CommandParameter.TRACK_INFO + "&" +
+                    ParameterName.ID + "=" + track.getTrackId();
             return new CommandResult(resultURL, CommandResult.Type.REDIRECT);
         } else {
             return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);

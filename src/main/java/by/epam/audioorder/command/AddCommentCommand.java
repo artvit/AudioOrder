@@ -2,7 +2,7 @@ package by.epam.audioorder.command;
 
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.service.TrackCommentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +16,7 @@ public class AddCommentCommand implements Command {
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         long trackId;
-        String trackIdParameter = request.getParameter(ParamenterName.ID);
+        String trackIdParameter = request.getParameter(ParameterName.ID);
         try {
             trackId = Long.parseLong(trackIdParameter);
         } catch (NumberFormatException e) {
@@ -24,7 +24,7 @@ public class AddCommentCommand implements Command {
             return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
         }
         String login = (String) request.getSession().getAttribute(AttributeName.LOGIN);
-        String commentText = request.getParameter(ParamenterName.COMMENT_TEXT);
+        String commentText = request.getParameter(ParameterName.COMMENT_TEXT);
         if (commentText != null && !commentText.isEmpty()) {
             TrackCommentService trackCommentService = new TrackCommentService();
             boolean addResult = trackCommentService.addComment(trackId, commentText, login);

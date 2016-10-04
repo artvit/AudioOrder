@@ -1,7 +1,6 @@
 package by.epam.audioorder.filter;
 
 import by.epam.audioorder.action.InternationalizationManager;
-import by.epam.audioorder.command.Command;
 import by.epam.audioorder.config.*;
 import by.epam.audioorder.entity.UserType;
 
@@ -43,8 +42,8 @@ public class AdminAccessFilter implements Filter {
                 request.getRequestDispatcher(Page.ERROR).forward(request, servletResponse);
                 return;
             }
-            String command = request.getParameter(ParamenterName.COMMAND);
-            if (forbiddenCommands.contains(command)) {
+            String command = request.getParameter(ParameterName.COMMAND);
+            if (command != null && forbiddenCommands.contains(command)) {
                 request.setAttribute(AttributeName.MESSAGE, InternationalizationManager.getProperty("error.access", locale));
                 request.getRequestDispatcher(Page.ERROR).forward(request, servletResponse);
                 return;

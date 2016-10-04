@@ -1,6 +1,6 @@
 package by.epam.audioorder.config;
 
-public final class CommandParameter {
+public class CommandParameter {
     public static final String LOGIN = "login";
     public static final String LOGOUT = "logout";
     public static final String LOCALE = "i18n";

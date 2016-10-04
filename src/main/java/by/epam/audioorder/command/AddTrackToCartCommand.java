@@ -3,11 +3,9 @@ package by.epam.audioorder.command;
 import by.epam.audioorder.action.IdParameterParser;
 import by.epam.audioorder.config.AttributeName;
 import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
+import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Track;
-import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.TrackInfoService;
-import by.epam.audioorder.service.UserTracksService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class AddTrackToCartCommand implements Command{
@@ -30,7 +27,7 @@ public class AddTrackToCartCommand implements Command{
             session.setAttribute(AttributeName.CART, cart);
         }
         long trackId = 0;
-        String trackIdParameter = request.getParameter(ParamenterName.ID);
+        String trackIdParameter = request.getParameter(ParameterName.ID);
         IdParameterParser parameterParser = new IdParameterParser();
         if (parameterParser.parse(trackIdParameter)) {
             trackId = parameterParser.getResult();
