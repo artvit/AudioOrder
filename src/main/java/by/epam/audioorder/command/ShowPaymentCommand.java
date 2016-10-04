@@ -11,6 +11,7 @@ import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.BonusService;
 import by.epam.audioorder.service.CountTotalService;
+import by.epam.audioorder.service.TrackInfoService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.stream.Collectors;
 
 public class ShowPaymentCommand implements Command {
     @Override
@@ -50,7 +52,15 @@ public class ShowPaymentCommand implements Command {
         if (cart.isEmpty()) {
             Locale locale = (Locale) request.getSession().getAttribute(AttributeName.LOCALE);
             request.setAttribute(AttributeName.MESSAGE, InternationalizationManager.getProperty("error.emptycart", locale));
-            return new CommandResult(Page.PAYMENT, CommandResult.Type.FORWARD);
+            return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
+        }
+        List<Track> boughtTrack = new ArrayList<>();
+        TrackInfoService trackInfoService = new TrackInfoService();
+        boughtTrack.addAll(tracks.stream().filter(track -> trackInfoService.checkUserHasTrack(user, track)).collect(Collectors.toList()));
+        if (boughtTrack.size() > 0) {
+            cart.removeAll(boughtTrack);
+            request.getSession().setAttribute(AttributeName.CART, cart);
+            return new CommandResult(ServletMappingValue.URL_CART, CommandResult.Type.REDIRECT);
         }
         CountTotalService countTotalService = new CountTotalService();
         double total = countTotalService.countTotal(tracks, bonuses);
