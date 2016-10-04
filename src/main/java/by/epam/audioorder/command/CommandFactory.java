@@ -67,6 +67,12 @@ public class CommandFactory {
             case CommandParameter.PAYMENT_COMPLETE:
                 result = new CompletePaymentCommand();
                 break;
+            case CommandParameter.USER_EDIT:
+                result = new EditUserCommand();
+                break;
+            case CommandParameter.BONUS_ADD:
+                result = new AddBonusCommand();
+                break;
             default:
                 throw new UnsupportedCommandException("Unknown command type");
         }

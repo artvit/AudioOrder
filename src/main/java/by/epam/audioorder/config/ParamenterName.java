@@ -20,4 +20,8 @@ public final class ParamenterName {
     public static final String MINUTES = "minutes";
     public static final String SECONDS = "seconds";
     public static final String BONUS = "bonus";
+    public static final String AFTER = "bonus";
+    public static final String BEFORE = "bonus";
+    public static final String BONUS_VALUE = "bonusValue";
+    public static final String SALE = "sale";
 }

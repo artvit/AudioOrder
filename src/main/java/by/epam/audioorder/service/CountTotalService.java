@@ -14,8 +14,7 @@ public class CountTotalService {
                 for (Bonus bonus : bonuses) {
                     int after = bonus.getYearAfter();
                     int before = bonus.getYearBefore();
-                    if ((after != 0 && after > track.getReleasedYear()) ||
-                            (before != 0 && track.getReleasedYear() > before)) {
+                    if ((after != 0 && after > track.getReleasedYear()) || (before != 0 && track.getReleasedYear() > before)) {
                        continue;
                     }
                     if (bonus.getBonusValue() >= trackCost) {
@@ -25,7 +24,7 @@ public class CountTotalService {
                         trackCost -= bonus.getBonusValue();
                         bonus.setBonusValue(0);
                     }
-                    trackCost -= bonus.getSale() * trackCost;
+                    trackCost -= bonus.getSale() / 100 * trackCost;
                     total += trackCost;
                 }
             }

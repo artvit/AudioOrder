@@ -7,9 +7,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><fmt:message key="registration.title"/></title>
-    <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script src="webjars/jquery/3.0.0/jquery.min.js"></script>
-    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/webjars/jquery/3.0.0/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="${pageContext.request.contextPath}/resource/css/registration.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/resource/css/background.css" rel="stylesheet">
 </head>

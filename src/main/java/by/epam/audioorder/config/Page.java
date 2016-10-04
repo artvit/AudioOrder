@@ -16,4 +16,5 @@ public final class Page {
     public static final String ACCOUNT = "/pages/account.jsp";
     public static final String PAYMENT = "/pages/payment.jsp";
     public static final String PAYMENT_BONUS = "/pages/payment-bonus.jsp";
+    public static final String USER_EDIT = "/pages/user-edit.jsp";
 }

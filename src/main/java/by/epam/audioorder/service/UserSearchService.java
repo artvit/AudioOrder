@@ -27,4 +27,15 @@ public class UserSearchService {
         }
         return new SearchResult<>(users, userDAO.getPagesNumber());
     }
+
+    public User findUserById(long id) {
+        UserDAO userDAO = new UserDAO();
+        User user = null;
+        try {
+            user = userDAO.findById(id);
+        } catch (DAOException e) {
+            LOGGER.error("Cannot find user with id " + id);
+        }
+        return user;
+    }
 }

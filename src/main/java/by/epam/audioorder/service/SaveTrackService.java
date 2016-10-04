@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 public class SaveTrackService {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public void addTrack(String artistName, String title, int year, Genre genre, int duration, double cost, String link) {
+    public boolean addTrack(String artistName, String title, int year, Genre genre, int duration, double cost, String link) {
         try {
             ArtistDAO artistDAO = new ArtistDAO();
             Artist artist = artistDAO.findByName(artistName);
@@ -31,12 +31,14 @@ public class SaveTrackService {
             track.setDuration(duration);
             TrackDAO trackDAO = new TrackDAO();
             trackDAO.insert(track);
+            return true;
         } catch (DAOException e) {
-            LOGGER.error("Exception in DAO");
+            LOGGER.error("Exception in DAO", e);
+            return false;
         }
     }
 
-    public void saveTrack(Track track, String artistName, String title, int year, Genre genre, int duration, double cost, String link) {
+    public boolean saveTrack(Track track, String artistName, String title, int year, Genre genre, int duration, double cost, String link) {
         try {
             if (!track.getArtist().getName().equals(artistName)) {
                 ArtistDAO artistDAO = new ArtistDAO();
@@ -68,8 +70,10 @@ public class SaveTrackService {
             }
             TrackDAO trackDAO = new TrackDAO();
             trackDAO.update(track);
+            return true;
         } catch (DAOException e) {
-            e.printStackTrace();
+            LOGGER.error("Cannot update track " + track.getTrackId());
+            return false;
         }
     }
 }

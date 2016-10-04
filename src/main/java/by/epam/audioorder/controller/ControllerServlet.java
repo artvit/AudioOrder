@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "ControllerServlet",
-        urlPatterns = {"/controller", "/pages/controller", "/login", "/registration", "/tracks", "/addtrack", "/clients", "/cart", "/account", "/payment"})
+        urlPatterns = {"/controller", "/error", "/login", "/registration", "/tracks", "/addtrack", "/clients", "/cart", "/account", "/payment"})
 @MultipartConfig
 public class ControllerServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();

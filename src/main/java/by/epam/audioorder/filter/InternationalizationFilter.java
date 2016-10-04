@@ -7,7 +7,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-@WebFilter(filterName = "InternationalizationFilter", urlPatterns = {"*"})
+@WebFilter(filterName = "InternationalizationFilter")
 public class InternationalizationFilter implements Filter {
     public void destroy() {
     }

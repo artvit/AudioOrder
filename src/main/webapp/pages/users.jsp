@@ -11,10 +11,11 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><fmt:message key="users.title"/></title>
-    <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script src="webjars/jquery/3.0.0/jquery.min.js"></script>
-    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/webjars/jquery/3.0.0/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="${pageContext.request.contextPath}/resource/css/background.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/resource/js/clickable-row.js"></script>
 </head>
 <body>
 <%@ include file="../WEB-INF/jspf/menu.jspf" %>
@@ -48,7 +49,7 @@
                             </thead>
                             <tbody>
                             <c:forEach var="user" items="${results}">
-                            <tr>
+                            <tr class="clickable-row" data-href="${pageContext.request.contextPath}/clients?id=${user.userId}&command=user-edit">
                                 <td>${user.login}</td>
                                 <td>${user.email}</td>
                             </tr>

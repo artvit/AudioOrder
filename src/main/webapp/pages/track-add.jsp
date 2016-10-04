@@ -11,11 +11,9 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><fmt:message key="track.add.title"/></title>
-    <link href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <link href="webjars/jquery-ui/1.12.1/jquery-ui.min.css" rel="stylesheet">
-    <script src="webjars/jquery/3.0.0/jquery.min.js"></script>
-    <script src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="webjars/jquery-ui/1.12.1/jquery-ui.min.js"></script>
+    <link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/webjars/jquery/3.0.0/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="${pageContext.request.contextPath}/resource/css/background.css" rel="stylesheet">
     <style>
         #duration .form-control {
@@ -54,7 +52,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm-2">
-                            <label for="genre" class="control-label">Genre</label>
+                            <label for="genre" class="control-label"><fmt:message key="track.genre"/></label>
                             <select class="form-control" id="genre" name="genre">
                                 <c:forEach var="genreVar" items="${genres}">
                                     <option value="${genreVar.name()}" <c:if test="${genreVar == genre}">selected="selected"</c:if>><c:out value="${genreVar}"/></option>

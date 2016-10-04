@@ -85,10 +85,14 @@ public class SaveTrackCommand implements Command {
             LOGGER.error("Cannot store file", e);
         }
         SaveTrackService saveTrackService = new SaveTrackService();
-        saveTrackService.saveTrack(track, artist, title, year, genre, duration, cost, fileLink);
-        String resultURL = ServletMappingValue.URL_TRACKS + "?" +
-                ParamenterName.COMMAND + "=" + CommandParameter.TRACK_INFO + "&" +
-                ParamenterName.ID + "=" + track.getTrackId();
-        return new CommandResult(resultURL, CommandResult.Type.REDIRECT);
+        boolean result = saveTrackService.saveTrack(track, artist, title, year, genre, duration, cost, fileLink);
+        if (result) {
+            String resultURL = ServletMappingValue.URL_TRACKS + "?" +
+                    ParamenterName.COMMAND + "=" + CommandParameter.TRACK_INFO + "&" +
+                    ParamenterName.ID + "=" + track.getTrackId();
+            return new CommandResult(resultURL, CommandResult.Type.REDIRECT);
+        } else {
+            return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
+        }
     }
 }

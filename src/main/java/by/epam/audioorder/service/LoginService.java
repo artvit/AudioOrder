@@ -16,7 +16,7 @@ public class LoginService {
         try {
             user = userDAO.findUserByLogin(login);
             if (user != null && password != null && user.getPasswordHash() != null) {
-                if (!password.equals(user.getPasswordHash())) {
+                if (!PasswordHandler.hashPassword(password).equals(user.getPasswordHash())) {
                     user = null;
                 }
             }

@@ -20,4 +20,6 @@ public final class CommandParameter {
     public static final String ACCOUNT_BONUSES = "account-bonuses";
     public static final String PAYMENT = "payment";
     public static final String PAYMENT_COMPLETE = "payment-complete";
+    public static final String USER_EDIT = "user-edit";
+    public static final String BONUS_ADD = "bonus-add";
 }

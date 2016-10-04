@@ -6,6 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 import java.util.Set;
@@ -34,7 +35,7 @@ public class ConnectionPool {
     private Set<ProxyConnection> busyConnections;
 
     private ConnectionPool(int capacity) {
-        this.busyConnections = new HashSet<>();
+        this.busyConnections = Collections.synchronizedSet(new HashSet<>());
         this.maxConnectionsNumber = capacity;
         this.connectionQueue = new ArrayBlockingQueue<>(capacity, true);
         this.createdConnectionsNumber = 0;

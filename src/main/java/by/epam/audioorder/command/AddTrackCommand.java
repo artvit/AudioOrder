@@ -46,12 +46,16 @@ public class AddTrackCommand implements Command {
         String costParameter = request.getParameter(ParamenterName.COST);
         double cost = 0;
         boolean costError = false;
-        try {
-            cost = Double.parseDouble(costParameter);
-            if (cost < 0) {
+        if (costParameter != null) {
+            try {
+                cost = Double.parseDouble(costParameter);
+                if (cost < 0) {
+                    costError = true;
+                }
+            } catch (NumberFormatException e) {
                 costError = true;
             }
-        } catch (NumberFormatException e) {
+        } else {
             costError = true;
         }
         if (costError) {
@@ -73,8 +77,12 @@ public class AddTrackCommand implements Command {
                 AudioFileService audioFileService = new AudioFileService();
                 String fileLink = audioFileService.saveFile(fileName, fileContent);
                 SaveTrackService saveTrackService = new SaveTrackService();
-                saveTrackService.addTrack(artist, title, year, genre, duration, cost, fileLink);
-                return new CommandResult(Page.TRACK_ADD_SUCCESS, CommandResult.Type.FORWARD);
+                boolean result = saveTrackService.addTrack(artist, title, year, genre, duration, cost, fileLink);
+                if (result) {
+                    return new CommandResult(Page.TRACK_ADD_SUCCESS, CommandResult.Type.FORWARD);
+                } else {
+                    return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
+                }
             }
         } catch (IOException | ServletException e) {
             LOGGER.error("Cannot upload file", e);

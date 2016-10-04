@@ -6,6 +6,7 @@ import by.epam.audioorder.entity.Bonus;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.AddTrackToUserService;
+import org.w3c.dom.Attr;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +23,7 @@ public class CompletePaymentCommand implements Command {
         List<Bonus> usingBonuses = (List<Bonus>) request.getSession().getAttribute(AttributeName.USING_BONUS);
         AddTrackToUserService addTrackToUserService = new AddTrackToUserService();
         addTrackToUserService.addTracksToUser(tracks, user, usingBonuses);
+        request.getSession().removeAttribute(AttributeName.USING_BONUS);
         return new CommandResult(ServletMappingValue.URL_ACCOUNT, CommandResult.Type.REDIRECT);
     }
 }
