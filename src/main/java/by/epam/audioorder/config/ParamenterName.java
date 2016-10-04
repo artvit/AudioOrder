@@ -1,6 +1,6 @@
 package by.epam.audioorder.config;
 
-public class ParamenterName {
+public final class ParamenterName {
     public static final String COMMAND = "command";
     public static final String LOGIN = "login";
     public static final String PASSWORD = "password";
@@ -19,4 +19,5 @@ public class ParamenterName {
     public static final String LANG = "lang";
     public static final String MINUTES = "minutes";
     public static final String SECONDS = "seconds";
+    public static final String BONUS = "bonus";
 }

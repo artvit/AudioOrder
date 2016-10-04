@@ -1,6 +1,7 @@
 package by.epam.audioorder.command;
 
 import by.epam.audioorder.config.AttributeName;
+import by.epam.audioorder.config.Page;
 import by.epam.audioorder.entity.UserType;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,6 @@ public class LogoutCommand implements Command {
         session.removeAttribute(AttributeName.USER);
         session.removeAttribute(AttributeName.CART);
         session.setAttribute(AttributeName.ROLE, UserType.GUEST);
-        String lastPage = (String) request.getSession().getAttribute(AttributeName.LAST_PAGE);
-        return new CommandResult(lastPage, CommandResult.Type.REDIRECT);
+        return new CommandResult(Page.INDEX, CommandResult.Type.REDIRECT);
     }
 }

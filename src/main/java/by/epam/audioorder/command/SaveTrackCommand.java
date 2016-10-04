@@ -1,10 +1,8 @@
 package by.epam.audioorder.command;
 
 import by.epam.audioorder.action.IdParameterParser;
-import by.epam.audioorder.config.CommandParameter;
-import by.epam.audioorder.config.Page;
-import by.epam.audioorder.config.ParamenterName;
-import by.epam.audioorder.config.ServletMappingValue;
+import by.epam.audioorder.action.InternationalizationManager;
+import by.epam.audioorder.config.*;
 import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.exception.ServiceException;
@@ -21,15 +19,19 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Paths;
+import java.util.Locale;
 
 public class SaveTrackCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
+        Locale locale = (Locale) request.getSession().getAttribute(AttributeName.LOCALE);
         String idParameter = request.getParameter(ParamenterName.ID);
         IdParameterParser idParser = new IdParameterParser();
         if (!idParser.parse(idParameter)) {
+            LOGGER.error("No id parameter");
+            request.setAttribute(AttributeName.MESSAGE, InternationalizationManager.getProperty("error.param.id", locale));
             return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
         }
         long id = idParser.getResult();

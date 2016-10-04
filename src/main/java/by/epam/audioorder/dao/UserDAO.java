@@ -1,6 +1,5 @@
 package by.epam.audioorder.dao;
 
-import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.exception.DAOException;
 import by.epam.audioorder.pool.ConnectionPoolException;
@@ -217,7 +216,7 @@ public class UserDAO extends AbstractDAO<User> {
             statement.setString(2, entity.getPasswordHash());
             statement.setString(3, entity.getEmail());
             statement.setString(4, entity.getRole().toString().toLowerCase());
-            statement.setLong(6, entity.getUserId());
+            statement.setLong(5, entity.getUserId());
             int result = statement.executeUpdate();
             if (result == 0) {
                 throw new DAOException("User "  + entity.getLogin() + " was not updated");

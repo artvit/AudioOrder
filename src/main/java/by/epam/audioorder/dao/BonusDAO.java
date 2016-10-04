@@ -9,10 +9,7 @@ import by.epam.audioorder.pool.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -29,7 +26,6 @@ public class BonusDAO extends AbstractDAO<Bonus>{
     private static final String GENRE = "genre";
     private static final String BONUS = "bonus";
     private static final String SALE = "sale";
-    private static final String EXPIRED = "expired";
 
     private static final String FIND_BY_ID = "SELECT " +
             ID + ", " +
@@ -38,8 +34,7 @@ public class BonusDAO extends AbstractDAO<Bonus>{
             BEFORE + ", " +
             GENRE + ", " +
             BONUS + ", " +
-            SALE + ", " +
-            EXPIRED +
+            SALE +
             " FROM " + BONUS_TABLE + " WHERE " + ID + " = ?";
     private static final String FIND_FOR_USER = "SELECT " +
             ID + ", " +
@@ -48,11 +43,16 @@ public class BonusDAO extends AbstractDAO<Bonus>{
             BEFORE + ", " +
             GENRE + ", " +
             BONUS + ", " +
-            SALE + ", " +
-            EXPIRED +
+            SALE +
             " FROM " + BONUS_TABLE + " WHERE " + USER_ID + " = ?";
     private static final String DELETE_BONUS = "DELETE FROM " + BONUS_TABLE + " WHERE " + ID + " = ?";
-
+    private static final String INSERT_BONUS = "INSERT INTO " + BONUS_TABLE + "(" +
+            USER_ID + ", " +
+            AFTER + ", " +
+            BEFORE + ", " +
+            GENRE + ", " +
+            BONUS + ", " +
+            SALE +") VALUES (?, ?, ?, ?, ?, ?)";
 
     @Override
     public List<Bonus> findAll(int page, int rowsPerPage) throws DAOException {
@@ -117,7 +117,25 @@ public class BonusDAO extends AbstractDAO<Bonus>{
 
     @Override
     public void insert(Bonus entity) throws DAOException {
-
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_BONUS)) {
+            statement.setLong(1, entity.getUser().getUserId());
+            statement.setInt(2, entity.getYearAfter());
+            statement.setInt(3, entity.getYearBefore());
+            statement.setString(4, entity.getGenre().name().toLowerCase());
+            statement.setDouble(5, entity.getBonusValue());
+            statement.setDouble(6, entity.getSale());
+            int result = statement.executeUpdate();
+            if (result == 0) {
+                throw new DAOException("Bonus " + entity.getBonusId() + " was not deleted");
+            } else {
+                LOGGER.info("Delete successful");
+            }
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Cannot get connection", e);
+        } catch (SQLException e) {
+            throw new DAOException("Error in SQL", e);
+        }
     }
 
     @Override
@@ -136,7 +154,6 @@ public class BonusDAO extends AbstractDAO<Bonus>{
         bonus.setYearBefore(resultSet.getInt(BEFORE));
         bonus.setBonusValue(resultSet.getDouble(BONUS));
         bonus.setSale(resultSet.getDouble(SALE));
-        bonus.setExpired(LocalDateTime.ofInstant(resultSet.getTimestamp(EXPIRED).toInstant(), ZoneOffset.ofHours(0)));
         return bonus;
     }
 }

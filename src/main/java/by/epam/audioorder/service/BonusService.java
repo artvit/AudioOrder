@@ -22,4 +22,15 @@ public class BonusService {
         }
         return bonuses;
     }
+
+    public Bonus bonusForId(long id) {
+        BonusDAO bonusDAO = new BonusDAO();
+        Bonus bonus = null;
+        try {
+            bonus = bonusDAO.findById(id);
+        } catch (DAOException e) {
+            LOGGER.error("Cannot get bonuses for id " + id, e);
+        }
+        return bonus;
+    }
 }

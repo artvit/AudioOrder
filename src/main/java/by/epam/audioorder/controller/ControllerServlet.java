@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet(name = "ControllerServlet",
-        urlPatterns = {"/controller", "/pages/controller", "/login", "/registration", "/tracks", "/addtrack", "/clients", "/cart", "/account"})
+        urlPatterns = {"/controller", "/pages/controller", "/login", "/registration", "/tracks", "/addtrack", "/clients", "/cart", "/account", "/payment"})
 @MultipartConfig
 public class ControllerServlet extends HttpServlet {
     private static final Logger LOGGER = LogManager.getLogger();
@@ -72,6 +72,8 @@ public class ControllerServlet extends HttpServlet {
             handleCommand(CommandParameter.SEARCH_USER, request, response);
         } else if (ServletMappingValue.URL_ACCOUNT.equals(servletPath)) {
             handleCommand(CommandParameter.ACCOUNT_TRACKS, request, response);
+        } else if (ServletMappingValue.URL_PAYMENT.equals(servletPath)) {
+            handleCommand(CommandParameter.PAYMENT, request, response);
         } else {
             try {
                 request.getRequestDispatcher(getForwardPage(servletPath)).forward(request, response);

@@ -45,10 +45,20 @@ public class AddTrackCommand implements Command {
         }
         String costParameter = request.getParameter(ParamenterName.COST);
         double cost = 0;
+        boolean costError = false;
         try {
             cost = Double.parseDouble(costParameter);
+            if (cost < 0) {
+                costError = true;
+            }
         } catch (NumberFormatException e) {
-            LOGGER.warn("Wrong year parameter", e);
+            costError = true;
+        }
+        if (costError) {
+            LOGGER.error("Wrong cost parameter");
+            Locale locale = (Locale) request.getSession().getAttribute(AttributeName.LOCALE);
+            request.setAttribute(AttributeName.MESSAGE, InternationalizationManager.getProperty("error.param.cost", locale));
+            return new CommandResult(Page.TRACK_ADD, CommandResult.Type.FORWARD);
         }
         Genre genre = Genre.ANY;
         String genreParameter = request.getParameter(ParamenterName.GENRE);

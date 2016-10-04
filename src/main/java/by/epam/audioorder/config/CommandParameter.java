@@ -18,4 +18,6 @@ public final class CommandParameter {
     public static final String TRACK_CART_DELETE = "delete-track-cart";
     public static final String ACCOUNT_TRACKS = "account-tracks";
     public static final String ACCOUNT_BONUSES = "account-bonuses";
+    public static final String PAYMENT = "payment";
+    public static final String PAYMENT_COMPLETE = "payment-complete";
 }

@@ -72,6 +72,7 @@
                                 </tfoot>
                             </table>
                         </div>
+                        <a href="${pageContext.request.contextPath}/payment" class="btn btn-lg btn-success"><fmt:message key="cart.button.buy"/></a>
                     </c:when>
                     <c:otherwise>
                         <div style="font-size: x-large; opacity: 0.7; text-align: center">

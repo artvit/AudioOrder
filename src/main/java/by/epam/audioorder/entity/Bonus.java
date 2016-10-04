@@ -1,6 +1,5 @@
 package by.epam.audioorder.entity;
 
-import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class Bonus {
@@ -11,7 +10,6 @@ public class Bonus {
     private int yearBefore;
     private double bonusValue;
     private double sale;
-    private LocalDateTime expired;
 
     public long getBonusId() {
         return bonusId;
@@ -69,14 +67,6 @@ public class Bonus {
         this.sale = sale;
     }
 
-    public LocalDateTime getExpired() {
-        return expired;
-    }
-
-    public void setExpired(LocalDateTime expired) {
-        this.expired = expired;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -88,12 +78,11 @@ public class Bonus {
                 Double.compare(bonus.bonusValue, bonusValue) == 0 &&
                 Double.compare(bonus.sale, sale) == 0 &&
                 Objects.equals(user, bonus.user) &&
-                genre == bonus.genre &&
-                Objects.equals(expired, bonus.expired);
+                genre == bonus.genre;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(bonusId, user, genre, yearAfter, yearBefore, bonusValue, sale, expired);
+        return Objects.hash(bonusId, user, genre, yearAfter, yearBefore, bonusValue, sale);
     }
 }

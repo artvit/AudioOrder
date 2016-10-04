@@ -1,7 +1,6 @@
 package by.epam.audioorder.command;
 
 import by.epam.audioorder.config.CommandParameter;
-;
 import by.epam.audioorder.exception.UnsupportedCommandException;
 
 public class CommandFactory {
@@ -61,6 +60,12 @@ public class CommandFactory {
                 break;
             case CommandParameter.TRACK_DOWNLOAD:
                 result = new DownloadCommand();
+                break;
+            case CommandParameter.PAYMENT:
+                result = new ShowPaymentCommand();
+                break;
+            case CommandParameter.PAYMENT_COMPLETE:
+                result = new CompletePaymentCommand();
                 break;
             default:
                 throw new UnsupportedCommandException("Unknown command type");

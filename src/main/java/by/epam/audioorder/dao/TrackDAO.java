@@ -19,6 +19,8 @@ import java.util.List;
 public class TrackDAO extends AbstractDAO<Track> {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    private static final String TRACK_TABLE = "track";
+
     private static final String ID = "track_id";
     private static final String TITLE = "title";
     private static final String ARTIST_NAME = "name";
@@ -30,7 +32,7 @@ public class TrackDAO extends AbstractDAO<Track> {
     private static final String RELEASED = "released";
     private static final String USER_ID = "user_id";
 
-    private static final String TRACK_ALL_COUNT_ROWS = "SELECT COUNT(*) FROM track";
+    private static final String TRACK_ALL_COUNT_ROWS = "SELECT COUNT(*) FROM " + TRACK_TABLE;
 
     private static final String TRACK_ALL = "SELECT " +
             ID +  ", " +
@@ -41,7 +43,7 @@ public class TrackDAO extends AbstractDAO<Track> {
             COST + ", " +
             PATH + ", " +
             RELEASED + ", " +
-            GENRE + " FROM track LEFT JOIN artist USING(artist_id)";
+            GENRE + " FROM " + TRACK_TABLE + " LEFT JOIN artist USING(artist_id)";
     private static final String TRACK_BY_ID = "SELECT " +
             ID +  ", " +
             TITLE +  ", " +
@@ -52,8 +54,8 @@ public class TrackDAO extends AbstractDAO<Track> {
             PATH + ", " +
             RELEASED + ", " +
             GENRE + " FROM track LEFT JOIN artist USING(artist_id) WHERE " + ID +" = ?";
-    private static final String DELETE_TRACK = "DELETE FROM track WHERE " + ID + " = ?";
-    private static final String INSERT_TRACK = "INSERT INTO track (" +
+    private static final String DELETE_TRACK = "DELETE FROM " + TRACK_TABLE + " WHERE " + ID + " = ?";
+    private static final String INSERT_TRACK = "INSERT INTO " + TRACK_TABLE + " (" +
             ARTIST_ID + ", " +
             TITLE + ", " +
             GENRE + ", " +
@@ -61,7 +63,7 @@ public class TrackDAO extends AbstractDAO<Track> {
             PATH + ", " +
             COST + ", " +
             RELEASED + ") VALUES (?, ?, ?, ?, ?, ?, ?);";
-    private static final String UPDATE_TRACK = "UPDATE track SET " +
+    private static final String UPDATE_TRACK = "UPDATE " + TRACK_TABLE + " SET " +
             ARTIST_ID + " = ?, " +
             TITLE + " = ?, " +
             GENRE + " = ?, " +
@@ -79,8 +81,9 @@ public class TrackDAO extends AbstractDAO<Track> {
             PATH + ", " +
             RELEASED + ", " +
             GENRE +
-            " FROM user_track LEFT JOIN track USING(track_id) LEFT JOIN artist USING(artist_id)" +
+            " FROM user_track LEFT JOIN " + TRACK_TABLE + " USING(track_id) LEFT JOIN artist USING(artist_id)" +
             "WHERE " + USER_ID + " = ?";
+    private static final String INSERT_USER_TRACK = "INSERT INTO user_track (" + USER_ID +", " + ID + ") VALUES (?, ?)";
 
     private static final String LIMIT = " LIMIT ? OFFSET ?";
     private static final String WHERE = " WHERE ";
@@ -273,6 +276,24 @@ public class TrackDAO extends AbstractDAO<Track> {
             int result = statement.executeUpdate();
             if (result == 0) {
                 throw new DAOException("Update was not complete");
+            } else {
+                LOGGER.info("Insertion successful");
+            }
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Cannot get connection", e);
+        } catch (SQLException e) {
+            throw new DAOException("Error in SQL", e);
+        }
+    }
+
+    public void saveUserTrack(User user, Track track) throws DAOException {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_USER_TRACK)) {
+            statement.setLong(1, user.getUserId());
+            statement.setLong(2, track.getTrackId());
+            int result = statement.executeUpdate();
+            if (result == 0) {
+                throw new DAOException("User Track was not inserted");
             } else {
                 LOGGER.info("Insertion successful");
             }

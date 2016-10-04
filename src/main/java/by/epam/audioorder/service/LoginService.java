@@ -15,11 +15,13 @@ public class LoginService {
         User user = null;
         try {
             user = userDAO.findUserByLogin(login);
-            if (!PasswordHandler.validateUser(user, password)) {
-                user = null;
+            if (user != null && password != null && user.getPasswordHash() != null) {
+                if (!password.equals(user.getPasswordHash())) {
+                    user = null;
+                }
             }
         } catch (DAOException e) {
-            LOGGER.error("DAO Exception");
+            LOGGER.error("DAO Exception", e);
         }
         return user;
     }

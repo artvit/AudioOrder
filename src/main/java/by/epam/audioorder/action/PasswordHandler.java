@@ -1,10 +1,8 @@
 package by.epam.audioorder.action;
 
-import by.epam.audioorder.entity.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -27,12 +25,5 @@ public final class PasswordHandler {
             LOGGER.error("Hash algorithm does not found", e);
             return password;
         }
-    }
-
-    public static boolean validateUser(User user, String password) {
-        if (password == null || user.getPasswordHash() == null) {
-            return false;
-        }
-        return user.getPasswordHash().equals(hashPassword(password));
     }
 }

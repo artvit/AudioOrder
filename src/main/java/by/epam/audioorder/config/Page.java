@@ -1,6 +1,6 @@
 package by.epam.audioorder.config;
 
-public class Page {
+public final class Page {
     public static final String LOGIN = "/pages/login.jsp";
     public static final String REGISTRATION = "/pages/registration.jsp";
     public static final String REGISTRATION_SUCCESS = "/pages/registration-success.jsp";
@@ -14,4 +14,6 @@ public class Page {
     public static final String TRACK_EDIT = "/pages/track-edit.jsp";
     public static final String CART = "/pages/cart.jsp";
     public static final String ACCOUNT = "/pages/account.jsp";
+    public static final String PAYMENT = "/pages/payment.jsp";
+    public static final String PAYMENT_BONUS = "/pages/payment-bonus.jsp";
 }
