@@ -21,7 +21,7 @@ public class TrackDAO extends AbstractDAO<Track> {
 
     private static final String TRACK_TABLE = "track";
 
-    private static final String ID = "track_id";
+    private static final String TRACK_ID = "track_id";
     private static final String TITLE = "title";
     private static final String ARTIST_NAME = "name";
     private static final String ARTIST_ID = "artist_id";
@@ -35,7 +35,7 @@ public class TrackDAO extends AbstractDAO<Track> {
     private static final String TRACK_ALL_COUNT_ROWS = "SELECT COUNT(*) FROM " + TRACK_TABLE;
 
     private static final String TRACK_ALL = "SELECT " +
-            ID +  ", " +
+            TRACK_ID +  ", " +
             TITLE +  ", " +
             ARTIST_NAME + ", " +
             ARTIST_ID + ", " +
@@ -45,7 +45,7 @@ public class TrackDAO extends AbstractDAO<Track> {
             RELEASED + ", " +
             GENRE + " FROM " + TRACK_TABLE + " LEFT JOIN artist USING(artist_id)";
     private static final String TRACK_BY_ID = "SELECT " +
-            ID +  ", " +
+            TRACK_ID +  ", " +
             TITLE +  ", " +
             ARTIST_NAME + ", " +
             ARTIST_ID + ", " +
@@ -53,8 +53,8 @@ public class TrackDAO extends AbstractDAO<Track> {
             COST + ", " +
             PATH + ", " +
             RELEASED + ", " +
-            GENRE + " FROM track LEFT JOIN artist USING(artist_id) WHERE " + ID +" = ?";
-    private static final String DELETE_TRACK = "DELETE FROM " + TRACK_TABLE + " WHERE " + ID + " = ?";
+            GENRE + " FROM track LEFT JOIN artist USING(artist_id) WHERE " + TRACK_ID +" = ?";
+    private static final String DELETE_TRACK = "DELETE FROM " + TRACK_TABLE + " WHERE " + TRACK_ID + " = ?";
     private static final String INSERT_TRACK = "INSERT INTO " + TRACK_TABLE + " (" +
             ARTIST_ID + ", " +
             TITLE + ", " +
@@ -70,9 +70,9 @@ public class TrackDAO extends AbstractDAO<Track> {
             DURATION + " = ?, " +
             PATH + " = ?, " +
             COST + " = ?, " +
-            RELEASED + " = ?" + " WHERE " + ID + " = ?";
+            RELEASED + " = ?" + " WHERE " + TRACK_ID + " = ?";
     private static final String TRACKS_FOR_USER = "SELECT " +
-            ID +  ", " +
+            TRACK_ID +  ", " +
             TITLE +  ", " +
             ARTIST_NAME + ", " +
             ARTIST_ID + ", " +
@@ -83,8 +83,9 @@ public class TrackDAO extends AbstractDAO<Track> {
             GENRE +
             " FROM user_track LEFT JOIN " + TRACK_TABLE + " USING(track_id) LEFT JOIN artist USING(artist_id)" +
             "WHERE " + USER_ID + " = ?";
-    private static final String INSERT_USER_TRACK = "INSERT INTO user_track (" + USER_ID +", " + ID + ") VALUES (?, ?)";
-
+    private static final String INSERT_USER_TRACK = "INSERT INTO user_track (" + USER_ID +", " + TRACK_ID + ") VALUES (?, ?)";
+    private static final String CHECK_USER_TRACK = "SELECT " + USER_ID + ", " + TRACK_ID +
+            " FROM user_track WHERE " + USER_ID + " = ? AND " + TRACK_ID + " = ?";
     private static final String LIMIT = " LIMIT ? OFFSET ?";
     private static final String WHERE = " WHERE ";
     private static final String AND = " AND ";
@@ -140,6 +141,24 @@ public class TrackDAO extends AbstractDAO<Track> {
             }
             LOGGER.info("Successful reading from database");
             return tracks;
+        } catch (ConnectionPoolException e) {
+            throw new DAOException("Cannot get connection", e);
+        } catch (SQLException e) {
+            throw new DAOException("Error in SQL", e);
+        }
+    }
+
+    public boolean checkUserBoughtTrack(User user, Track track) throws DAOException {
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(CHECK_USER_TRACK)) {
+            statement.setLong(1, user.getUserId());
+            statement.setLong(2, track.getTrackId());
+            ResultSet result = statement.executeQuery();
+            if (result.next()) {
+                return true;
+            } else {
+                return false;
+            }
         } catch (ConnectionPoolException e) {
             throw new DAOException("Cannot get connection", e);
         } catch (SQLException e) {
@@ -204,12 +223,10 @@ public class TrackDAO extends AbstractDAO<Track> {
              PreparedStatement statement = connection.prepareStatement(TRACK_BY_ID)) {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
-            Track track;
+            Track track = null;
             if (result.next()) {
                 track = createTrack(result);
                 LOGGER.info("Successful reading from database");
-            } else {
-                throw new DAOException("No result was found for id " + id);
             }
             return track;
         } catch (ConnectionPoolException e) {
@@ -310,7 +327,7 @@ public class TrackDAO extends AbstractDAO<Track> {
 
     private Track createTrack(ResultSet resultSet) throws SQLException {
         Track track = new Track();
-        track.setTrackId(resultSet.getLong(ID));
+        track.setTrackId(resultSet.getLong(TRACK_ID));
         track.setTitle(resultSet.getString(TITLE));
         Artist artist = new Artist();
         artist.setArtistId(resultSet.getLong(ARTIST_ID));

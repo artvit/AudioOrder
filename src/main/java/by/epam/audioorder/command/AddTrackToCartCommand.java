@@ -39,8 +39,13 @@ public class AddTrackToCartCommand implements Command{
         }
         TrackInfoService trackInfoService = new TrackInfoService();
         Track track = trackInfoService.getTrackInfo(trackId);
-        cart.add(track);
-        String lastPage = (String) session.getAttribute(AttributeName.LAST_PAGE);
-        return new CommandResult(lastPage, CommandResult.Type.REDIRECT);
+        if (track != null) {
+            cart.add(track);
+            String lastPage = (String) session.getAttribute(AttributeName.LAST_PAGE);
+            return new CommandResult(lastPage, CommandResult.Type.REDIRECT);
+        } else {
+            return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
+        }
+
     }
 }

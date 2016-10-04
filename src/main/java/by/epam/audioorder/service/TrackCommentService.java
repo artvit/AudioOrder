@@ -42,14 +42,16 @@ public class TrackCommentService {
             User user = userDAO.findUserByLogin(login);
             TrackDAO trackDAO = new TrackDAO();
             Track track = trackDAO.findById(trackId);
-            Comment comment = new Comment();
-            comment.setTrack(track);
-            comment.setUser(user);
-            comment.setText(commentText);
-            comment.setTime(LocalDateTime.now(ZoneOffset.ofHours(0)));
-            CommentDAO commentDAO = new CommentDAO();
-            commentDAO.insert(comment);
-            return true;
+            if (track != null) {
+                Comment comment = new Comment();
+                comment.setTrack(track);
+                comment.setUser(user);
+                comment.setText(commentText);
+                comment.setTime(LocalDateTime.now(ZoneOffset.ofHours(0)));
+                CommentDAO commentDAO = new CommentDAO();
+                commentDAO.insert(comment);
+                return true;
+            }
         } catch (DAOException e) {
             LOGGER.error("Error in DAO", e);
         }

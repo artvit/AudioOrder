@@ -11,6 +11,7 @@ public class Track {
     private String path;
     private double cost;
     private int releasedYear;
+    private boolean bought;
 
     public long getTrackId() {
         return trackId;
@@ -74,6 +75,14 @@ public class Track {
 
     public void setReleasedYear(int releasedYear) {
         this.releasedYear = releasedYear;
+    }
+
+    public boolean isBought() {
+        return bought;
+    }
+
+    public void setBought(boolean bought) {
+        this.bought = bought;
     }
 
     @Override

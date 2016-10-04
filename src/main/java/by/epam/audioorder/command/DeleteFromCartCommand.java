@@ -31,8 +31,12 @@ public class DeleteFromCartCommand implements Command {
         }
         TrackInfoService trackInfoService = new TrackInfoService();
         Track track = trackInfoService.getTrackInfo(trackId);
-        cart.remove(track);
-        String lastPage = (String) session.getAttribute(AttributeName.LAST_PAGE);
-        return new CommandResult(lastPage, CommandResult.Type.REDIRECT);
+        if (track != null) {
+            cart.remove(track);
+            String lastPage = (String) session.getAttribute(AttributeName.LAST_PAGE);
+            return new CommandResult(lastPage, CommandResult.Type.REDIRECT);
+        } else {
+            return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
+        }
     }
 }

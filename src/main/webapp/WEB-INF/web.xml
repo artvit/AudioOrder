@@ -26,6 +26,10 @@
         <filter-name>PageAccessFilter</filter-name>
         <url-pattern>/pages/*</url-pattern>
     </filter-mapping>
+    <filter-mapping>
+        <filter-name>AdminAccessFilter</filter-name>
+        <servlet-name>ControllerServlet</servlet-name>
+    </filter-mapping>
     
     <error-page>
         <location>/error</location>

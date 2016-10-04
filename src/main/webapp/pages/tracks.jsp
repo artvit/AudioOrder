@@ -63,20 +63,22 @@
                                     <td><ctl:duration value="${track.duration}"/></td>
                                     <td>$${track.cost}</td>
                                     <td>
-                                        <c:choose>
-                                            <c:when test="${not cart.contains(track)}">
-                                                <a href="${pageContext.request.contextPath}/tracks?command=add-track-cart&id=${track.trackId}"
-                                                   class="btn btn-xs btn-success btn-block" >
-                                                    <span class="glyphicon glyphicon-plus"></span> <fmt:message key="cart.add"/>
-                                                </a>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <a href="${pageContext.request.contextPath}/tracks?command=delete-track-cart&id=${track.trackId}"
-                                                   class="btn btn-xs btn-danger btn-block" >
-                                                    <span class="glyphicon glyphicon-minus"></span> <fmt:message key="cart.remove"/>
-                                                </a>
-                                            </c:otherwise>
-                                        </c:choose>
+                                        <c:if test="${not track.bought}">
+                                            <c:choose>
+                                                <c:when test="${not cart.contains(track)}">
+                                                    <a href="${pageContext.request.contextPath}/tracks?command=add-track-cart&id=${track.trackId}"
+                                                       class="btn btn-xs btn-success btn-block" >
+                                                        <span class="glyphicon glyphicon-plus"></span> <fmt:message key="cart.add"/>
+                                                    </a>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <a href="${pageContext.request.contextPath}/tracks?command=delete-track-cart&id=${track.trackId}"
+                                                       class="btn btn-xs btn-danger btn-block" >
+                                                        <span class="glyphicon glyphicon-minus"></span> <fmt:message key="cart.remove"/>
+                                                    </a>
+                                                </c:otherwise>
+                                            </c:choose>
+                                        </c:if>
                                     </td>
                                 </tr>
                             </c:forEach>

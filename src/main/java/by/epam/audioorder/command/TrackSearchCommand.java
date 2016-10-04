@@ -5,6 +5,7 @@ import by.epam.audioorder.config.Page;
 import by.epam.audioorder.config.ParamenterName;
 import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.entity.Track;
+import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.SearchResult;
 import by.epam.audioorder.service.TrackSearchService;
 import org.apache.logging.log4j.LogManager;
@@ -35,8 +36,9 @@ public class TrackSearchCommand implements Command {
                 LOGGER.warn("No page parameter");
             }
         }
+        User user = (User) request.getSession().getAttribute(AttributeName.USER);
         TrackSearchService service = new TrackSearchService();
-        SearchResult<Track> result = service.searchTrack(searchQuery, genre, page);
+        SearchResult<Track> result = service.searchTrack(searchQuery, genre, page, user);
         request.setAttribute(AttributeName.RESULTS, result.getResults());
         request.setAttribute(AttributeName.PAGE, page);
         request.setAttribute(AttributeName.NUMBER_OF_PAGES, result.getNumberOfPages());
