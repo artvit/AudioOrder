@@ -15,6 +15,11 @@
     <script src="${pageContext.request.contextPath}/webjars/jquery/3.0.0/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="${pageContext.request.contextPath}/resource/css/background.css" rel="stylesheet">
+    <style>
+        textarea {
+            resize: none;
+        }
+    </style>
 </head>
 <body>
 <%@ include file="../WEB-INF/jspf/menu.jspf" %>
@@ -37,23 +42,25 @@
             </div>
             <div>
                 <br>
-                <c:choose>
-                    <c:when test="${not cart.contains(track)}">
-                        <a href="${pageContext.request.contextPath}/tracks?command=add-track-cart&id=${track.trackId}"
-                           class="btn btn-lg btn-success" >
-                            <span class="glyphicon glyphicon-plus"></span> <fmt:message key="cart.add"/>
-                        </a>
-                    </c:when>
-                    <c:otherwise>
-                        <a href="${pageContext.request.contextPath}/tracks?command=delete-track-cart&id=${track.trackId}"
-                           class="btn btn-sm btn-danger" >
-                            <span class="glyphicon glyphicon-minus"></span> <fmt:message key="cart.remove"/>
-                        </a>
-                    </c:otherwise>
-                </c:choose>
+                <c:if test="${not track.bought}">
+                    <c:choose>
+                        <c:when test="${not cart.contains(track)}">
+                            <a href="${pageContext.request.contextPath}/tracks?command=add-track-cart&id=${track.trackId}"
+                               class="btn btn-lg btn-success">
+                                <span class="glyphicon glyphicon-plus"></span> <fmt:message key="cart.add"/>
+                            </a>
+                        </c:when>
+                        <c:otherwise>
+                            <a href="${pageContext.request.contextPath}/tracks?command=delete-track-cart&id=${track.trackId}"
+                               class="btn btn-lg btn-danger">
+                                <span class="glyphicon glyphicon-minus"></span> <fmt:message key="cart.remove"/>
+                            </a>
+                        </c:otherwise>
+                    </c:choose>
+                </c:if>
                 <c:if test="${sessionScope.role == 'ADMIN'}">
                     <a href="${pageContext.request.contextPath}/tracks?command=track-edit&id=${track.trackId}"
-                       class="btn btn-lg btn-primary" >
+                       class="btn btn-lg btn-primary">
                         <span class="glyphicon glyphicon-edit"></span> <fmt:message key="track.edit"/>
                     </a>
                 </c:if>
@@ -66,17 +73,20 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <div class="panel-title pull-left">
-                                        ${comment.user.login}
+                                            ${comment.user.login}
                                     </div>
                                     <c:if test="${sessionScope.role == 'ADMIN'}">
-                                    <div class="panel-title pull-right">
-                                        <a href="${pageContext.request.contextPath}/tracks?command=delete-comment&id=${comment.commentId}" class="btn btn-sm btn-danger"><span class="glyphicon glyphicon-remove"></span> <fmt:message key="track.info.comment.delete"/></a>
-                                    </div>
+                                        <div class="panel-title pull-right">
+                                            <a href="${pageContext.request.contextPath}/tracks?command=delete-comment&id=${comment.commentId}"
+                                               class="btn btn-sm btn-danger"><span
+                                                    class="glyphicon glyphicon-remove"></span> <fmt:message
+                                                    key="track.info.comment.delete"/></a>
+                                        </div>
                                     </c:if>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="panel-body">
-                                    ${comment.text}
+                                        ${comment.text}
                                 </div>
                             </div>
                         </c:forEach>
@@ -94,9 +104,10 @@
                                 <input type="hidden" name="id" value="${track.trackId}">
                                 <div class="form-group">
                                     <label for="comment"><fmt:message key="track.info.comment"/>:</label>
-                                    <textarea name="text" class="form-control" rows="5" id="comment" required></textarea>
+                                    <textarea name="text" class="form-control" rows="5" id="comment"  required></textarea>
                                 </div>
-                                <button type="submit" class="btn btn-success"><fmt:message key="track.info.submit.comment"/></button>
+                                <button type="submit" class="btn btn-success"><fmt:message
+                                        key="track.info.submit.comment"/></button>
                             </form>
                         </div>
                     </div>

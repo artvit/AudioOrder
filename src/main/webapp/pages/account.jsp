@@ -15,6 +15,7 @@
     <script src="${pageContext.request.contextPath}/webjars/jquery/3.0.0/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="${pageContext.request.contextPath}/resource/css/background.css" rel="stylesheet">
+    <script src="${pageContext.request.contextPath}/resource/js/clickable-row.js"></script>
 </head>
 <body>
 <%@ include file="../WEB-INF/jspf/menu.jspf" %>

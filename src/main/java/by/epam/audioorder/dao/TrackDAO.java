@@ -226,7 +226,7 @@ public class TrackDAO extends AbstractDAO<Track> {
             Track track = null;
             if (result.next()) {
                 track = createTrack(result);
-                LOGGER.info("Successful reading from database");
+                LOGGER.info("Successful reading from database for id " + id);
             }
             return track;
         } catch (ConnectionPoolException e) {

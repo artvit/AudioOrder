@@ -15,6 +15,7 @@ public class TrackInfoService {
         Track track = null;
         try {
             track = trackDAO.findById(id);
+
         } catch (DAOException e) {
             LOGGER.error("Track was not found for id " + id, e);
         }

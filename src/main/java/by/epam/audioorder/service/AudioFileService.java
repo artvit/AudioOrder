@@ -27,21 +27,24 @@ public class AudioFileService {
             String newFileName = UUID.randomUUID().toString() + extension;
             String newFilePath = SAVE_FOLDER + newFileName;
             Files.move(Paths.get(filePath), Paths.get(newFilePath));
-            LOGGER.info("File " + newFilePath + "saved");
+            LOGGER.info("File " + newFilePath + " saved");
             return newFilePath;
         } catch (IOException e) {
             throw new ServiceException("Cannot store file");
         }
     }
 
-    public boolean deleteTrack(String trackPath) {
-        try {
-            Files.delete(Paths.get(trackPath));
-        } catch (IOException e) {
-            LOGGER.error("Cannot delete file " + trackPath, e);
-            return false;
+    public boolean deleteFile(String trackPath) {
+        if (Files.exists(Paths.get(trackPath))) {
+            try {
+                Files.delete(Paths.get(trackPath));
+                LOGGER.info("Delete file " + trackPath +" successfully");
+                return true;
+            } catch (IOException e) {
+                LOGGER.error("Cannot delete file " + trackPath, e);
+                return false;
+            }
         }
-        LOGGER.info("Delete file " + trackPath +" successfully");
-        return true;
+        return false;
     }
 }

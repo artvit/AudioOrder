@@ -22,6 +22,7 @@ public class CompletePaymentCommand implements Command {
         List<Bonus> usingBonuses = (List<Bonus>) request.getSession().getAttribute(AttributeName.USING_BONUS);
         AddTrackToUserService addTrackToUserService = new AddTrackToUserService();
         addTrackToUserService.addTracksToUser(tracks, user, usingBonuses);
+        request.getSession().removeAttribute(AttributeName.CART);
         request.getSession().removeAttribute(AttributeName.USING_BONUS);
         return new CommandResult(ServletMappingValue.URL_ACCOUNT, CommandResult.Type.REDIRECT);
     }

@@ -5,6 +5,7 @@ import by.epam.audioorder.config.Page;
 import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Comment;
 import by.epam.audioorder.entity.Track;
+import by.epam.audioorder.entity.User;
 import by.epam.audioorder.service.SearchResult;
 import by.epam.audioorder.service.TrackCommentService;
 import by.epam.audioorder.service.TrackInfoService;
@@ -41,6 +42,10 @@ public class TrackInfoCommand implements Command{
         }
         TrackInfoService trackInfoService = new TrackInfoService();
         Track track = trackInfoService.getTrackInfo(trackId);
+        User user = (User) request.getSession().getAttribute(AttributeName.USER);
+        if (user != null) {
+            track.setBought(trackInfoService.checkUserHasTrack(user, track));
+        }
         TrackCommentService trackCommentService = new TrackCommentService();
         SearchResult<Comment> feedback = trackCommentService.findCommentsForTrack(track, page);
         request.setAttribute(AttributeName.TRACK, track);

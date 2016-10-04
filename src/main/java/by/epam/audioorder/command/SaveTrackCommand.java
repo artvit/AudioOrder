@@ -74,7 +74,7 @@ public class SaveTrackCommand implements Command {
                 InputStream fileContent = filePart.getInputStream();
                 String fileName = Paths.get(filePart.getSubmittedFileName()).getFileName().toString();
                 AudioFileService audioFileService = new AudioFileService();
-                if (!audioFileService.deleteTrack(track.getPath())) {
+                if (!audioFileService.deleteFile(track.getPath())) {
                     LOGGER.error("Cannot delete file: " + track.getPath());
                 }
                 fileLink = audioFileService.saveFile(fileName, fileContent);
