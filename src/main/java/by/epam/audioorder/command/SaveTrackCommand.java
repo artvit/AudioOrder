@@ -51,7 +51,7 @@ public class SaveTrackCommand implements Command {
         String minutesParameter = request.getParameter(ParameterName.MINUTES);
         try {
             duration = Integer.parseInt(secondsParameter);
-            duration = 60 * Integer.parseInt(minutesParameter);
+            duration += 60 * Integer.parseInt(minutesParameter);
         } catch (NumberFormatException e) {
             LOGGER.warn("Wrong year parameter", e);
         }
