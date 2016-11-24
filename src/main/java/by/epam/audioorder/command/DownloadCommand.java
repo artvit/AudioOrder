@@ -26,6 +26,7 @@ import java.util.Locale;
 
 public class DownloadCommand implements Command {
     private static final Logger LOGGER = LogManager.getLogger();
+
     @Override
     public CommandResult execute(HttpServletRequest request, HttpServletResponse response) {
         String idParameter = request.getParameter(ParameterName.ID);
