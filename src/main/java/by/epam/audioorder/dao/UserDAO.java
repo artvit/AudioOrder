@@ -2,6 +2,7 @@ package by.epam.audioorder.dao;
 
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.exception.DAOException;
+import by.epam.audioorder.pool.ConnectionPool;
 import by.epam.audioorder.pool.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserDAO extends AbstractDAO<User> {
+public class UserDAO {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String USER_ID = "user_id";
@@ -59,7 +60,7 @@ public class UserDAO extends AbstractDAO<User> {
             PASS_HASH + ", " +
             EMAIL + ", " +
             ROLE +
-            ") VALUES (?, ?, ?, ?, ?);";
+            ") VALUES (?, ?, ?, ?);";
     private static final String DELETE_USER = "DELETE FROM user WHERE " + USER_ID + " = ?;";
     private static final String UPDATE_USER = "UPDATE user SET " +
             LOGIN + " = ?," +
@@ -71,7 +72,7 @@ public class UserDAO extends AbstractDAO<User> {
     private int pagesNumber = 0;
 
     public User findUserByLogin(String login) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(USER_BY_LOGIN)) {
             statement.setString(1, login);
             ResultSet result = statement.executeQuery();
@@ -90,9 +91,8 @@ public class UserDAO extends AbstractDAO<User> {
         }
     }
 
-    @Override
     public List<User> findAll(int page, int rowsPerPage) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(USER_ALL + ORDER_LOGIN + LIMIT)) {
             statement.setInt(1, rowsPerPage);
             statement.setInt(2, (page - 1) * rowsPerPage);
@@ -121,7 +121,7 @@ public class UserDAO extends AbstractDAO<User> {
         if (searchQuery == null ||  searchQuery.isEmpty()) {
             throw new DAOException("Empty search query passed to search method");
         }
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(USER_SEARCH + ORDER_LOGIN + LIMIT)) {
             statement.setString(1, "%" + searchQuery + "%");
             statement.setString(2, "%" + searchQuery + "%");
@@ -148,9 +148,8 @@ public class UserDAO extends AbstractDAO<User> {
         }
     }
 
-    @Override
     public User findById(long id) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(USER_BY_ID)) {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
@@ -169,9 +168,8 @@ public class UserDAO extends AbstractDAO<User> {
         }
     }
 
-    @Override
     public void delete(User entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_USER)) {
             statement.setLong(1, entity.getUserId());
             int result = statement.executeUpdate();
@@ -187,9 +185,8 @@ public class UserDAO extends AbstractDAO<User> {
         }
     }
 
-    @Override
     public void insert(User entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_USER)) {
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPasswordHash());
@@ -208,9 +205,8 @@ public class UserDAO extends AbstractDAO<User> {
         }
     }
 
-    @Override
     public void update(User entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_USER)) {
             statement.setString(1, entity.getLogin());
             statement.setString(2, entity.getPasswordHash());

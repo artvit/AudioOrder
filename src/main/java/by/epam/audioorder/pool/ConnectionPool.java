@@ -121,6 +121,7 @@ public class ConnectionPool {
             localInstance = instance;
             if (localInstance == null) {
                 instance = localInstance = new ConnectionPool(CAPACITY);
+                initialized.set(true);
             }
             accessLock.unlock();
         }

@@ -4,6 +4,7 @@ import by.epam.audioorder.entity.Comment;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.exception.DAOException;
+import by.epam.audioorder.pool.ConnectionPool;
 import by.epam.audioorder.pool.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,7 +15,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CommentDAO extends AbstractDAO<Comment> {
+public class CommentDAO {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String COMMENT_TABLE = "comment";
@@ -46,14 +47,8 @@ public class CommentDAO extends AbstractDAO<Comment> {
 
     private int pagesNumber = 0;
 
-    @Override
-    public List<Comment> findAll(int page, int rowsPerPage) throws DAOException {
-        return null;
-    }
-
-    @Override
     public Comment findById(long id) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
@@ -70,9 +65,8 @@ public class CommentDAO extends AbstractDAO<Comment> {
         }
     }
 
-    @Override
     public void delete(Comment entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_COMMENT)) {
             statement.setLong(1, entity.getCommentId());
             int result = statement.executeUpdate();
@@ -88,9 +82,8 @@ public class CommentDAO extends AbstractDAO<Comment> {
         }
     }
 
-    @Override
     public void insert(Comment entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_COMMENT)) {
             statement.setLong(1, entity.getTrack().getTrackId());
             statement.setLong(2, entity.getUser().getUserId());
@@ -109,13 +102,8 @@ public class CommentDAO extends AbstractDAO<Comment> {
         }
     }
 
-    @Override
-    public void update(Comment entity) throws DAOException {
-
-    }
-
     public List<Comment> findForTrack(Track track, int page, int rowsPerPage) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_BY_TRACK + LIMIT)) {
             statement.setLong(1, track.getTrackId());
             statement.setInt(2, rowsPerPage);

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,6 +56,7 @@ public class DownloadCommand implements Command {
             String fileName = (track.getArtist().getName() + " - " + track.getTitle()).replaceAll("[^\\p{L}\\d.-]+", "_");
             String extension = track.getPath().substring(track.getPath().lastIndexOf("."));
             fileName += extension;
+            fileName = URLEncoder.encode(fileName, "UTF-8");
             String headerValue = String.format("attachment; filename=\"%s\"", fileName);
             response.setHeader(headerKey, headerValue);
             OutputStream outStream = response.getOutputStream();

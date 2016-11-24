@@ -8,6 +8,7 @@ public enum Genre {
     ANY,
     POP,
     ROCK,
+    RAP,
     HOUSE_DANCE,
     ALTERNATIVE,
     INSTRUMENTAL,

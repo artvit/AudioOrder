@@ -2,6 +2,7 @@ package by.epam.audioorder.dao;
 
 import by.epam.audioorder.entity.Artist;
 import by.epam.audioorder.exception.DAOException;
+import by.epam.audioorder.pool.ConnectionPool;
 import by.epam.audioorder.pool.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -9,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.List;
 
-public class ArtistDAO extends AbstractDAO<Artist>{
+public class ArtistDAO {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String ID = "artist_id";
@@ -21,14 +22,8 @@ public class ArtistDAO extends AbstractDAO<Artist>{
     private static final String DELETE_ARTIST = "DELETE FROM artist WHERE " + ID + " = ?";
     private static final String UPDATE_ARTIST = "UPDATE artist SET " + NAME + " = ? WHERE " + ID + " = ?";
 
-    @Override
-    public List<Artist> findAll(int page, int rowsPerPage) throws DAOException {
-        return null;
-    }
-
-    @Override
     public Artist findById(long id) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(ARTIST_BY_ID)) {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
@@ -45,9 +40,8 @@ public class ArtistDAO extends AbstractDAO<Artist>{
         }
     }
 
-    @Override
     public void delete(Artist entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_ARTIST)) {
             statement.setLong(1, entity.getArtistId());
             int result = statement.executeUpdate();
@@ -63,9 +57,8 @@ public class ArtistDAO extends AbstractDAO<Artist>{
         }
     }
 
-    @Override
     public void insert(Artist entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_ARTIST, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, entity.getName());
             int result = statement.executeUpdate();
@@ -85,9 +78,8 @@ public class ArtistDAO extends AbstractDAO<Artist>{
         }
     }
 
-    @Override
     public void update(Artist entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_ARTIST)) {
             statement.setString(1, entity.getName());
             statement.setLong(2, entity.getArtistId());
@@ -105,7 +97,7 @@ public class ArtistDAO extends AbstractDAO<Artist>{
     }
 
     public Artist findByName(String name) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(ARTIST_BY_LOGIN)) {
             statement.setString(1, name);
             ResultSet result = statement.executeQuery();

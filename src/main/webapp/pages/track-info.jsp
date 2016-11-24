@@ -86,7 +86,7 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="panel-body">
-                                        ${comment.text}
+                                    <c:out value="${comment.text}"/>
                                 </div>
                             </div>
                         </c:forEach>

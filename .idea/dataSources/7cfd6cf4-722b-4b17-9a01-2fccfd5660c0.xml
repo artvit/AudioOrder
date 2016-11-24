@@ -38,9 +38,9 @@
       <data-type>int(11)|0</data-type>
     </column>
     <column id="20" parent="10" name="genre">
-      <comment>Жанр треков, на которые действует скидка</comment>
+      <comment>Р–Р°РЅСЂ С‚СЂРµРєРѕРІ, РЅР° РєРѕС‚РѕСЂС‹Рµ РґРµР№СЃС‚РІСѓРµС‚ СЃРєРёРґРєР°</comment>
       <mandatory>1</mandatory>
-      <data-type>enum(&apos;any&apos;, &apos;pop&apos;, &apos;rock&apos;, &apos;house_dance&apos;, &apos;alternative&apos;, &apos;instrumental&apos;, &apos;metal&apos;, &apos;dubstep&apos;, &apos;jazz&apos;, &apos;dnb&apos;, &apos;trance&apos;, &apos;acoustic&apos;, &apos;reggae&apos;, &apos;classical&apos;)|0</data-type>
+      <data-type>enum(&apos;any&apos;, &apos;pop&apos;, &apos;rock&apos;, &apos;hiphop&apos;, &apos;house_dance&apos;, &apos;alternative&apos;, &apos;instrumental&apos;, &apos;metal&apos;, &apos;dubstep&apos;, &apos;jazz&apos;, &apos;dnb&apos;, &apos;trance&apos;, &apos;acoustic&apos;, &apos;reggae&apos;, &apos;classical&apos;)|0</data-type>
       <default-expression>&apos;any&apos;</default-expression>
     </column>
     <column id="21" parent="10" name="sale">
@@ -136,7 +136,7 @@
     <column id="39" parent="12" name="genre">
       <comment>Жанр трека</comment>
       <mandatory>1</mandatory>
-      <data-type>enum(&apos;any&apos;, &apos;pop&apos;, &apos;rock&apos;, &apos;house_dance&apos;, &apos;alternative&apos;, &apos;instrumental&apos;, &apos;metal&apos;, &apos;dubstep&apos;, &apos;jazz&apos;, &apos;dnb&apos;, &apos;trance&apos;, &apos;acoustic&apos;, &apos;reggae&apos;, &apos;classical&apos;)|0</data-type>
+      <data-type>enum(&apos;any&apos;, &apos;pop&apos;, &apos;rock&apos;, &apos;rap&apos;, &apos;house_dance&apos;, &apos;alternative&apos;, &apos;instrumental&apos;, &apos;metal&apos;, &apos;dubstep&apos;, &apos;jazz&apos;, &apos;dnb&apos;, &apos;trance&apos;, &apos;acoustic&apos;, &apos;reggae&apos;, &apos;classical&apos;)|0</data-type>
       <default-expression>&apos;any&apos;</default-expression>
     </column>
     <column id="40" parent="12" name="duration">

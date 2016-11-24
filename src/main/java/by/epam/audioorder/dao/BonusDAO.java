@@ -5,6 +5,7 @@ import by.epam.audioorder.entity.Comment;
 import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.exception.DAOException;
+import by.epam.audioorder.pool.ConnectionPool;
 import by.epam.audioorder.pool.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,7 +16,7 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BonusDAO extends AbstractDAO<Bonus>{
+public class BonusDAO {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String BONUS_TABLE = "bonus";
@@ -54,14 +55,8 @@ public class BonusDAO extends AbstractDAO<Bonus>{
             BONUS + ", " +
             SALE +") VALUES (?, ?, ?, ?, ?, ?)";
 
-    @Override
-    public List<Bonus> findAll(int page, int rowsPerPage) throws DAOException {
-        return null;
-    }
-
-    @Override
     public Bonus findById(long id) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_BY_ID)) {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
@@ -79,7 +74,7 @@ public class BonusDAO extends AbstractDAO<Bonus>{
     }
 
     public List<Bonus> findForUser(User user) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(FIND_FOR_USER)) {
             statement.setLong(1, user.getUserId());
             ResultSet result = statement.executeQuery();
@@ -97,9 +92,8 @@ public class BonusDAO extends AbstractDAO<Bonus>{
         }
     }
 
-    @Override
     public void delete(Bonus entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_BONUS)) {
             statement.setLong(1, entity.getBonusId());
             int result = statement.executeUpdate();
@@ -115,9 +109,8 @@ public class BonusDAO extends AbstractDAO<Bonus>{
         }
     }
 
-    @Override
     public void insert(Bonus entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_BONUS)) {
             statement.setLong(1, entity.getUser().getUserId());
             statement.setInt(2, entity.getYearAfter());
@@ -136,11 +129,6 @@ public class BonusDAO extends AbstractDAO<Bonus>{
         } catch (SQLException e) {
             throw new DAOException("Error in SQL", e);
         }
-    }
-
-    @Override
-    public void update(Bonus entity) throws DAOException {
-
     }
 
     private Bonus createBonus(ResultSet resultSet) throws SQLException {

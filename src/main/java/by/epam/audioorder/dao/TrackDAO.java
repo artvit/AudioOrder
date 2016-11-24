@@ -5,6 +5,7 @@ import by.epam.audioorder.entity.Genre;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
 import by.epam.audioorder.exception.DAOException;
+import by.epam.audioorder.pool.ConnectionPool;
 import by.epam.audioorder.pool.ConnectionPoolException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +17,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TrackDAO extends AbstractDAO<Track> {
+public class TrackDAO {
     private static final Logger LOGGER = LogManager.getLogger();
 
     private static final String TRACK_TABLE = "track";
@@ -94,9 +95,8 @@ public class TrackDAO extends AbstractDAO<Track> {
 
     private int pagesNumber;
 
-    @Override
     public List<Track> findAll(int page, int rowsPerPage) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
               PreparedStatement statement = connection.prepareStatement(TRACK_ALL + LIMIT)) {
             statement.setInt(1, rowsPerPage);
             statement.setInt(2, (page - 1) * rowsPerPage);
@@ -122,7 +122,7 @@ public class TrackDAO extends AbstractDAO<Track> {
     }
 
     public List<Track> findTracksForUser(User user, int page, int rowsPerPage) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(TRACKS_FOR_USER + LIMIT)) {
             statement.setLong(1, user.getUserId());
             statement.setInt(2, rowsPerPage);
@@ -149,7 +149,7 @@ public class TrackDAO extends AbstractDAO<Track> {
     }
 
     public boolean checkUserBoughtTrack(User user, Track track) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(CHECK_USER_TRACK)) {
             statement.setLong(1, user.getUserId());
             statement.setLong(2, track.getTrackId());
@@ -184,7 +184,7 @@ public class TrackDAO extends AbstractDAO<Track> {
             sqlQuery += SEARCH_GENRE;
         }
         sqlQuery += LIMIT;
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(sqlQuery)) {
             int parametersCounter = 1;
             if (isQuery) {
@@ -217,9 +217,8 @@ public class TrackDAO extends AbstractDAO<Track> {
         }
     }
 
-    @Override
     public Track findById(long id) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(TRACK_BY_ID)) {
             statement.setLong(1, id);
             ResultSet result = statement.executeQuery();
@@ -236,9 +235,8 @@ public class TrackDAO extends AbstractDAO<Track> {
         }
     }
 
-    @Override
     public void delete(Track entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(DELETE_TRACK)) {
             statement.setLong(1, entity.getTrackId());
             int result = statement.executeUpdate();
@@ -254,9 +252,8 @@ public class TrackDAO extends AbstractDAO<Track> {
         }
     }
 
-    @Override
     public void insert(Track entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_TRACK)) {
             statement.setLong(1, entity.getArtist().getArtistId());
             statement.setString(2, entity.getTitle());
@@ -278,9 +275,8 @@ public class TrackDAO extends AbstractDAO<Track> {
         }
     }
 
-    @Override
     public void update(Track entity) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_TRACK)) {
             statement.setLong(1, entity.getArtist().getArtistId());
             statement.setString(2, entity.getTitle());
@@ -304,7 +300,7 @@ public class TrackDAO extends AbstractDAO<Track> {
     }
 
     public void saveUserTrack(User user, Track track) throws DAOException {
-        try (Connection connection = getConnection();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_USER_TRACK)) {
             statement.setLong(1, user.getUserId());
             statement.setLong(2, track.getTrackId());
