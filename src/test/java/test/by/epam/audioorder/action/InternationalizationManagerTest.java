@@ -13,6 +13,5 @@ public class InternationalizationManagerTest {
         Assert.assertTrue("Tracks".equals(result));
         result = InternationalizationManager.getProperty("menu.tracks", new Locale("en"));
         Assert.assertTrue("Tracks".equals(result));
-        String a = "ывпрвралфыпвафл";
     }
 }
