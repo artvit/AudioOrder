@@ -27,7 +27,7 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-body">
-            <ul class="nav nav-tabs">
+            <ul class="nav-tabs">
                 <li role="presentation" <c:if test="${section == 'tracks'}">class="active"</c:if>><a href="${pageContext.request.contextPath}/account?command=account-tracks"><fmt:message key="account.section.tracks"/></a></li>
                 <li role="presentation" <c:if test="${section == 'bonuses'}">class="active"</c:if>><a href="${pageContext.request.contextPath}/account?command=account-bonuses"><fmt:message key="account.section.bonuses"/></a></li>
             </ul>
