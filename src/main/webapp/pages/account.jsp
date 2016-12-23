@@ -13,7 +13,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><c:out value="${login}"/></title>
     <link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <<link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
     <script src="${pageContext.request.contextPath}/webjars/jquery/3.0.0/jquery.min.js"></script>
     <script src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <link href="${pageContext.request.contextPath}/resource/css/theme.min.css" rel="stylesheet"/>
@@ -27,7 +26,7 @@
     </div>
     <div class="panel panel-default">
         <div class="panel-body">
-            <ul class="nav-tabs">
+            <ul class="nav nav-tabs">
                 <li role="presentation" <c:if test="${section == 'tracks'}">class="active"</c:if>><a href="${pageContext.request.contextPath}/account?command=account-tracks"><fmt:message key="account.section.tracks"/></a></li>
                 <li role="presentation" <c:if test="${section == 'bonuses'}">class="active"</c:if>><a href="${pageContext.request.contextPath}/account?command=account-bonuses"><fmt:message key="account.section.bonuses"/></a></li>
             </ul>
