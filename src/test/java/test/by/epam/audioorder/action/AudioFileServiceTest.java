@@ -2,6 +2,7 @@ package test.by.epam.audioorder.action;
 
 import by.epam.audioorder.exception.ServiceException;
 import by.epam.audioorder.service.AudioFileService;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,6 +16,8 @@ public class AudioFileServiceTest {
     @Test
     public void saveFileTest() throws IOException, ServiceException {
         List<String> filenames = Arrays.asList(
+                "6e053af4-f98f-4f1b-a795-01cc0ecc001f.mp3",
+                "3af6b10a-a1a2-45a6-9745-c52cb83ba9e0.mp3",
                 "c7a0fd2f-8dc3-4b11-8fcc-2e9d063edc3b.mp3",
                 "738e0dbd-f2d1-4a12-9d84-6bd7b78bc1e4.mp3",
                 "4e022686-8bd0-417c-b919-a23744469861.mp3",
@@ -26,5 +29,13 @@ public class AudioFileServiceTest {
             InputStream inputStream = Files.newInputStream(Paths.get("c:\\Users\\artvi\\IdeaProjects\\storage\\" + filename));
             audioFileService.saveFile(filename, inputStream);
         }
+    }
+
+    @Test
+    public void downloadFileTest() {
+        String filename =  "7524ff20-1540-48dd-948c-2fba49c064a2.mp3";
+        AudioFileService audioFileService = new AudioFileService();
+        InputStream inputStream = audioFileService.downloadFile(filename);
+        Assert.assertNotNull(inputStream);
     }
 }

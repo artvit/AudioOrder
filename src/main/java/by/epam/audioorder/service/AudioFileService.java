@@ -24,19 +24,17 @@ public class AudioFileService {
 
     public String saveFile(String fileName, InputStream inputStream) throws ServiceException {
         try {
-            String filePath = fileName;
             String extension = "";
             int i = fileName.lastIndexOf('.');
             if (i > 0) {
                 extension = fileName.substring(i);
             }
-            String newFileName = UUID.randomUUID().toString() + extension;
+            fileName = UUID.randomUUID().toString() + extension;
             DbxRequestConfig config = new DbxRequestConfig("AudioOrder/1.0");
             DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
-            FileMetadata metadata = client.files().uploadBuilder("/" + newFileName).uploadAndFinish(inputStream);
-            Files.copy(inputStream, Paths.get(filePath));
-            LOGGER.info("File " + newFileName + " saved");
-            return newFileName;
+            FileMetadata metadata = client.files().uploadBuilder("/" + fileName).uploadAndFinish(inputStream);
+            LOGGER.info("File " + fileName + " saved");
+            return fileName;
         } catch (IOException e) {
             throw new ServiceException("Cannot store file");
         } catch (UploadErrorException e) {
@@ -65,9 +63,10 @@ public class AudioFileService {
     public InputStream downloadFile(String file) {
         DbxRequestConfig config = new DbxRequestConfig("AudioOrder/1.0");
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
-        try {
-            return client.files().download("/" + file).getInputStream();
+        try (DbxDownloader<FileMetadata> downloader = client.files().download("/" + file)) {
+            return downloader.getInputStream();
         } catch (DbxException | IllegalArgumentException e) {
+            LOGGER.error("Cannot get file", e);
             return null;
         }
     }
