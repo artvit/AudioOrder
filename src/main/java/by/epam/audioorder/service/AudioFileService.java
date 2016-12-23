@@ -63,7 +63,8 @@ public class AudioFileService {
     public InputStream downloadFile(String file) {
         DbxRequestConfig config = new DbxRequestConfig("AudioOrder/1.0");
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
-        try (DbxDownloader<FileMetadata> downloader = client.files().download("/" + file)) {
+        try {
+            DbxDownloader<FileMetadata> downloader = client.files().download("/" + file);
             return downloader.getInputStream();
         } catch (DbxException | IllegalArgumentException e) {
             LOGGER.error("Cannot get file", e);
