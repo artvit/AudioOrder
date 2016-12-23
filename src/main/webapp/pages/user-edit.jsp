@@ -9,6 +9,7 @@
 </c:if>
 <html>
 <head>
+    <link rel="shortcut icon" href="${pageContext.request.contextPath}/resource/img/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><c:out value="${user.login}"/></title>
     <link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">

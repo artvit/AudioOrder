@@ -5,7 +5,7 @@
 <fmt:setBundle basename="i18n.i18n"/>
 <c:set var="lastpage" scope="session" value="${requestScope['javax.servlet.forward.request_uri']}"/>
 <html>
-<head>
+<head><link rel="shortcut icon" href="${pageContext.request.contextPath}/resource/img/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><fmt:message key="track.add.success.title"/></title>
     <link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">

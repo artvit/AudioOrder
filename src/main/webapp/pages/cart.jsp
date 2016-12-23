@@ -8,7 +8,7 @@
     <c:set var="lastpage" scope="session" value="${lastpage}?${requestScope['javax.servlet.forward.query_string']}"/>
 </c:if>
 <html>
-<head>
+<head><link rel="shortcut icon" href="${pageContext.request.contextPath}/resource/img/favicon.ico">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title><fmt:message key="cart.title"/></title>
     <link href="${pageContext.request.contextPath}/webjars/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
