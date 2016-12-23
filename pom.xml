@@ -73,6 +73,11 @@
             <artifactId>jquery-ui</artifactId>
             <version>1.12.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.dropbox.core</groupId>
+            <artifactId>dropbox-core-sdk</artifactId>
+            <version>2.1.1</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>AudioOrder</finalName>

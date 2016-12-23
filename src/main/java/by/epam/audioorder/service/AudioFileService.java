@@ -1,6 +1,13 @@
 package by.epam.audioorder.service;
 
 import by.epam.audioorder.exception.ServiceException;
+import com.dropbox.core.DbxDownloader;
+import com.dropbox.core.DbxException;
+import com.dropbox.core.DbxRequestConfig;
+import com.dropbox.core.v2.DbxClientV2;
+import com.dropbox.core.v2.files.FileMetadata;
+import com.dropbox.core.v2.files.Metadata;
+import com.dropbox.core.v2.files.UploadErrorException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -13,38 +20,56 @@ import java.util.UUID;
 public class AudioFileService {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    private static final String SAVE_FOLDER = "c:/Users/artvi/IdeaProjects/storage/";
+    private static final String ACCESS_TOKEN = "06D96Ewopg8AAAAAAABfykaEtBHN6Y7z1aLhgEISiKsvua6Pl7DPXTwQZQBolJm2";
 
     public String saveFile(String fileName, InputStream inputStream) throws ServiceException {
         try {
-            String filePath = SAVE_FOLDER + fileName;
+            String filePath = fileName;
             String extension = "";
             int i = fileName.lastIndexOf('.');
             if (i > 0) {
                 extension = fileName.substring(i);
             }
-            Files.copy(inputStream, Paths.get(filePath));
             String newFileName = UUID.randomUUID().toString() + extension;
-            String newFilePath = SAVE_FOLDER + newFileName;
-            Files.move(Paths.get(filePath), Paths.get(newFilePath));
-            LOGGER.info("File " + newFilePath + " saved");
-            return newFilePath;
+            DbxRequestConfig config = new DbxRequestConfig("AudioOrder/1.0");
+            DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+            FileMetadata metadata = client.files().uploadBuilder("/" + newFileName).uploadAndFinish(inputStream);
+            Files.copy(inputStream, Paths.get(filePath));
+            LOGGER.info("File " + newFileName + " saved");
+            return newFileName;
         } catch (IOException e) {
             throw new ServiceException("Cannot store file");
+        } catch (UploadErrorException e) {
+            throw new ServiceException("Cannot upload file");
+        } catch (DbxException e) {
+            throw new ServiceException("Dropbox exception");
         }
     }
 
     public boolean deleteFile(String trackPath) {
-        if (Files.exists(Paths.get(trackPath))) {
-            try {
-                Files.delete(Paths.get(trackPath));
+        DbxRequestConfig config = new DbxRequestConfig("AudioOrder/1.0");
+        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+        try {
+            Metadata fileMetadata = client.files().getMetadata(trackPath);
+            if (fileMetadata != null) {
+                client.files().delete(trackPath);
                 LOGGER.info("Delete file " + trackPath +" successfully");
                 return true;
-            } catch (IOException e) {
-                LOGGER.error("Cannot delete file " + trackPath, e);
-                return false;
             }
+        } catch (DbxException e) {
+            LOGGER.error("Dropbox error");
         }
         return false;
     }
+
+    public InputStream downloadFile(String file) {
+        DbxRequestConfig config = new DbxRequestConfig("AudioOrder/1.0");
+        DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
+        try {
+            return client.files().download(file).getInputStream();
+        } catch (DbxException e) {
+            return null;
+        }
+    }
+
 }

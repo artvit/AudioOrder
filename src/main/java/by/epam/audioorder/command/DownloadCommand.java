@@ -7,6 +7,7 @@ import by.epam.audioorder.config.Page;
 import by.epam.audioorder.config.ParameterName;
 import by.epam.audioorder.entity.Track;
 import by.epam.audioorder.entity.User;
+import by.epam.audioorder.service.AudioFileService;
 import by.epam.audioorder.service.TrackInfoService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,16 +44,16 @@ public class DownloadCommand implements Command {
             request.setAttribute(AttributeName.MESSAGE, InternationalizationManager.getProperty("error.access", locale));
             return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
         }
-        Path filePath = Paths.get(track.getPath());
+        String name = track.getPath();
         try {
-            InputStream inStream = Files.newInputStream(filePath);
+            AudioFileService audioFileService = new AudioFileService();
+            InputStream inStream = audioFileService.downloadFile(name);
             ServletContext context = request.getServletContext();
             String mimeType = context.getMimeType(track.getPath());
             if (mimeType == null) {
                 mimeType = "application/octet-stream";
             }
             response.setContentType(mimeType);
-            response.setContentLength((int) Files.size(filePath));
             String headerKey = "Content-Disposition";
             String fileName = (track.getArtist().getName() + " - " + track.getTitle()).replaceAll("[^\\p{L}\\d.-]+", "_");
             String extension = track.getPath().substring(track.getPath().lastIndexOf("."));
