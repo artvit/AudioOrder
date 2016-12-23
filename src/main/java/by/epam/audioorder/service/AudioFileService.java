@@ -66,8 +66,8 @@ public class AudioFileService {
         DbxRequestConfig config = new DbxRequestConfig("AudioOrder/1.0");
         DbxClientV2 client = new DbxClientV2(config, ACCESS_TOKEN);
         try {
-            return client.files().download(file).getInputStream();
-        } catch (DbxException e) {
+            return client.files().download("/" + file).getInputStream();
+        } catch (DbxException | IllegalArgumentException e) {
             return null;
         }
     }

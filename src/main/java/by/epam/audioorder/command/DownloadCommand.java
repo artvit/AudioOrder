@@ -48,6 +48,10 @@ public class DownloadCommand implements Command {
         try {
             AudioFileService audioFileService = new AudioFileService();
             InputStream inStream = audioFileService.downloadFile(name);
+            if (inStream == null) {
+                LOGGER.error("Cannot get file from dropbox");
+                return new CommandResult(Page.ERROR, CommandResult.Type.FORWARD);
+            }
             ServletContext context = request.getServletContext();
             String mimeType = context.getMimeType(track.getPath());
             if (mimeType == null) {
