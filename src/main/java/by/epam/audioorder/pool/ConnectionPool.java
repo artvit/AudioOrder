@@ -59,6 +59,9 @@ public class ConnectionPool {
                 busyConnections.add(connection);
             } else {
                 connection = connectionQueue.take();
+                if (connection.isClosed()) {
+                    connection = new ProxyConnection(DriverManager.getConnection(url, user, password));
+                }
                 busyConnections.add(connection);
             }
             return connection;
