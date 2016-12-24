@@ -30,7 +30,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
             <div>
-                <h2><fmt:message key="cart.total"/>: ${total}</h2>
+                <h2 style="color: #111"><fmt:message key="cart.total"/>: ${total}</h2>
             </div>
             <form action="${pageContext.request.contextPath}/payment" method="post">
                 <input type="hidden" name="command" value="payment-complete">
