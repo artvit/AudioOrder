@@ -1,6 +1,6 @@
 package test.by.epam.audioorder.action;
 
-import by.epam.audioorder.action.InternationalizationManager;
+import by.bsu.audioorder.action.InternationalizationManager;
 import org.junit.Assert;
 import org.junit.Test;
 

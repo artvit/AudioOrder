@@ -1,6 +1,6 @@
 package test.by.epam.audioorder.action;
 
-import by.epam.audioorder.action.IdParameterParser;
+import by.bsu.audioorder.action.IdParameterParser;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

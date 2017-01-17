@@ -1,7 +1,7 @@
 package test.by.epam.audioorder.action;
 
-import by.epam.audioorder.exception.ServiceException;
-import by.epam.audioorder.service.AudioFileService;
+import by.bsu.audioorder.exception.ServiceException;
+import by.bsu.audioorder.service.AudioFileService;
 import org.junit.Assert;
 import org.junit.Test;
 

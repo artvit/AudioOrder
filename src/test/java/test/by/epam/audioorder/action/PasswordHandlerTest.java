@@ -1,6 +1,6 @@
 package test.by.epam.audioorder.action;
 
-import by.epam.audioorder.action.PasswordHandler;
+import by.bsu.audioorder.action.PasswordHandler;
 import org.junit.Assert;
 import org.junit.Test;
 

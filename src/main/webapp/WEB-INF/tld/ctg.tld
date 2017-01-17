@@ -10,13 +10,13 @@
 
     <tag>
         <name>usermenu</name>
-        <tag-class>by.epam.audioorder.tag.UserMenuTag</tag-class>
+        <tag-class>by.bsu.audioorder.tag.UserMenuTag</tag-class>
         <body-content>empty</body-content>
     </tag>
 
     <tag>
         <name>pagination</name>
-        <tag-class>by.epam.audioorder.tag.PaginationTag</tag-class>
+        <tag-class>by.bsu.audioorder.tag.PaginationTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>page</name>
@@ -34,7 +34,7 @@
 
     <tag>
         <name>duration</name>
-        <tag-class>by.epam.audioorder.tag.TrackDurationTag</tag-class>
+        <tag-class>by.bsu.audioorder.tag.TrackDurationTag</tag-class>
         <body-content>empty</body-content>
         <attribute>
             <name>value</name>
